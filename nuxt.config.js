@@ -23,7 +23,14 @@ module.exports = {
   /*
    ** Global CSS
    */
-  css: [],
+  css: [
+    // 直接加载一个 Node.js 模块。（在这里它是一个 Sass 文件）
+    'bulma',
+    // 项目里要用的 CSS 文件
+    '@/assets/css/main.css',
+    // 项目里要使用的 SCSS 文件
+    '@/assets/css/main.scss'
+  ],
   /*
    ** Plugins to load before mounting the App
    */

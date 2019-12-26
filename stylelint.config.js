@@ -19,11 +19,11 @@ module.exports = {
     ],
     'max-empty-lines': 2,
     'rule-empty-line-before': [
-      'never-multi-line'
-      // {
-      //   except: ['first-nested'],
-      //   ignore: ['after-comment']
-      // }
+      'always',
+      {
+        except: ['first-nested'],
+        ignore: ['after-comment']
+      }
     ],
     'unit-whitelist': ['em', 'rem', '%', 's']
   }
