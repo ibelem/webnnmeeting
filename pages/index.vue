@@ -39,7 +39,7 @@ export default {
     },
     emptyName() {
       this.$buefy.toast.open({
-        duration: 300000,
+        duration: 3000,
         message: `Type name to join the meeting`,
         position: 'is-bottom',
         type: 'is-warning'
