@@ -9,3 +9,7 @@ body, button, input, select, textarea {
 .notices .toast.is-warning {
   color: rgba(255, 255, 255, 1.0) !important;
 }
+
+.notices .toast {
+  padding: 0.5em 1em !important;
+}

@@ -26,15 +26,20 @@ export default {
     join() {
       if (this.user.length <= 0) {
         this.emptyName()
-      } else if (this.user.length > 0 && this.user.length < 2) {
+      }
+      if (this.user.length > 0 && this.user.length < 2) {
         this.shortName()
-      } else if (this.user.length > 48) {
+      }
+      if (this.user.length > 48) {
         this.longName()
-      } else this.goodToGo()
+      }
+      if (this.user.length >= 2 && this.user.length <= 48) {
+        this.goodToGo()
+      }
     },
     emptyName() {
       this.$buefy.toast.open({
-        duration: 3000,
+        duration: 300000,
         message: `Type name to join the meeting`,
         position: 'is-bottom',
         type: 'is-warning'
