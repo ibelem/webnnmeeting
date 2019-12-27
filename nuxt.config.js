@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 module.exports = {
   mode: 'universal',
   /*
@@ -14,7 +15,15 @@ module.exports = {
         content: process.env.npm_package_description || ''
       }
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
+    link: [
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      {
+        rel: 'stylesheet',
+        type: 'text/css',
+        href:
+          'https://fonts.googleapis.com/css?family=Lato:300,300i,400,400i&display=swap'
+      }
+    ]
   },
   /*
    ** Customize the progress-bar color
