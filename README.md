@@ -5,8 +5,7 @@
 
 ## HTTPS Configuration
 
-- Go to project main dir;
-- Create private and public key;
+Go to project main dir and create private and public key:
 ```
 $ openssl genrsa 2048 > server.key
 $ chmod 400 server.key
