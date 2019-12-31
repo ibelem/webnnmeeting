@@ -11,6 +11,7 @@
         <button @click="join" class="button is-info">Join</button>
       </p>
     </b-field>
+    <div class="lll">webnn meeting, meet happy</div>
   </section>
 </template>
 
@@ -72,3 +73,12 @@ export default {
   }
 }
 </script>
+<style>
+.lll {
+  font-weight: 300;
+  font-style: italic;
+  line-height: 1;
+  font-size: 2rem;
+  letter-spacing: -0.01em;
+}
+</style>

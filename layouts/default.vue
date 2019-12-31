@@ -18,6 +18,22 @@
                   </a>
                 </div>
               </b-navbar-item>
+              <b-navbar-dropdown label="Theme">
+                <b-navbar-item href="#">
+                  Classic
+                </b-navbar-item>
+                <b-navbar-item href="#">
+                  Immersive
+                </b-navbar-item>
+              </b-navbar-dropdown>
+              <b-navbar-dropdown label="EN">
+                <b-navbar-item href="#">
+                  English (EN-US)
+                </b-navbar-item>
+                <b-navbar-item href="#">
+                  简体中文 (ZH-CN)
+                </b-navbar-item>
+              </b-navbar-dropdown>
             </template>
           </b-navbar>
         </div>
@@ -34,14 +50,19 @@
     <!-- Hero footer: will stick at the bottom -->
     <div class="hero-foot">
       <div class="container has-text-centered section">
-        &copy;2020 <a href="">WebNN API</a>
+        &copy;2020 <a href="">WebNN API</a> <WebNNBadge />
       </div>
     </div>
   </section>
 </template>
 
 <script>
+import WebNNBadge from '~/components/WebNNBadge.vue'
+
 export default {
+  components: {
+    WebNNBadge
+  },
   data() {
     return {
       animated: 'slide',

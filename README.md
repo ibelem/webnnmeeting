@@ -4,6 +4,17 @@
 
 ## Build Setup
 
+### HTTPS Required
+
+- Go to project main dir;
+- Create private and public key;
+
+$ openssl genrsa 2048 > server.key
+$ chmod 400 server.key
+$ openssl req -new -x509 -nodes -sha256 -days 365 -key server.key -out server.crt
+
+
+
 ``` bash
 # install dependencies
 $ npm run install

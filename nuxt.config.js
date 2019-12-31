@@ -1,3 +1,6 @@
+const fs = require('fs');
+const path = require('path');
+
 /* eslint-disable prettier/prettier */
 module.exports = {
   mode: 'universal',
@@ -78,5 +81,14 @@ module.exports = {
      ** You can extend webpack config here
      */
     extend(config, ctx) {}
+  },
+  server: {
+    port: 8080, // default: 3000
+    host: '0.0.0.0', // default: localhost,
+    timing: false,
+    https: {
+      key: fs.readFileSync(path.resolve(__dirname, 'server.key')),
+      cert: fs.readFileSync(path.resolve(__dirname, 'server.crt'))
+    }
   }
 }
