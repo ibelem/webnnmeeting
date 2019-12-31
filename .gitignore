@@ -1,8 +1,8 @@
 # Created by .ignore support plugin (hsz.mobi)
 ### Node template
 # Certificate
-.crt
-.key
+*.crt
+*.key
 
 
 # Logs
