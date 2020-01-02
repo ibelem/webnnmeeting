@@ -1,17 +1,21 @@
 <template>
   <section class="section">
-    <b-field position="is-centered">
-      <b-input
-        v-model="user"
-        placeholder="Name..."
-        type="text"
-        icon="account"
-      ></b-input>
-      <p class="control">
-        <button @click="join" class="button is-info">Join</button>
-      </p>
-    </b-field>
-    <div class="lll">webnn meeting, meet happy</div>
+    <div class="home-center">
+      <b-field position="is-centered homecontrol">
+        <b-input
+          v-model="user"
+          placeholder="type your name"
+          type="text"
+          icon="account"
+        ></b-input>
+        <p class="control">
+          <button @click="join" class="button join">
+            <div class="insider"></div>
+            join
+          </button>
+        </p>
+      </b-field>
+    </div>
   </section>
 </template>
 
@@ -41,7 +45,7 @@ export default {
     emptyName() {
       this.$buefy.toast.open({
         duration: 3000,
-        message: `Type name to join the meeting`,
+        message: `type name to join the meeting`,
         position: 'is-bottom',
         type: 'is-warning'
       })
@@ -49,7 +53,7 @@ export default {
     shortName() {
       this.$buefy.toast.open({
         duration: 3000,
-        message: `Too short name`,
+        message: `too short name`,
         position: 'is-bottom',
         type: 'is-warning'
       })
@@ -57,7 +61,7 @@ export default {
     longName() {
       this.$buefy.toast.open({
         duration: 3000,
-        message: `Too long name`,
+        message: `too long name`,
         position: 'is-bottom',
         type: 'is-warning'
       })
@@ -65,7 +69,7 @@ export default {
     goodToGo() {
       this.$buefy.toast.open({
         duration: 3000,
-        message: `Great`,
+        message: `great`,
         position: 'is-bottom',
         type: 'is-info'
       })
@@ -74,11 +78,82 @@ export default {
 }
 </script>
 <style>
-.lll {
-  font-weight: 300;
-  font-style: italic;
-  line-height: 1;
-  font-size: 2rem;
-  letter-spacing: -0.01em;
+.home-center {
+  margin: 0 auto;
+  text-align: center;
+  display: block;
+}
+
+.homecontrol {
+  margin: 0 auto;
+  background-color: transparent !important;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 30px !important;
+  height: 60px;
+  color: rgba(255, 255, 255, 1);
+  font-size: 18px;
+  width: 300px;
+  align-items: center !important;
+  padding: 0 8px;
+}
+
+.homecontrol:hover,
+.homecontrol:focus {
+  border: 2px solid rgba(255, 255, 255, 0.4);
+}
+
+.homecontrol .input,
+.homecontrol input {
+  background-color: transparent !important;
+  border: 0px solid transparent !important;
+  height: 56px;
+  color: rgba(255, 255, 255, 1);
+  font-size: 18px;
+  outline: 0 !important;
+  box-shadow: 0px 0px 0px rgba(255, 255, 255, 0);
+}
+
+.homecontrol input::placeholder {
+  color: rgba(255, 255, 255, 0.4) !important;
+}
+
+.homecontrol .control.has-icons-left .icon,
+.control.has-icons-right .icon {
+  height: 56px;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.homecontrol .join {
+  height: 47px;
+  width: 47px;
+  border-radius: 24px !important;
+  border: 2px solid #4ec7f3;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.8);
+  border-radius: 24px !important;
+  overflow: hidden;
+  transform: scale(0.8);
+  transition: all 350ms ease-in-out;
+}
+
+.join .insider {
+  background-color: rgba(255, 255, 255, 0.4);
+  width: 10px;
+  height: 100px;
+  position: absolute;
+  left: -135px;
+  transform: rotateZ(135deg);
+}
+
+.join:hover {
+  background-color: #4ec7f3;
+  border-color: #4ec7f3;
+  color: #fff;
+  transform: scale(1);
+}
+
+.join:hover .insider {
+  transition: all 1s ease;
+  left: 135px;
 }
 </style>

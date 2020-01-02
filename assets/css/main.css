@@ -2,14 +2,19 @@ body, button, input, select, textarea {
   font-family: 'Lato', sans-serif !important;
 }
 
-.notices .toast, .button, .input, .taginput .taginput-container.is-focusable, .textarea, .select select, .file-cta, .file-name, .pagination-previous, .pagination-next, .pagination-link, .pagination-ellipsis {
-  border-radius: 0px !important;
-}
-
 .notices .toast.is-warning {
   color: rgba(255, 255, 255, 1.0) !important;
 }
 
 .notices .toast {
   padding: 0.5em 1em !important;
+}
+
+
+.lg {
+  color: rgb(204, 255, 144);
+}
+
+a:hover {
+  color: rgb(204, 255, 144) !important;
 }

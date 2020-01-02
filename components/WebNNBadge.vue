@@ -1,16 +1,11 @@
 <template>
   <div class="webnnbadge">
-    <div id="flip">
-      <div><div>5 people online</div></div>
-      <div><div>lifeStyle</div></div>
-      <div><div>Everything</div></div>
+    <div v-if="webmlstatus" class="webnn-supported">
+      supported
     </div>
-    <span v-if="webmlstatus" class="webnn-supported">
-      Supported
-    </span>
-    <span v-else class="webnn-not-supported">
-      Not Supported
-    </span>
+    <div v-else class="webnn-not-supported">
+      not supported
+    </div>
   </div>
 </template>
 <script>
@@ -39,78 +34,27 @@ export default {
 }
 </script>
 <style>
-.webnnbadge {
+.webnnbadge,
+.webnnbadge div {
   display: inline-block;
-  text-transform: uppercase;
+
+  /* text-transform: uppercase; */
+  padding: 0 8px;
 }
 
 .webnn-supported {
-  background-color: rgb(204, 255, 144);
+  background-color: #4ec7f3;
+}
+
+.webnn-supported:hover {
+  background-color: #3eb7e3;
 }
 
 .webnn-not-supported {
-  background-color: rgb(255, 144, 204);
+  background-color: #dc143c;
 }
 
-#flip {
-  height: 50px;
-  overflow: hidden;
-}
-
-#flip > div > div {
-  color: #fff;
-  padding: 4px 12px;
-  height: 45px;
-  display: inline-block;
-}
-
-#flip div:first-child {
-  animation: show 5s linear infinite;
-}
-
-#flip div div {
-  background: #42c58a;
-}
-
-#flip div:first-child div {
-  background: #4ec7f3;
-}
-
-#flip div:last-child div {
-  background: #dc143c;
-}
-
-@keyframes show {
-  0% {
-    margin-top: -270px;
-  }
-
-  5% {
-    margin-top: -180px;
-  }
-
-  33% {
-    margin-top: -180px;
-  }
-
-  38% {
-    margin-top: -90px;
-  }
-
-  66% {
-    margin-top: -90px;
-  }
-
-  71% {
-    margin-top: 0px;
-  }
-
-  99.99% {
-    margin-top: 0px;
-  }
-
-  100% {
-    margin-top: -270px;
-  }
+.webnn-not-supported:hover {
+  background-color: #cc042c;
 }
 </style>
