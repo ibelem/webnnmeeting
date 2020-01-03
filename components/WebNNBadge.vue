@@ -1,10 +1,10 @@
 <template>
   <div class="webnnbadge">
     <div v-if="webmlstatus" class="webnn-supported">
-      supported
+      Supported
     </div>
     <div v-else class="webnn-not-supported">
-      not supported
+      Not Supported
     </div>
   </div>
 </template>

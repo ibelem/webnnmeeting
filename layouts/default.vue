@@ -2,39 +2,36 @@
   <section class="hero is-fullheight home">
     <!-- Hero head: will stick at the top -->
     <div class="hero-head">
-      <header class="navbar">
-        <section class="section container">
-          <div
-            id="menu-icon-wrapper"
-            class="menu-icon-wrapper"
-            style="visibility: hidden"
-          >
-            <svg width="1000px" height="1000px">
-              <path
-                id="pathA"
-                d="M 300 400 L 700 400 C 900 400 900 750 600 850 A 400 400 0 0 1 200 200 L 800 800"
-              ></path>
-              <path id="pathB" d="M 300 500 L 700 500"></path>
-              <path
-                id="pathC"
-                d="M 700 600 L 300 600 C 100 600 100 200 400 150 A 400 380 0 1 1 200 800 L 800 200"
-              ></path>
-            </svg>
-            <button id="menu-icon-trigger" class="menu-icon-trigger"></button>
-          </div>
-          <!-- menu-icon-wrapper -->
-          <div id="dummy" class="dummy">
-            <div class="dummy__item"></div>
-            <div class="dummy__item"></div>
-            <div class="dummy__item"></div>
-            <div class="dummy__item"></div>
-          </div>
-          <div class="titlea">
-            webnn meeting
-            <div class="slogan lg">meet happy, meet everywhere</div>
-          </div>
-        </section>
-      </header>
+      <section class="section container">
+        <b-navbar>
+          <template slot="brand">
+            <b-navbar-item :to="{ path: '/' }" class="logo" tag="router-link">
+              <div class="titlea">
+                WebNN Meeting
+                <div class="slogan lg">meet happy, meet everywhere</div>
+              </div>
+            </b-navbar-item>
+          </template>
+          <template slot="end">
+            <b-navbar-dropdown label="Theme">
+              <b-navbar-item href="#">
+                Classic
+              </b-navbar-item>
+              <b-navbar-item href="#">
+                Immersive
+              </b-navbar-item>
+            </b-navbar-dropdown>
+            <b-navbar-dropdown label="EN">
+              <b-navbar-item href="#">
+                English
+              </b-navbar-item>
+              <b-navbar-item href="#">
+                Simplified Chinese
+              </b-navbar-item>
+            </b-navbar-dropdown>
+          </template>
+        </b-navbar>
+      </section>
     </div>
 
     <div id="shadow"></div>
@@ -49,8 +46,30 @@
       <!-- Hero footer: will stick at the bottom -->
       <div class="hero-foot">
         <div class="container has-text-centered section">
-          <div><a href="">webnn </a> <WebNNBadge /></div>
-          &copy;2020 <a href="">WebNN API</a>
+          <div><WebNNBadge /> <MeetingInfo /></div>
+          <div class="footerbrackets brackets">
+            <a
+              href="https://intel.github.io/webml-polyfill/examples/"
+              title="Web Neural Network API Examples"
+              >Examples</a
+            >
+            <a
+              href="https://webmachinelearning.github.io/webnn"
+              title="W3C Web Neural Network API Specification"
+              >W3C Spec</a
+            >
+            <a
+              href="https://www.w3.org/community/webmachinelearning/"
+              title="W3C Machine Learning for the Web Community Group"
+              >W3C CG</a
+            >
+          </div>
+          &copy;2020
+          <a
+            href="https://github.com/intel/webml-polyfill"
+            title="Web Neural Network API"
+            >WebNN API</a
+          >
         </div>
       </div>
     </div>
@@ -59,6 +78,7 @@
 
 <script>
 import WebNNBadge from '~/components/WebNNBadge.vue'
+import MeetingInfo from '~/components/MeetingInfo.vue'
 
 export default {
   head: {
@@ -66,14 +86,12 @@ export default {
       { src: '../js/three.js', defer: true },
       { src: '../js/gsap.js', defer: true },
       { src: '../js/sketch.js', defer: true },
-      { src: '../js/slide.js', defer: true },
-      { src: '../js/segment.min.js', defer: true },
-      { src: '../js/ease.min.js', defer: true },
-      { src: '../js/main.js', defer: true }
+      { src: '../js/slide.js', defer: true }
     ]
   },
   components: {
-    WebNNBadge
+    WebNNBadge,
+    MeetingInfo
   },
   data() {
     return {
@@ -139,8 +157,8 @@ body::scrollbar {
   display: flex;
   flex-direction: column;
   width: 100vw;
-  height: calc(100vh - 0rem);
-  margin-top: -13rem;
+  height: calc(100vh - 11rem);
+  margin-top: 0rem;
   position: relative;
   justify-content: flex-start;
   align-items: center;
@@ -156,103 +174,102 @@ body::scrollbar {
   z-index: -2;
 }
 
-.dummy__item {
-  z-index: 100;
-  height: 3em;
-  margin: 1em 1.25em;
-  pointer-events: none;
-  border-radius: 4px;
-  background: rgba(0, 0, 0, 0.1);
-  -webkit-transition: -webkit-transform 0.5s;
-  transition: transform 0.5s;
-  -webkit-transition-timing-function: cubic-bezier(0.7, 0, 0.3, 1);
-  transition-timing-function: cubic-bezier(0.7, 0, 0.3, 1);
+@media screen and (min-width: 1024px) {
+  .navbar-dropdown {
+    padding: 0;
+  }
+
+  .navbar-item.has-dropdown:focus .navbar-link,
+  .navbar-item.has-dropdown:hover .navbar-link,
+  .navbar-item.has-dropdown.is-active .navbar-link {
+    background-color: rgba(0, 0, 0, 0.2);
+  }
+
+  .navbar-dropdown a.navbar-item {
+    padding: 0.375rem 1rem;
+    background-color: rgba(0, 0, 0, 0.2);
+  }
+
+  .navbar-dropdown a.navbar-item:hover {
+    padding: 0.375rem 1rem;
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+
+  .navbar-dropdown {
+    background-color: transparent;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+    border-top: 1px solid rgb(204, 255, 144);
+    box-shadow: 0 8px 8px rgba(10, 10, 10, 0.1);
+    display: none;
+    font-size: 0.875rem;
+    left: 0;
+    min-width: 100%;
+    position: absolute;
+    top: 100%;
+    z-index: 20;
+  }
 }
 
-.dummy__item {
-  transform: translate3d(-100%, 0, 0) translate3d(-2em, 0, 0) scale3d(0.5, 1, 1);
-  transform-origin: 100% 50%;
+@media (max-width: 768px) {
+  .navbar-menu {
+    background-color: rgba(0, 0, 0, 0.2);
+  }
+
+  .logo {
+    background-color: transparent;
+  }
+
+  a.navbar-item:focus,
+  a.navbar-item:focus-within,
+  a.navbar-item:hover,
+  a.navbar-item.is-active,
+  .navbar-link:focus,
+  .navbar-link:focus-within,
+  .navbar-link:hover,
+  .navbar-link.is-active {
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+
+  .navbar-dropdown {
+    padding: 0;
+  }
 }
 
-.device--alt .dummy__item {
-  transform: translate3d(0, 260px, 0) scale3d(1, 0.2, 1);
-}
-
-.dummy--active .dummy__item {
-  transition-timing-function: cubic-bezier(0.56, 1.19, 0.2, 1.05);
-  transform: translate3d(0, 0, 0);
-}
-
-.dummy__item:nth-child(4),
-.dummy--active .dummy__item:first-child {
-  transition-delay: 0.05s;
-}
-
-.dummy__item:nth-child(3),
-.dummy--active .dummy__item:nth-child(2) {
-  transition-delay: 0.1s;
-}
-
-.dummy__item:nth-child(2),
-.dummy--active .dummy__item:nth-child(3) {
-  transition-delay: 0.15s;
-}
-
-.dummy__item:first-child,
-.dummy--active .dummy__item:nth-child(4) {
-  transition-delay: 0.2s;
-}
-
-.menu-icon-wrapper {
+.footerbrackets a {
+  color: #fff;
+  text-decoration: none;
+  margin: 0px 6px;
+  padding: 10px 10px;
   position: relative;
-  display: inline-block;
-  width: 34px;
-  height: 34px;
-  margin: 2em;
-  pointer-events: none;
-  transition: 0.1s;
-}
-
-.menu-icon-wrapper.scaled {
-  -webkit-transform: scale(0.5);
-  -ms-transform: scale(0.5);
-  transform: scale(0.5);
-}
-
-.menu-icon-wrapper svg {
-  position: absolute;
-  top: -33px;
-  left: -33px;
-  -webkit-transform: scale(0.1);
-  -ms-transform: scale(0.1);
-  transform: scale(0.1);
-  -webkit-transform-origin: 0 0;
-  -ms-transform-origin: 0 0;
-  transform-origin: 0 0;
-}
-
-.menu-icon-wrapper svg path {
-  stroke: #fff;
-  stroke-width: 60px;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  fill: transparent;
-}
-
-.menu-icon-wrapper .menu-icon-trigger {
-  position: relative;
-  width: 100%;
-  height: 100%;
+  z-index: 0;
   cursor: pointer;
-  pointer-events: auto;
-  background: none;
-  border: none;
-  margin: 0;
-  padding: 0;
 }
 
-.menu-icon-wrapper .menu-icon-trigger:hover,
-.menu-icon-wrapper .menu-icon-trigger:focus {
-  outline: none;
+.brackets a:before,
+.brackets a:after {
+  position: absolute;
+  opacity: 0;
+  font-size: 1.2rem;
+  top: 4px;
+  transition: all 0.3s;
+}
+
+.brackets a:before {
+  content: '(';
+  left: 0px;
+  transform: translateX(10px);
+}
+
+.brackets a:after {
+  content: ')';
+  right: 0px;
+  transform: translateX(-10px);
+}
+
+.brackets a:hover:before,
+.brackets a:hover:after {
+  opacity: 1;
+  transform: translateX(0px);
 }
 </style>

@@ -11,7 +11,7 @@
         <p class="control">
           <button @click="join" class="button join">
             <div class="insider"></div>
-            join
+            <i class="mdi mdi-near-me mdi-24px"></i>
           </button>
         </p>
       </b-field>
@@ -95,11 +95,19 @@ export default {
   width: 300px;
   align-items: center !important;
   padding: 0 8px;
+  transform: scale(0.8);
 }
 
 .homecontrol:hover,
 .homecontrol:focus {
   border: 2px solid rgba(255, 255, 255, 0.4);
+  transition: all 0.5s ease;
+  transform: scale(1);
+}
+
+.homecontrol:not(:hover) {
+  transition: all 1s ease;
+  transform: scale(0.8);
 }
 
 .homecontrol .input,
@@ -111,33 +119,43 @@ export default {
   font-size: 18px;
   outline: 0 !important;
   box-shadow: 0px 0px 0px rgba(255, 255, 255, 0);
+  font-weight: 400;
 }
 
 .homecontrol input::placeholder {
-  color: rgba(255, 255, 255, 0.4) !important;
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.homecontrol input::placeholder::after {
+  color: rgba(255, 255, 255, 0.8) !important;
 }
 
 .homecontrol .control.has-icons-left .icon,
 .control.has-icons-right .icon {
   height: 56px;
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.mdi-24px.mdi-set,
+.mdi-24px.mdi:before {
+  color: rgba(255, 255, 255, 0.8);
 }
 
 .homecontrol .join {
   height: 47px;
   width: 47px;
   border-radius: 24px !important;
-  border: 2px solid #4ec7f3;
+  border: 2px solid rgb(204, 255, 144);
   background: transparent;
   color: rgba(255, 255, 255, 0.8);
   border-radius: 24px !important;
   overflow: hidden;
-  transform: scale(0.8);
+  transform: scale(0.6);
   transition: all 350ms ease-in-out;
 }
 
 .join .insider {
-  background-color: rgba(255, 255, 255, 0.4);
+  background-color: rgba(255, 255, 255, 0.8);
   width: 10px;
   height: 100px;
   position: absolute;
@@ -146,8 +164,7 @@ export default {
 }
 
 .join:hover {
-  background-color: #4ec7f3;
-  border-color: #4ec7f3;
+  border-color: rgb(204, 255, 144);
   color: #fff;
   transform: scale(1);
 }
