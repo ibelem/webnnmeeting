@@ -8,6 +8,15 @@
 
 <script>
 export default {
+  head: {
+    script: [
+      { src: '../js/socket.io.js', defer: true },
+      { src: '../js/adapter-7.0.0.js', defer: true },
+      { src: '../js/owt.js', defer: true },
+      { src: '../js/classic.js', defer: true },
+      { src: '../js/rest.sample.js', defer: true }
+    ]
+  },
   data() {
     return {
       test: ''

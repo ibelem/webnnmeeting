@@ -1,5 +1,5 @@
 export const state = () => ({
-  serverurl: 'https://webnnteam.sh.x.com:3004',
+  serverurl: 'https://webnnteam.sh.X.com:3004',
   participantsurl: '/rooms/5df9d3661b3282c0ef1a5ee3/participants',
   participantsnumber: 0
 })
