@@ -1,10 +1,11 @@
 <template>
   <div class="webnnbadge">
     <div v-if="webmlstatus" class="webnn-supported">
-      Supported
+      Your browser supports Web Neural Network API.
     </div>
     <div v-else class="webnn-not-supported">
-      Not Supported
+      Your browser doesn't support Web Neural Network API, Machine Learning
+      relevant features will be disabled during meeting.
     </div>
   </div>
 </template>
@@ -40,21 +41,8 @@ export default {
 
   /* text-transform: uppercase; */
   padding: 0 8px;
-}
-
-.webnn-supported {
-  background-color: #4ec7f3;
-}
-
-.webnn-supported:hover {
-  background-color: #3eb7e3;
-}
-
-.webnn-not-supported {
-  background-color: #dc143c;
-}
-
-.webnn-not-supported:hover {
-  background-color: #cc042c;
+  font-style: italic;
+  font-size: 0.8rem;
+  color: rgb(204, 255, 144);
 }
 </style>

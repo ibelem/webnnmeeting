@@ -4,6 +4,7 @@
       <b-field position="is-centered homecontrol">
         <b-input
           v-model="user"
+          v-on:keyup.native.enter="join"
           placeholder="type your name"
           type="text"
           icon="account"
@@ -16,12 +17,20 @@
         </p>
       </b-field>
     </div>
+    <div>
+      <MeetingInfo />
+    </div>
   </section>
 </template>
 
 <script>
+import MeetingInfo from '~/components/MeetingInfo.vue'
+
 export default {
   name: 'Home',
+  components: {
+    MeetingInfo
+  },
   data() {
     return {
       user: ''
@@ -67,12 +76,7 @@ export default {
       })
     },
     goodToGo() {
-      this.$buefy.toast.open({
-        duration: 3000,
-        message: `great`,
-        position: 'is-bottom',
-        type: 'is-info'
-      })
+      this.$router.push({ name: 'user-id', params: { id: this.user } })
     }
   }
 }
@@ -119,7 +123,7 @@ export default {
   font-size: 18px;
   outline: 0 !important;
   box-shadow: 0px 0px 0px rgba(255, 255, 255, 0);
-  font-weight: 400;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
 }
 
 .homecontrol input::placeholder {

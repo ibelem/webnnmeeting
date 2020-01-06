@@ -18,3 +18,10 @@ body, button, input, select, textarea {
 a:hover {
   color: rgb(204, 255, 144) !important;
 }
+
+.page-enter-active, .page-leave-active {
+  transition: opacity .5s;
+}
+.page-enter, .page-leave-active {
+  opacity: 0;
+}

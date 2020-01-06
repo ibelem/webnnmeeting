@@ -46,7 +46,7 @@
       <!-- Hero footer: will stick at the bottom -->
       <div class="hero-foot">
         <div class="container has-text-centered section">
-          <div><WebNNBadge /> <MeetingInfo /></div>
+          <div><WebNNBadge /></div>
           <div class="footerbrackets brackets">
             <a
               href="https://intel.github.io/webml-polyfill/examples/"
@@ -78,7 +78,6 @@
 
 <script>
 import WebNNBadge from '~/components/WebNNBadge.vue'
-import MeetingInfo from '~/components/MeetingInfo.vue'
 
 export default {
   head: {
@@ -90,8 +89,7 @@ export default {
     ]
   },
   components: {
-    WebNNBadge,
-    MeetingInfo
+    WebNNBadge
   },
   data() {
     return {

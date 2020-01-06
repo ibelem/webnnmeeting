@@ -1,28 +1,46 @@
 <template>
   <div class="meetinginfo">
-    <div>
-      {{ usernumber }}
+    <div v-if="participantsNumber > 1">
+      {{ participantsNumber }} participants online
     </div>
+    <div v-else>{{ participantsNumber }} participant online</div>
   </div>
 </template>
 <script>
+import axios from 'axios'
+
 export default {
   name: 'MeetingInfo',
   data() {
     return {
-      usernumber: ''
+      test: ''
+    }
+  },
+  computed: {
+    participantsNumber() {
+      return this.$store.state.participantsnumber
     }
   },
   mounted() {
-    this.fetchSomething()
+    this.fetchParticipant()
+
+    // will try websocket in the future
+    setInterval(() => {
+      this.fetchParticipant()
+    }, 5000)
   },
   methods: {
-    async fetchSomething() {
-      const ip = await this.$axios.$get(
-        'https://webnnteam.sh.X.com:3004/rooms/5df9d3661b3282c0ef1a5ee3/participants'
-      )
-      this.usernumber = ip
+    async fetchParticipant() {
+      const url =
+        this.$store.state.serverurl + this.$store.state.participantsurl
+      const res = await axios.get(url)
+      const participantsnumber = Object.keys(res.data).length - 1
+      console.log(participantsnumber)
+      this.$store.commit('setParticipantsnumber', participantsnumber)
     }
+  },
+  destoryed() {
+    clearTimeout(this.fetchParticipant)
   }
 }
 </script>
