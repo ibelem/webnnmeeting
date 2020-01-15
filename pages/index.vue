@@ -1,6 +1,6 @@
 <template>
   <section class="section">
-    <div class="home-center">
+    <div class="home-center control-scale">
       <b-field position="is-centered homecontrol">
         <b-input
           v-model="user"
@@ -16,6 +16,25 @@
           </button>
         </p>
       </b-field>
+      <div class="settings">
+        <b-field>
+          <b-radio-button v-model="radio" native-value="forward">
+            <span>Forward</span>
+          </b-radio-button>
+          <b-radio-button v-model="radio" native-value="mix">
+            Mix
+          </b-radio-button>
+        </b-field>
+        <b-tabs type="is-toggle" class="three">
+          <b-tab-item label="320x240"></b-tab-item>
+          <b-tab-item label="640x480"></b-tab-item>
+          <b-tab-item label="1280x720"></b-tab-item>
+        </b-tabs>
+        <b-tabs type="is-toggle" class="two">
+          <b-tab-item label="Audio Only"></b-tab-item>
+          <b-tab-item label="Video and Audio"></b-tab-item>
+        </b-tabs>
+      </div>
     </div>
     <div>
       <MeetingInfo />
@@ -33,7 +52,8 @@ export default {
   },
   data() {
     return {
-      user: ''
+      user: '',
+      radio: 'forward'
     }
   },
   methods: {
@@ -95,23 +115,117 @@ export default {
   border-radius: 30px !important;
   height: 60px;
   color: rgba(255, 255, 255, 1);
-  font-size: 18px;
-  width: 300px;
+  width: 360px;
   align-items: center !important;
   padding: 0 8px;
+  transform: scale(0.8);
+}
+
+.field.has-addons {
+  margin-bottom: 0;
+}
+
+.settings .b-tabs:not(:last-child) {
+  margin-bottom: 0rem;
+}
+
+.settings {
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  margin: -7px auto 0 auto;
+  padding: 1rem;
+  width: 250px;
+  border-top: 0px;
+}
+
+.settings .field,
+.settings .field span,
+.settings .field label,
+.settings .tabs ul {
+  justify-content: center;
+  font-size: 0.7rem;
+}
+
+.settings .b-radio,
+.settings .tabs ul li a {
+  border-radius: 0px !important;
+  border: 0px;
+}
+
+.settings .tabs ul {
+  margin: 4px 0 0 0;
+}
+
+.settings .b-radio {
+  background-color: transparent;
+  width: 90px;
+}
+
+.settings .three .tabs ul li a {
+  width: 60px;
+}
+
+.settings .two .tabs ul li a {
+  width: 90px;
+}
+
+.settings .button.is-primary:focus:not(:active),
+.settings .button.is-primary.is-focused:not(:active) {
+  background-color: rgba(0, 0, 0, 0.2) !important;
+  color: rgb(204, 255, 144) !important;
+  box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+}
+
+.settings .button.is-primary {
+  background-color: rgba(0, 0, 0, 0.2) !important;
+  color: rgb(204, 255, 144) !important;
+}
+
+.settings .b-radio:hover {
+  background-color: rgba(0, 0, 0, 0.4);
+  color: rgb(204, 255, 144) !important;
+}
+
+.settings .is-focused {
+  background-color: rgba(0, 0, 0, 0.2);
+  color: rgb(204, 255, 144) !important;
+}
+
+.settings .b-radio,
+.settings .tabs ul li a {
+  color: rgba(255, 255, 255, 1);
+}
+
+.settings .tabs ul li.is-active a {
+  color: rgb(204, 255, 144);
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.settings .tabs ul li:hover a {
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.settings .b-tabs .tab-content {
+  display: none;
+}
+
+.control-scale {
+  transform: scale(0.8);
+}
+
+.control-scale:hover,
+.control-scale:focus {
+  transition: all 0.5s ease;
+  transform: scale(1);
+}
+
+.control-scale:not(:hover) {
+  transition: all 1s ease;
   transform: scale(0.8);
 }
 
 .homecontrol:hover,
 .homecontrol:focus {
   border: 2px solid rgba(255, 255, 255, 0.4);
-  transition: all 0.5s ease;
-  transform: scale(1);
-}
-
-.homecontrol:not(:hover) {
-  transition: all 1s ease;
-  transform: scale(0.8);
 }
 
 .homecontrol .input,
@@ -120,7 +234,8 @@ export default {
   border: 0px solid transparent !important;
   height: 56px;
   color: rgba(255, 255, 255, 1);
-  font-size: 18px;
+  font-size: 22px;
+  font-weight: 500;
   outline: 0 !important;
   box-shadow: 0px 0px 0px rgba(255, 255, 255, 0);
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);

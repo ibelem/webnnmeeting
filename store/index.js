@@ -1,11 +1,16 @@
 export const state = () => ({
-  serverurl: 'https://webnnteam.sh.X.com:3004',
-  participantsurl: '/rooms/5df9d3661b3282c0ef1a5ee3/participants',
-  participantsnumber: 0
+  server: {
+    url: 'https://10.239.47.52:3004'
+  },
+  participants: {
+    url: '/rooms/5df9d3661b3282c0ef1a5ee3/participants',
+    number: 0
+  },
+  subscribe: 'forward'
 })
 
 export const mutations = {
-  setParticipantsnumber(state, participantsnumber) {
-    state.participantsnumber = participantsnumber
+  setParticipantsnumber(state, data) {
+    state.participants.number = data
   }
 }

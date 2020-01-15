@@ -18,7 +18,7 @@ export default {
   },
   computed: {
     participantsNumber() {
-      return this.$store.state.participantsnumber
+      return this.$store.state.participants.number
     }
   },
   mounted() {
@@ -32,9 +32,9 @@ export default {
   methods: {
     async fetchParticipant() {
       const url =
-        this.$store.state.serverurl + this.$store.state.participantsurl
+        this.$store.state.server.url + this.$store.state.participants.url
       const res = await axios.get(url)
-      const participantsnumber = Object.keys(res.data).length - 1
+      const participantsnumber = Object.keys(res.data).length
       console.log(participantsnumber)
       this.$store.commit('setParticipantsnumber', participantsnumber)
     }
@@ -44,7 +44,7 @@ export default {
   }
 }
 </script>
-<style>
+<style scope>
 .meetinginfo,
 .meetinginfo div {
   display: inline-block;

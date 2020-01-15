@@ -18,8 +18,6 @@ const request = authrequest(
   false
 )
 
-//Move them to pages
-
 const prepareSampleRoom = new Promise((resolve, reject) => {
   const checkResponse = (resp) => {
     const rooms = JSON.parse(resp)
