@@ -1,13 +1,25 @@
 <template>
   <section class="section">
     <div class="home-center">{{ $route.params.id }}</div>
+    <section class="section">
+      <MeetingInfo />
+      <div>
+        {{ this.$store.state.subscribetype }}<br />
+        {{ this.$store.state.enablevideo }}<br />
+        {{ this.$store.state.resolution }}<br />
+      </div>
+    </section>
   </section>
 </template>
 
 <script>
+import MeetingInfo from '~/components/MeetingInfo.vue'
 export default {
   name: 'Classic',
   layout: 'classic',
+  components: {
+    MeetingInfo
+  },
   data() {
     return {}
   },

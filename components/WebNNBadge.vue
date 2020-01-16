@@ -4,8 +4,8 @@
       Your browser supports Web Neural Network API.
     </div>
     <div v-else class="webnn-not-supported">
-      Your browser doesn't support Web Neural Network API, Machine Learning
-      relevant features will be disabled during meeting.
+      Your browser doesn't support Web Neural Network API, machine learning
+      relevant features are disabled.
     </div>
   </div>
 </template>

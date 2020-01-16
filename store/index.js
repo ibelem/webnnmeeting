@@ -6,11 +6,32 @@ export const state = () => ({
     url: '/rooms/5df9d3661b3282c0ef1a5ee3/participants',
     number: 0
   },
-  subscribe: 'forward'
+  subscribetype: 'forward',
+  mode: 'galaxy',
+  resolution: {
+    width: 1280,
+    height: 720
+  },
+  enablevideo: true
 })
 
 export const mutations = {
   setParticipantsnumber(state, data) {
     state.participants.number = data
+  },
+  setSubscribeType(state, data) {
+    state.subscribetype = data
+  },
+  setMode(state, data) {
+    state.mode = data
+  },
+  setResolutionWidth(state, data) {
+    state.resolution.width = data
+  },
+  setResolutionHeight(state, data) {
+    state.resolution.height = data
+  },
+  setEnableVideo(state, data) {
+    state.enablevideo = data
   }
 }

@@ -8,7 +8,7 @@
             <b-navbar-item :to="{ path: '/' }" class="logo" tag="router-link">
               <div class="titlea">
                 WebNN Meeting
-                <div class="slogan lg">meet happy, meet everywhere</div>
+                <div class="slogan lg">meet you, meet happy</div>
               </div>
             </b-navbar-item>
           </template>
@@ -43,41 +43,13 @@
           <nuxt />
         </div>
       </div>
-      <!-- Hero footer: will stick at the bottom -->
-      <div class="hero-foot">
-        <div class="container has-text-centered section">
-          <div><WebNNBadge /></div>
-          <div class="footerbrackets brackets">
-            <a
-              href="https://intel.github.io/webml-polyfill/examples/"
-              title="Web Neural Network API Examples"
-              >Examples</a
-            >
-            <a
-              href="https://webmachinelearning.github.io/webnn"
-              title="W3C Web Neural Network API Specification"
-              >W3C Spec</a
-            >
-            <a
-              href="https://www.w3.org/community/webmachinelearning/"
-              title="W3C Machine Learning for the Web Community Group"
-              >W3C CG</a
-            >
-          </div>
-          &copy;2020
-          <a
-            href="https://github.com/intel/webml-polyfill"
-            title="Web Neural Network API"
-            >WebNN API</a
-          >
-        </div>
-      </div>
+      <HomeFooter />
     </div>
   </section>
 </template>
 
 <script>
-import WebNNBadge from '~/components/WebNNBadge.vue'
+import HomeFooter from '~/components/HomeFooter.vue'
 
 export default {
   head: {
@@ -89,7 +61,7 @@ export default {
     ]
   },
   components: {
-    WebNNBadge
+    HomeFooter
   },
   data() {
     return {
@@ -125,6 +97,10 @@ body::scrollbar {
   color: rgba(255, 255, 255, 1);
 }
 
+.hero-body {
+  padding: 0;
+}
+
 .titlea {
   font-size: 1.5rem;
   font-style: italic;
@@ -155,7 +131,7 @@ body::scrollbar {
   display: flex;
   flex-direction: column;
   width: 100vw;
-  height: calc(100vh - 11rem);
+  height: 82vh;
   margin-top: 0rem;
   position: relative;
   justify-content: flex-start;

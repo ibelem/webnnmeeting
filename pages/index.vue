@@ -4,7 +4,7 @@
       <b-field position="is-centered homecontrol">
         <b-input
           v-model="user"
-          v-on:keyup.native.enter="join"
+          @keyup.native.enter="join"
           placeholder="type your name"
           type="text"
           icon="account"
@@ -18,27 +18,40 @@
       </b-field>
       <div class="settings">
         <b-field>
-          <b-radio-button v-model="radio" native-value="forward">
-            <span>Forward</span>
-          </b-radio-button>
-          <b-radio-button v-model="radio" native-value="mix">
-            Mix
-          </b-radio-button>
+          <template v-for="st in subscribetypes">
+            <b-radio-button
+              @change.native="updateSubscribeType"
+              v-model="activesubscribetype"
+              :native-value="st"
+            >
+              {{ st }}
+            </b-radio-button>
+          </template>
         </b-field>
-        <b-tabs type="is-toggle" class="three">
-          <b-tab-item label="320x240"></b-tab-item>
-          <b-tab-item label="640x480"></b-tab-item>
-          <b-tab-item label="1280x720"></b-tab-item>
+        <b-tabs v-model="activevideo" @change="updateEnableVideo" class="two">
+          <template v-for="videooption in videooptions">
+            <b-tab-item :label="videooption"></b-tab-item>
+          </template>
         </b-tabs>
-        <b-tabs type="is-toggle" class="two">
-          <b-tab-item label="Audio Only"></b-tab-item>
-          <b-tab-item label="Video and Audio"></b-tab-item>
+        <b-tabs
+          v-model="activeresolution"
+          @change="updateResolutions"
+          class="three"
+        >
+          <template v-for="resolution in resolutions">
+            <b-tab-item :label="resolution"></b-tab-item>
+          </template>
         </b-tabs>
       </div>
     </div>
-    <div>
+    <section class="section">
       <MeetingInfo />
-    </div>
+      <div>
+        {{ this.$store.state.subscribetype }} /
+        {{ this.$store.state.enablevideo }} /
+        {{ this.$store.state.resolution }}
+      </div>
+    </section>
   </section>
 </template>
 
@@ -53,10 +66,46 @@ export default {
   data() {
     return {
       user: '',
-      radio: 'forward'
+      activesubscribetype: 'forward',
+      subscribetypes: ['forward', 'mix'],
+      activeresolution: 2,
+      resolutions: ['320x240', '640x480', '1280x720'],
+      activevideo: 1,
+      videooptions: ['Audio Only', 'Video and Audio']
     }
   },
   methods: {
+    updateSubscribeType() {
+      this.$store.commit('setSubscribeType', this.activesubscribetype)
+    },
+    updateEnableVideo() {
+      let ev
+      this.activevideo ? (ev = true) : (ev = false)
+      this.$store.commit('setEnableVideo', ev)
+    },
+    updateResolutions() {
+      console.log('ch9ina')
+      let rswidth, rsheight
+      switch (this.activeresolution) {
+        case 0:
+          rswidth = 320
+          rsheight = 240
+          break
+        case 1:
+          rswidth = 640
+          rsheight = 480
+          break
+        case 2:
+          rswidth = 1280
+          rsheight = 720
+          break
+        default:
+          rswidth = 1280
+          rsheight = 720
+      }
+      this.$store.commit('setResolutionWidth', rswidth)
+      this.$store.commit('setResolutionHeight', rsheight)
+    },
     join() {
       if (this.user.length <= 0) {
         this.emptyName()
@@ -111,14 +160,13 @@ export default {
 .homecontrol {
   margin: 0 auto;
   background-color: transparent !important;
-  border: 2px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 30px !important;
   height: 60px;
   color: rgba(255, 255, 255, 1);
   width: 360px;
   align-items: center !important;
   padding: 0 8px;
-  transform: scale(0.8);
 }
 
 .field.has-addons {
@@ -126,14 +174,14 @@ export default {
 }
 
 .settings .b-tabs:not(:last-child) {
-  margin-bottom: 0rem;
+  margin-bottom: 0.2rem;
 }
 
 .settings {
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  margin: -7px auto 0 auto;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  margin: 0px auto 0 auto;
   padding: 1rem;
-  width: 250px;
+  width: 290px;
   border-top: 0px;
 }
 
@@ -142,13 +190,14 @@ export default {
 .settings .field label,
 .settings .tabs ul {
   justify-content: center;
-  font-size: 0.7rem;
+  font-size: 0.8rem;
 }
 
 .settings .b-radio,
 .settings .tabs ul li a {
   border-radius: 0px !important;
   border: 0px;
+  height: 24px;
 }
 
 .settings .tabs ul {
@@ -157,36 +206,34 @@ export default {
 
 .settings .b-radio {
   background-color: transparent;
-  width: 90px;
+  width: 120px;
+  text-transform: capitalize;
 }
 
 .settings .three .tabs ul li a {
-  width: 60px;
+  width: 80px;
 }
 
 .settings .two .tabs ul li a {
-  width: 90px;
+  width: 120px;
 }
 
 .settings .button.is-primary:focus:not(:active),
 .settings .button.is-primary.is-focused:not(:active) {
-  background-color: rgba(0, 0, 0, 0.2) !important;
   color: rgb(204, 255, 144) !important;
   box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
 }
 
 .settings .button.is-primary {
-  background-color: rgba(0, 0, 0, 0.2) !important;
   color: rgb(204, 255, 144) !important;
 }
 
 .settings .b-radio:hover {
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: rgba(0, 0, 0, 0.2);
   color: rgb(204, 255, 144) !important;
 }
 
 .settings .is-focused {
-  background-color: rgba(0, 0, 0, 0.2);
   color: rgb(204, 255, 144) !important;
 }
 
@@ -197,35 +244,38 @@ export default {
 
 .settings .tabs ul li.is-active a {
   color: rgb(204, 255, 144);
-  background-color: rgba(0, 0, 0, 0.2);
 }
 
 .settings .tabs ul li:hover a {
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: rgba(0, 0, 0, 0.2);
 }
 
 .settings .b-tabs .tab-content {
   display: none;
 }
 
-.control-scale {
-  transform: scale(0.8);
-}
-
 .control-scale:hover,
 .control-scale:focus {
   transition: all 0.5s ease;
-  transform: scale(1);
+  transform: scale(1.2);
 }
 
 .control-scale:not(:hover) {
   transition: all 1s ease;
-  transform: scale(0.8);
+  transform: scale(1);
+}
+
+@media (max-width: 768px) {
+  .control-scale:hover,
+  .control-scale:focus {
+    transition: all 0.5s ease;
+    transform: scale(1.1);
+  }
 }
 
 .homecontrol:hover,
 .homecontrol:focus {
-  border: 2px solid rgba(255, 255, 255, 0.4);
+  border: 1px solid rgba(255, 255, 255, 1);
 }
 
 .homecontrol .input,
@@ -264,12 +314,12 @@ export default {
   height: 47px;
   width: 47px;
   border-radius: 24px !important;
-  border: 2px solid rgb(204, 255, 144);
+  border: 1px solid rgb(204, 255, 144);
   background: transparent;
   color: rgba(255, 255, 255, 0.8);
   border-radius: 24px !important;
   overflow: hidden;
-  transform: scale(0.6);
+  transform: scale(0.8);
   transition: all 350ms ease-in-out;
 }
 
