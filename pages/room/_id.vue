@@ -15,7 +15,7 @@
 <script>
 import MeetingInfo from '~/components/MeetingInfo.vue'
 export default {
-  name: 'User',
+  name: 'Room',
   layout: 'classic',
   components: {
     MeetingInfo

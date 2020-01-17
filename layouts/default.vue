@@ -91,6 +91,10 @@ body::scrollbar {
   display: none;
 }
 
+.section {
+  padding: 1rem;
+}
+
 .home,
 .navbar-item,
 .navbar-link {
@@ -156,17 +160,17 @@ body::scrollbar {
   .navbar-item.has-dropdown:focus .navbar-link,
   .navbar-item.has-dropdown:hover .navbar-link,
   .navbar-item.has-dropdown.is-active .navbar-link {
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(0, 0, 0, 0.1);
   }
 
   .navbar-dropdown a.navbar-item {
     padding: 0.375rem 1rem;
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(0, 0, 0, 0.1);
   }
 
   .navbar-dropdown a.navbar-item:hover {
     padding: 0.375rem 1rem;
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: rgba(0, 0, 0, 0.2);
   }
 
   .navbar-dropdown {

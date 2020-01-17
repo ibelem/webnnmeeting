@@ -145,7 +145,8 @@ export default {
       })
     },
     goodToGo() {
-      this.$router.push({ name: 'user-id', params: { id: this.user } })
+      // this.$router.push({ name: 'user-id', params: { id: this.user } })
+      this.$router.push({ name: 'room-id', params: { id: this.user } })
     }
   }
 }
