@@ -4,14 +4,8 @@
   "description": "A video conference example based on W3C Web Neural Network API and Open WebRTC Toolkit (OWT).",
   "author": "Zhang, Belem",
   "private": true,
-  "config": {
-    "nuxt": {
-      "host": "0.0.0.0",
-      "port": "8080"
-    }
-  },
   "scripts": {
-    "dev": "cross-env NODE_ENV=development nodemon server/index.js --watch server",
+    "dev": "nodemon server/meetingserver.js & cross-env NODE_ENV=development nodemon server/index.js --watch server",
     "build": "nuxt build",
     "start": "cross-env NODE_ENV=production node server/index.js",
     "generate": "nuxt generate",

@@ -1,6 +1,6 @@
 <template>
   <section class="section">
-    <div class="home-center">{{ $route.params.id }}</div>
+    <div class="home-center">{{ $route.params.user }}</div>
     <section class="section">
       <MeetingInfo />
       <div>

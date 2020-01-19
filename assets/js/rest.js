@@ -5,8 +5,8 @@
 // REST samples. It sends HTTP requests to sample server, and sample server sends requests to conference server.
 // Both this file and sample server are samples.
 'use strict'
-let send = function(method, path, body, onRes, host) {
-  let req = new XMLHttpRequest()
+const send = function(method, path, body, onRes, host) {
+  const req = new XMLHttpRequest()
   req.onreadystatechange = function() {
     if (req.readyState === 4) {
       onRes(req.responseText)
@@ -22,18 +22,22 @@ let send = function(method, path, body, onRes, host) {
   }
 }
 
-let generateUrl = function(host, path) {
+const generateUrl = function(host, path) {
   let url
   if (host !== undefined) {
     url = host + path // Use the host user set.
+    url = url.replace('8080', '8081')
+    console.log('>>>>>>>>>>: ' + url)
   } else {
     const u = new URL(document.URL)
     url = u.origin + path // Get the string before last '/'.
+    url = url.replace('8080', '8081')
+    console.log('>>>>>>>>>>: ' + url)
   }
   return url
 }
 
-let onResponse = function(result) {
+const onResponse = function(result) {
   if (result) {
     try {
       console.info('Result:', JSON.parse(result))
@@ -45,8 +49,8 @@ let onResponse = function(result) {
   }
 }
 
-let mixStream = function(room, stream, view, host) {
-  let jsonPatch = [
+const mixStream = function(room, stream, view, host) {
+  const jsonPatch = [
     {
       op: 'add',
       path: '/info/inViews',
@@ -62,8 +66,8 @@ let mixStream = function(room, stream, view, host) {
   )
 }
 
-let startStreamingIn = function(room, inUrl, host) {
-  let options = {
+const startStreamingIn = function(room, inUrl, host) {
+  const options = {
     url: inUrl,
     media: {
       audio: 'auto',
@@ -77,11 +81,11 @@ let startStreamingIn = function(room, inUrl, host) {
   send('POST', '/rooms/' + room + '/streaming-ins', options, onResponse, host)
 }
 
-let createToken = function(room, user, role, callback, host) {
-  let body = {
+const createToken = function(room, user, role, callback, host) {
+  const body = {
     preference: { isp: 'isp', region: 'region' },
-    user: user,
-    role: role
+    user,
+    role
   }
   if (room) {
     send('POST', '/rooms/' + room + '/tokens/', body, callback, host)
@@ -90,8 +94,8 @@ let createToken = function(room, user, role, callback, host) {
   }
 }
 
-let getStreams = function(room, callback, host) {
-  let resCb = function(result) {
+const getStreams = function(room, callback, host) {
+  const resCb = function(result) {
     if (result) {
       try {
         callback(JSON.parse(result))
@@ -105,8 +109,8 @@ let getStreams = function(room, callback, host) {
   send('GET', '/rooms/' + room + '/streams/', undefined, resCb, host)
 }
 
-let pauseStream = function(room, stream, track, callback, host) {
-  let jsonPatch = []
+const pauseStream = function(room, stream, track, callback, host) {
+  const jsonPatch = []
   if (track === 'audio' || track === 'av') {
     jsonPatch.push({
       op: 'replace',
@@ -131,8 +135,8 @@ let pauseStream = function(room, stream, track, callback, host) {
   )
 }
 
-let playStream = function(room, stream, track, callback, host) {
-  let jsonPatch = []
+const playStream = function(room, stream, track, callback, host) {
+  const jsonPatch = []
   if (track === 'audio' || track === 'av') {
     jsonPatch.push({
       op: 'replace',
@@ -155,4 +159,16 @@ let playStream = function(room, stream, track, callback, host) {
     callback,
     host
   )
+}
+
+export {
+  send,
+  generateUrl,
+  onResponse,
+  mixStream,
+  startStreamingIn,
+  createToken,
+  getStreams,
+  pauseStream,
+  playStream
 }
