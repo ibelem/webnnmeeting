@@ -33,10 +33,11 @@ export default {
   methods: {
     async fetchParticipant() {
       const url =
-        config.webrtcserver.url +
+        'https://' +
+        location.host.split(':')[0] +
         ':' +
-        config.webrtcserver.restapiport +
-        config.webrtcserver.participantspath
+        config.restapiserver.httpsport +
+        config.restapiserver.sampleroomparticipantspath
       const res = await axios.get(url)
       const participantsnumber = Object.keys(res.data).length
       console.log(participantsnumber)

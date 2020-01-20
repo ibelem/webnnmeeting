@@ -10,10 +10,10 @@
           icon="account"
         ></b-input>
         <p class="control">
-          <button @click="join" class="button join">
-            <div class="insider"></div>
+          <a @click="join" :href="roomuser" class="button join">
+            <span class="insider"></span>
             <i class="mdi mdi-near-me mdi-24px"></i>
-          </button>
+          </a>
         </p>
       </b-field>
       <div class="settings">
@@ -74,6 +74,11 @@ export default {
       videooptions: ['Audio Only', 'Video and Audio']
     }
   },
+  computed: {
+    roomuser() {
+      return '/room/' + this.user
+    }
+  },
   methods: {
     updateSubscribeType() {
       this.$store.commit('setSubscribeType', this.activesubscribetype)
@@ -84,7 +89,6 @@ export default {
       this.$store.commit('setEnableVideo', ev)
     },
     updateResolutions() {
-      console.log('ch9ina')
       let rswidth, rsheight
       switch (this.activeresolution) {
         case 0:
@@ -106,18 +110,18 @@ export default {
       this.$store.commit('setResolutionWidth', rswidth)
       this.$store.commit('setResolutionHeight', rsheight)
     },
-    join() {
+    join(e) {
       if (this.user.length <= 0) {
         this.emptyName()
+        e.preventDefault()
       }
       if (this.user.length > 0 && this.user.length < 2) {
         this.shortName()
+        e.preventDefault()
       }
       if (this.user.length > 48) {
         this.longName()
-      }
-      if (this.user.length >= 2 && this.user.length <= 48) {
-        this.goodToGo()
+        e.preventDefault()
       }
     },
     emptyName() {
@@ -143,10 +147,6 @@ export default {
         position: 'is-bottom',
         type: 'is-warning'
       })
-    },
-    goodToGo() {
-      // this.$router.push({ name: 'user-id', params: { id: this.user } })
-      this.$router.push({ name: 'room-id', params: { id: this.user } })
     }
   }
 }

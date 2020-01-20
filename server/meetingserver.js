@@ -31,47 +31,47 @@ const request = rest(
 )
 
 // Prepare sample room before start-up
-const prepareSampleRoom = new Promise((resolve, reject) => {
-  const checkResponse = (resp) => {
+const prepareWebNNRoom = new Promise((resolve, reject) => {
+  const checkresponse = (resp) => {
     const rooms = JSON.parse(resp)
-    let sampleRoomId = null
+    let webnnroomid = null
     // Find sample room
     for (const room of rooms) {
       if (room.name === 'sampleRoom') {
-        sampleRoomId = room._id
+        webnnroomid = room._id
         break
       }
     }
-    if (sampleRoomId) {
-      resolve(sampleRoomId)
+    if (webnnroomid) {
+      resolve(webnnroomid)
     } else {
       // Try create
-      const createBody = JSON.stringify({
+      const createbody = JSON.stringify({
         name: 'sampleRoom',
         options: {}
       })
-      const createOk = (resp) => {
+      const createok = (resp) => {
         resolve(JSON.parse(resp)._id)
       }
-      request('POST', '/v1/rooms', createBody, createOk, reject)
+      request('POST', '/v1/rooms', createbody, createok, reject)
     }
   }
 
-  request('GET', '/v1/rooms?page=1&per_page=100', null, checkResponse, reject)
+  request('GET', '/v1/rooms?page=1&per_page=100', null, checkresponse, reject)
 })
 
 function onRequestFail(err) {
   console.log('Request Fail:', err)
 }
 
-prepareSampleRoom
-  .then((sampleRoom) => {
-    console.log('Get sampleRoom Id:', sampleRoom)
+prepareWebNNRoom
+  .then((webnnroom) => {
+    console.log('sampleRoom Id:', webnnroom)
 
     // Create token API with default room
     app.post('/createToken/', function(req, res) {
-      const tokenRoom = req.body.room || sampleRoom
-      request('POST', '/v1/rooms/' + tokenRoom + '/tokens', req.body)
+      const tokenroom = req.body.room || webnnroom
+      request('POST', '/v1/rooms/' + tokenroom + '/tokens', req.body)
         .then((imRes) => {
           res.writeHead(imRes.statusCode, imRes.headers)
           imRes.pipe(res)
@@ -103,10 +103,18 @@ prepareSampleRoom
           app
         )
         .listen(config.restapiserver.httpsport)
+      console.log(
+        'WebNN Meeting Rest API Server HTTPS Port: ' +
+          config.restapiserver.httpsport
+      )
+      console.log(
+        'WebNN Meeting Rest API Server HTTP Port: ' +
+          config.restapiserver.httpport
+      )
     } catch (e) {
       console.log(e)
     }
   })
   .catch((e) => {
-    console.log('Failed to intialize sampleRoom', e)
+    console.log('Failed to intialize webnnroom', e)
   })

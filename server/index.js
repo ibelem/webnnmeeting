@@ -31,6 +31,7 @@ async function start() {
   //   badge: true
   // })
   https.createServer(nuxt.options.server.https, app).listen(port, host)
+  console.log('WebNN Meeting App HTTPS Port: ' + port)
 }
 
 start()

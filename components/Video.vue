@@ -1,23 +1,41 @@
 <template>
   <div class="video-panel">
-    <div v-if="localVideo.length > 0" class="video">
-      <div v-for="lv in localVideo">
-        <video :id="lv.playerid" playsinline autoplay></video>
-        <div>{{ lv.id }} {{ lv.username }} {{ lv.role }}</div>
-      </div>
-    </div>
-    <div v-if="remoteVideo.length > 0" class="video">
-      <div v-for="rv in remoteVideo">
+    <a @click="leaveMeeting" href="/" class="button is-info">
+      Leave
+    </a>
+
+    <div v-if="localVideo.length > 0">
+      <div v-for="lv in localVideo" class="tile is-4">
         <video
-          :id="rv.playerid"
-          :src="rv.srcObject"
+          v-if="lv.srcObject"
+          :id="lv.playerid"
+          :src-object.prop.camel="lv.srcObject"
           playsinline
           autoplay
+          class="tile"
         ></video>
-        <div>{{ rv.id }} {{ rv.username }} {{ rv.role }}</div>
+        <div v-if="lv.srcThumbnail">
+          <img :src="lv.srcThumbnail" />
+        </div>
+        <span class="user">{{ lv.username }}</span>
       </div>
     </div>
-    <div id="player-"></div>
+    <div v-if="remoteVideo.length > 0">
+      <div v-for="rv in remoteVideo" class="tile is-4">
+        <video
+          v-if="rv.srcObject"
+          :id="rv.playerid"
+          :src-object.prop.camel="rv.srcObject"
+          playsinline
+          autoplay
+          class="tile"
+        ></video>
+        <div v-if="rv.srcThumbnail">
+          <img :src="rv.srcThumbnail" />
+        </div>
+        <span class="user">{{ rv.username }}</span>
+      </div>
+    </div>
     {{ mode }}
   </div>
 </template>
@@ -33,8 +51,6 @@ export default {
       thatName: '',
       bandwidth: 1000,
       avTrackConstraint: {},
-
-      // License
       localStream: null,
       localScreen: null,
       localName: 'Anonymous',
@@ -115,11 +131,16 @@ export default {
     }
   },
   mounted() {
+    this.userExit()
     this.initConference()
   },
   methods: {
     l(data) {
       console.log(data)
+    },
+    leaveMeeting() {
+      this.userExit()
+      this.$router.push({ name: 'index' })
     },
     initConference() {
       this.localName = this.$route.params.id
@@ -279,15 +300,30 @@ export default {
             // ) {
             //   userExit()
             // }
-            _this.$buefy.dialog.confirm({
-              title: 'User Exit',
-              message: `your camrea can't support the resolution constraints, please leave room and select a lower resolution`,
-              confirmText: 'Room Exit',
+            this.$buefy.snackbar.open({
+              duration: 20000,
+              message: `Your camrea can't support the resolution constraints, select a lower resolution?`,
               type: 'is-danger',
-              hasIcon: true,
-              onConfirm: () => {
-                // To do: userExit()
-                _this.$buefy.toast.open('User Exited')
+              position: 'is-bottom-left',
+              actionText: 'Accept',
+              queue: false,
+              onAction: () => {
+                // Need to exit user
+                console.log(
+                  '^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^' + this.resolutionwidth
+                )
+                this.userExit()
+                if (this.resolutionwidth === 1280) {
+                  this.$store.commit('setResolutionWidth', 640)
+                  this.$store.commit('setResolutionHeight', 480)
+                } else if (this.resolutionwidth === 640) {
+                  this.$store.commit('setResolutionWidth', 320)
+                  this.$store.commit('setResolutionHeight', 240)
+                }
+                console.log(
+                  '^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^' + this.resolutionwidth
+                )
+                this.initConference()
               }
             })
           }
@@ -462,27 +498,22 @@ export default {
         videoinfo.username = thisUser.userId
         videoinfo.role = thisUser.role
         videoinfo.playerid = 'player-' + thisUser.htmlId
-        videoinfo.srcObject = stream.mediaStream
+        if (stream.mediaStream) {
+          videoinfo.srcObject = stream.mediaStream
+        } else {
+          videoinfo.srcThumbnail = 'android-chrome-512x512.png'
+        }
 
         if (isLocal) {
           this.localVideo.push(videoinfo)
-          // document.querySelector('#player-' + thisUser.htmlId).srcObject =
-          //   stream.mediaStream
         } else {
           this.remoteVideo.push(videoinfo)
-          // document.querySelector('#player-' + thisUser.htmlId).srcObject =
-          //   stream.mediaStream
         }
 
         console.log('LLL')
         console.log(this.localVideo)
         console.log('RRR')
         console.log(this.remoteVideo)
-
-        // add avatar for no video users
-        if (stream.mediaStream === false) {
-          document.querySelector('#player-').src = 'android-chrome-512x512.png'
-        }
       }
     },
     chgMutePic(clientId, muted) {
@@ -506,6 +537,24 @@ export default {
       //     }
       //   })
       // }, 1000)
+    },
+    userExit() {
+      if (this.localScreen) {
+        this.localScreen.mediaStream.getTracks().forEach((track) => {
+          track.stop()
+        })
+      }
+
+      if (this.room) {
+        this.room.leave()
+      }
+
+      this.users = []
+      this.subList = {}
+      this.streamObj = {}
+      this.streamIndices = {}
+      this.isAudioOnly = false
+      // clearInterval(this.refreshMute)
     },
     changeMode(newMode, enlargeElement) {
       if (this.localStream) {
@@ -764,13 +813,14 @@ export default {
 }
 </script>
 <style scope>
-.video,
-.video div {
-  display: inline-block;
-}
-
 video {
   width: 320px;
   height: 240px;
+}
+
+.user {
+  position: relative;
+  left: -20px;
+  bottom: -20px;
 }
 </style>

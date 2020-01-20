@@ -5,12 +5,13 @@ module.exports = {
       'rGtTQokQM/OeG/9oDzK9TtFjd+OOeUmFN2dZl52mvaI4cSj1waduIJB8x21Wa9MaGqtZzV1KTWBvr7heBIgSjQjQyeBWI0RFzCTSyhFtd9jmZ994xE50Gkmb2zxkQYALef8oj8do3gT/cWfOfgq1zPooCkRtbMK1xm44Avduyj4=',
     url: 'https://10.239.47.52',
     port: '3000',
-    restapiport: '3004',
-    participantspath: '/rooms/5df9d3661b3282c0ef1a5ee3/participants'
+    restapiport: '3004'
   },
   restapiserver: {
+    host: '127.0.0.1',
     httpport: 8082,
-    httpsport: 8081
+    httpsport: 8081,
+    sampleroomparticipantspath: '/rooms/5df9d3661b3282c0ef1a5ee3/participants'
   },
   nuxtserver: {
     host: '0.0.0.0',

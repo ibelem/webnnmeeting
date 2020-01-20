@@ -56,8 +56,7 @@ export default {
     script: [
       { src: '../js/three.js', defer: true },
       { src: '../js/gsap.js', defer: true },
-      { src: '../js/sketch.js', defer: true },
-      { src: '../js/slide.js', defer: true }
+      { src: '../js/sketch.js', defer: true }
     ]
   },
   components: {
@@ -66,7 +65,6 @@ export default {
   data() {
     return {
       slideimage: [
-        '../img/00.jpg',
         '../img/01.jpg',
         '../img/02.jpg',
         '../img/03.jpg',
