@@ -4,7 +4,7 @@
       Leave
     </a>
 
-    <div v-if="localVideo.length > 0">
+    <div v-if="localVideo.length > 0" class="tile is-ancestor">
       <div v-for="lv in localVideo" class="tile is-4">
         <video
           v-if="lv.srcObject"
@@ -17,10 +17,10 @@
         <div v-if="lv.srcThumbnail">
           <img :src="lv.srcThumbnail" />
         </div>
-        <span class="user">{{ lv.username }}</span>
+        <div class="user">{{ lv.username }}</div>
       </div>
     </div>
-    <div v-if="remoteVideo.length > 0">
+    <div v-if="remoteVideo.length > 0" class="tile is-ancestor">
       <div v-for="rv in remoteVideo" class="tile is-4">
         <video
           v-if="rv.srcObject"
@@ -33,7 +33,7 @@
         <div v-if="rv.srcThumbnail">
           <img :src="rv.srcThumbnail" />
         </div>
-        <span class="user">{{ rv.username }}</span>
+        <div class="user">{{ rv.username }}</div>
       </div>
     </div>
     {{ mode }}
@@ -133,6 +133,9 @@ export default {
   mounted() {
     this.userExit()
     this.initConference()
+  },
+  destroyed() {
+    window.addEventListener('beforeunload', this.userExit())
   },
   methods: {
     l(data) {
@@ -819,8 +822,12 @@ video {
 }
 
 .user {
+  display: block;
+  height: 20px;
   position: relative;
-  left: -20px;
-  bottom: -20px;
+  left: -50%;
+  transform: translateX(-50%);
+  bottom: -70%;
+  color: rgba(255, 255, 255, 1);
 }
 </style>

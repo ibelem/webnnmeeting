@@ -123,6 +123,9 @@ export default {
         this.longName()
         e.preventDefault()
       }
+      if (this.user.length >= 2 && this.user.length <= 48) {
+        location.href = this.roomuser
+      }
     },
     emptyName() {
       this.$buefy.toast.open({
