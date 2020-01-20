@@ -1,6 +1,5 @@
 export const state = () => ({
   participants: {
-    url: '/rooms/5df9d3661b3282c0ef1a5ee3/participants',
     number: 0
   },
   subscribetype: 'forward',

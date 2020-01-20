@@ -8,6 +8,7 @@
 </template>
 <script>
 import axios from 'axios'
+import config from '../config'
 
 export default {
   name: 'MeetingInfo',
@@ -32,7 +33,10 @@ export default {
   methods: {
     async fetchParticipant() {
       const url =
-        this.$store.state.server.url + this.$store.state.participants.url
+        config.webrtcserver.url +
+        ':' +
+        config.webrtcserver.restapiport +
+        config.webrtcserver.participantspath
       const res = await axios.get(url)
       const participantsnumber = Object.keys(res.data).length
       console.log(participantsnumber)

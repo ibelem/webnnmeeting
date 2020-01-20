@@ -1,5 +1,6 @@
 const fs = require('fs')
 const path = require('path')
+const config = require('./config.js')
 
 /* eslint-disable prettier/prettier */
 module.exports = {
@@ -89,12 +90,12 @@ module.exports = {
     extend(config, ctx) {}
   },
   server: {
-    port: 8080, // default: 3000
-    host: '0.0.0.0', // default: localhost,
+    port: config.nuxtserver.httpsport, // default: 3000
+    host: config.nuxtserver.host, // default: localhost,
     timing: false,
     https: {
-      key: fs.readFileSync(path.resolve(__dirname, 'server.key')),
-      cert: fs.readFileSync(path.resolve(__dirname, 'server.crt'))
+      key: fs.readFileSync(config.certificate.key),
+      cert: fs.readFileSync(config.certificate.cert)
     }
   }
 }

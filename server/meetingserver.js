@@ -26,7 +26,7 @@ app.use(
 const request = rest(
   config.webrtcserver.id,
   config.webrtcserver.key,
-  config.webrtcserver.url,
+  config.webrtcserver.url + ':' + config.webrtcserver.port,
   false
 )
 
@@ -97,8 +97,8 @@ prepareSampleRoom
       https
         .createServer(
           {
-            cert: fs.readFileSync(path.resolve(__dirname, '../webnn-cert.pem')),
-            key: fs.readFileSync(path.resolve(__dirname, '../webnn-key.pem'))
+            cert: fs.readFileSync(path.resolve(config.certificate.cert)),
+            key: fs.readFileSync(path.resolve(config.certificate.key))
           },
           app
         )

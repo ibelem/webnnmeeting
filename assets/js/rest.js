@@ -5,6 +5,9 @@
 // REST samples. It sends HTTP requests to sample server, and sample server sends requests to conference server.
 // Both this file and sample server are samples.
 'use strict'
+
+const config = require('../../config.js')
+
 const send = function(method, path, body, onRes, host) {
   const req = new XMLHttpRequest()
   req.onreadystatechange = function() {
@@ -26,13 +29,17 @@ const generateUrl = function(host, path) {
   let url
   if (host !== undefined) {
     url = host + path // Use the host user set.
-    url = url.replace('8080', '8081')
-    console.log('>>>>>>>>>>: ' + url)
+    url = url.replace(
+      config.nuxtserver.httpsport,
+      config.restapiserver.httpsport
+    )
   } else {
     const u = new URL(document.URL)
     url = u.origin + path // Get the string before last '/'.
-    url = url.replace('8080', '8081')
-    console.log('>>>>>>>>>>: ' + url)
+    url = url.replace(
+      config.nuxtserver.httpsport,
+      config.restapiserver.httpsport
+    )
   }
   return url
 }
