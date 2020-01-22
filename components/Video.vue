@@ -29,6 +29,7 @@ export default {
   name: 'Video',
   data() {
     return {
+      items: ['a', 'b', 'c'],
       thatName: '',
       bandwidth: 1000,
       avTrackConstraint: {},
