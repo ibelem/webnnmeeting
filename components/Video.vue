@@ -14,7 +14,7 @@
           autoplay
           class="tile"
         ></video>
-        <div class="user">{{ u.userId }}</div>
+        <div v-if="u.srcObject" class="user">{{ u.userId }}</div>
       </div>
     </div>
     {{ mode }}
@@ -23,8 +23,7 @@
 </template>
 <script>
 import Owt from '~/assets/js/owt/owt'
-import { mixStream, createToken } from '~/assets/js/rest'
-// import { mixStream, createToken, getStreams } from '~/assets/js/rest'
+import { mixStream, createToken, getStreams } from '~/assets/js/rest'
 
 export default {
   name: 'Video',
@@ -190,10 +189,10 @@ export default {
             console.log('resp.participants')
             console.log(resp.participants)
             resp.participants.map(function(participant) {
-              // participant.addEventListener('left', () => {
-              //   // TODO:send message for notice everyone the participant has left maybe no need
-              //   _this.deleteUser(participant.id)
-              // })
+              participant.addEventListener('left', () => {
+                // TODO:send message for notice everyone the participant has left maybe no need
+                _this.deleteUser(participant.id)
+              })
               let local = false
               _this.localName === participant.userId
                 ? (local = true)
@@ -477,7 +476,7 @@ export default {
 
         if (!isLocal) {
           console.log('$$$$$$$$$$$$$$$$$ ' + uid)
-          if (stream.orgin) {
+          if (uid) {
             const remoteusers = this.users.map((p) =>
               p.id === uid ? { ...p, srcObject: stream.mediaStream } : p
             )
@@ -515,7 +514,7 @@ export default {
     },
     refreshMuteState() {
       this.refreshMute = setInterval(() => {
-        this.getStreams(this.roomId, (streams) => {
+        getStreams(this.roomId, (streams) => {
           this.forwardStreamMap.clear()
           for (const stream of streams) {
             // console.log(stream);
@@ -573,17 +572,15 @@ export default {
       // setTimeout(resizeStream, 500, newMode)
     },
     subscribeStream(stream) {
-      console.log('*****  subscribeStream(stream) *****')
+      console.log('=====  subscribeStream(stream) =====')
       console.log('stream.id: ' + stream.id)
       this.room.subscribe(stream, { video: this.enablevideo }).then(
         (subscription) => {
-          console.info('subscribed: ', subscription.id)
-          console.log('>>>>> stream')
           console.log(stream)
-          console.log(stream.orgin)
+          const uid = stream.orgin
+          console.log(uid)
           this.addVideo(stream, false)
           this.subList[subscription.id] = subscription
-          console.info('add success')
           this.streamObj[stream.id] = stream
 
           console.log(this.subList)
@@ -626,6 +623,7 @@ export default {
           console.error('subscribe error: ' + err)
         }
       )
+      console.log('===== END subscribeStream(stream) END =====')
     },
     sendIm(msg, sender) {
       console.log('sendIm: To DO, msg: ' + msg + ' ' + 'sender: ' + sender)
@@ -712,7 +710,7 @@ export default {
           return
         }
 
-        // const thatId = stream.id
+        const thatId = stream.id
         if (
           stream.source.audio === 'mixed' &&
           stream.source.video === 'mixed'
@@ -721,27 +719,24 @@ export default {
         } else if (stream.source.video === 'screen-cast') {
           this.thatName = 'Screen Sharing'
         }
-
-        // console.log(this.localId)
-        // console.log(thatId)
-        // console.log(this.localScreenId)
-        // console.log(thatId)
-        // console.log(this.localName)
-        // console.log(this.getUserFromId(stream.origin).userId)
         // add video of non-local streams
-        // if (
-        //   this.localId !== thatId &&
-        //   this.localScreenId !== thatId &&
-        //   this.localName !== this.getUserFromId(stream.origin).userId
-        // ) {
-        //   this.subscribeStream(stream)
-        // }
+        if (this.getUserFromId(stream.origin)) {
+          if (
+            this.localId !== thatId &&
+            this.localScreenId !== thatId &&
+            this.localName !== this.getUserFromId(stream.origin).userId
+          ) {
+            this.subscribeStream(stream)
+          }
+        } else {
+          this.subscribeStream(stream)
+        }
       })
-
       this.room.addEventListener('participantjoined', (event) => {
         console.log('participantjoined', event)
         if (
-          event.participant.userId !== 'user' &&
+          // Do not comment this line when ask colleagues to test in webnnteam
+          // event.participant.userId !== 'user' &&
           this.getUserFromId(event.participant.id) === null
         ) {
           let local = false
@@ -753,7 +748,8 @@ export default {
             id: event.participant.id,
             userId: event.participant.userId,
             role: event.participant.role,
-            local
+            local,
+            srcObject: null
           })
 
           event.participant.addEventListener('left', () => {
