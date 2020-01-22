@@ -50,7 +50,7 @@ module.exports = {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: [{ src: '~/plugins/vue-js-grid', mode: 'client', ssr: false }],
+  plugins: [{ src: '~/plugins/vue-js-grid.js', mode: 'client' }],
   /*
    ** Nuxt.js dev-modules
    */
@@ -65,7 +65,7 @@ module.exports = {
    */
   modules: [
     // Doc: https://buefy.github.io/#/documentation
-    'nuxt-buefy',
+    ['nuxt-buefy', { css: false, materialDesignIcons: true }],
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     '@nuxtjs/pwa',

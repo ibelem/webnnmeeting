@@ -4,19 +4,33 @@
       Leave
     </a>
 
-    <div class="tile is-ancestor">
-      <div v-if="users.length > 0" v-for="u in users" class="tile is-4">
+    <client-only placeholder="Loading...">
+      <grid
+        :draggable="true"
+        :sortable="true"
+        :items="items"
+        :height="100"
+        :width="100"
+      >
+        <div slot="cell" slot-scope="props">
+          <div>{{ props.item }}</div>
+        </div>
+      </grid>
+    </client-only>
+
+    <div v-if="users.length > 0" v-for="u in users" class="item">
+      <div class="item-content">
         <video
           v-if="u.srcObject"
           :id="u.id"
           :src-object.prop.camel="u.srcObject"
           playsinline
           autoplay
-          class="tile"
         ></video>
         <div v-if="u.srcObject" class="user">{{ u.userId }}</div>
       </div>
     </div>
+
     {{ mode }}
     <div style="margin: 10px; font-size: 11px;">{{ users }}</div>
   </div>
@@ -27,6 +41,12 @@ import { mixStream, createToken, getStreams } from '~/assets/js/rest'
 
 export default {
   name: 'Video',
+  components: {
+    Grid: () =>
+      process.client
+        ? import('vue-js-grid')
+        : Promise.resolve({ render: (h) => h('div') })
+  },
   data() {
     return {
       items: ['a', 'b', 'c'],
