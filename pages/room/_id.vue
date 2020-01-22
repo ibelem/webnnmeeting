@@ -8,6 +8,7 @@
         {{ this.$store.state.enablevideo }}<br />
         {{ this.$store.state.resolution }}<br />
       </div>
+      <div>{{ this.$store.state.users }}</div>
     </section>
   </section>
 </template>

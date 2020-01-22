@@ -8,7 +8,8 @@ export const state = () => ({
     width: 1280,
     height: 720
   },
-  enablevideo: true
+  enablevideo: true,
+  users: []
 })
 
 export const mutations = {
@@ -29,5 +30,8 @@ export const mutations = {
   },
   setEnableVideo(state, data) {
     state.enablevideo = data
+  },
+  setUsers(state, data) {
+    state.users = data
   }
 }

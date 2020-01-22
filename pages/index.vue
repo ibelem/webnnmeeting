@@ -185,7 +185,7 @@ export default {
   border: 1px solid rgba(255, 255, 255, 0.2);
   margin: 0px auto 0 auto;
   padding: 1rem;
-  width: 290px;
+  width: 296px;
   border-top: 0px;
 }
 
