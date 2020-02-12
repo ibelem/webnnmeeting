@@ -76,7 +76,7 @@ export default {
   },
   computed: {
     roomuser() {
-      return '/room/' + this.user
+      return '/user/' + this.user
     }
   },
   methods: {

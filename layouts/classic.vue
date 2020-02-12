@@ -1,13 +1,8 @@
 <template>
-  <div class="columns">
-    <div class="column is-one-fifth"><nuxt /></div>
-    <div class="column"><Video /></div>
-    <div class="column is-one-fifth">Auto</div>
-  </div>
+  <nuxt />
 </template>
 
 <script>
-import Video from '~/components/Video.vue'
 export default {
   head: {
     script: [
@@ -16,7 +11,6 @@ export default {
     ]
   },
   components: {
-    Video
   },
   data() {
     return {
