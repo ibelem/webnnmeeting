@@ -1,4 +1,4 @@
-export const strict = false
+// export const strict = false
 export const state = () => ({
   participants: {
     number: 0

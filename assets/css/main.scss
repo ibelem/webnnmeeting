@@ -1,5 +1,8 @@
 @import "~bulma/sass/utilities/_all";
 
+$body-font-size: 14px;
+$body-font-weight: 200;
+
 // Set your colors
 $primary: #ffffff;
 $primary-invert: findColorInvert($primary);

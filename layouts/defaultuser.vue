@@ -29,13 +29,16 @@
                 Simplified Chinese
               </b-navbar-item>
             </b-navbar-dropdown>
+            <b-navbar-item @click="leaveMeeting" href="/" class="leave">
+                Leave
+            </b-navbar-item>
           </template>
         </b-navbar>
       </section>
     </div>
 
     <div id="shadow"></div>
-    <div id="content" class="content">
+    <div id="content">
       <div id="slider" :data-images="slideimage"></div>
       <!-- Hero content: will be in the middle -->
       <div class="hero-body">
@@ -54,6 +57,8 @@ import HomeFooter from '~/components/HomeFooter.vue'
 export default {
   head: {
     script: [
+      { src: '../js/socket.io.js', defer: true },
+      { src: '../js/adapter-7.0.0.js', defer: true },
       { src: '../js/three.js', defer: true },
       { src: '../js/gsap.js', defer: true },
       { src: '../js/sketch.js', defer: true }
@@ -75,30 +80,16 @@ export default {
 }
 </script>
 <style scope>
-.home,
-.navbar-item,
-.navbar-link {
-  color: rgba(255, 255, 255, 1);
+.leave:focus, .leave:hover, .leave.is-active {
+  background-color: rgba(0, 0, 0, 0.1) !important;
 }
 
-.hero-body {
-  padding: 0;
+.navbar-menu.is-active {
+  background-color: rgba(0, 0, 0, 0.2);
 }
 
-.titlea {
-  font-size: 1.5rem;
-  font-style: italic;
-  display: block;
-  width: 100%;
-}
-
-.slogan {
-  display: block;
-  font-weight: 300;
-  font-style: italic;
-  font-size: 0.8rem;
-  letter-spacing: -0.01em;
-  width: 100%;
+.navbar-dropdown .navbar-item:hover, .navbar-link:hover {
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
 @media screen and (min-width: 1024px) {

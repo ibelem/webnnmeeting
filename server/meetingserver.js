@@ -7,11 +7,17 @@ const fs = require('fs')
 const path = require('path')
 const https = require('https')
 const express = require('express')
+const cors = require('cors')
 const bodyParser = require('body-parser')
 const app = express()
 
 const config = require('../config')
 const rest = require('./authrequest')
+
+const corsOptions = {
+  origin: 'https://127.0.0.1:8080',
+  optionsSuccessStatus: 200 
+}
 
 // Directory 'public' for static files
 // app.use(express.static(__dirname + '/html'))
@@ -69,7 +75,7 @@ prepareWebNNRoom
     console.log('sampleRoom Id:', webnnroom)
 
     // Create token API with default room
-    app.post('/createToken/', function(req, res) {
+    app.post('/createToken/', cors(corsOptions), function(req, res) {
       const tokenroom = req.body.room || webnnroom
       request('POST', '/v1/rooms/' + tokenroom + '/tokens', req.body)
         .then((imRes) => {
@@ -80,7 +86,7 @@ prepareWebNNRoom
     })
 
     // Route internal REST interface
-    app.use(function(req, res) {
+    app.use(cors(corsOptions), function(req, res) {
       request(req.method, '/v1' + req.path, req.body)
         .then((imRes) => {
           res.writeHead(imRes.statusCode, imRes.headers)

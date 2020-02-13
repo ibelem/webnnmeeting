@@ -25,3 +25,115 @@ a:hover {
 .page-enter, .page-leave-active {
   opacity: 0;
 }
+
+body {
+  -ms-overflow-style: none;
+  overflow: -moz-scrollbars-none;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}
+
+body::scrollbar {
+  display: none;
+}
+
+.section {
+  padding: 1rem 0rem !important;
+}
+
+.home,
+.navbar-item,
+.navbar-link {
+  color: rgba(255, 255, 255, 1);
+}
+
+.hero-body {
+  padding: 0;
+}
+
+.titlea {
+  font-size: 1.5rem;
+  font-style: italic;
+  display: block;
+  width: 100%;
+}
+
+.slogan {
+  display: block;
+  font-weight: 300;
+  font-style: italic;
+  font-size: 0.8rem;
+  letter-spacing: -0.01em;
+  width: 100%;
+}
+
+#shadow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 82vh;
+  margin-top: 0rem;
+  position: relative;
+  justify-content: flex-start;
+  align-items: center;
+  cursor: pointer;
+}
+
+#slider {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -2;
+} 
+
+.footerbrackets a {
+  color: #fff;
+  text-decoration: none;
+  margin: 0px 6px;
+  padding: 10px 10px;
+  position: relative;
+  z-index: 0;
+  cursor: pointer;
+}
+
+.brackets a:before,
+.brackets a:after {
+  position: absolute;
+  opacity: 0;
+  font-size: 1.2rem;
+  top: 4px;
+  transition: all 0.3s;
+}
+
+.brackets a:before {
+  content: '(';
+  left: 0px;
+  transform: translateX(10px);
+}
+
+.brackets a:after {
+  content: ')';
+  right: 0px;
+  transform: translateX(-10px);
+}
+
+.brackets a:hover:before,
+.brackets a:hover:after {
+  opacity: 1;
+  transform: translateX(0px);
+}

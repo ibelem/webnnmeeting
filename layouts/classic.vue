@@ -36,6 +36,6 @@ body::scrollbar {
 }
 
 .column {
-  border: 1px solid red;
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 </style>

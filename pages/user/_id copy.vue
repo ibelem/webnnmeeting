@@ -32,9 +32,28 @@
         </div>
       </section>
     </div>
-    <div class="column columncenter">
+    <div class="column">
       <div class="video-panel">
-        <div v-if="users.length > 0" v-for="u in users">
+        <a @click="leaveMeeting" href="/" class="button is-info">
+          Leave
+        </a>
+
+        <client-only placeholder="Loading...">
+          <grid
+            :draggable="true"
+            :sortable="true"
+            :items="items"
+            :height="100"
+            :width="100"
+          >
+            <div slot="cell" slot-scope="props">
+              <div>{{ props.item }}</div>
+            </div>
+          </grid>
+        </client-only>
+
+        <div v-if="users.length > 0" v-for="u in users" class="item">
+          <div class="item-content">
             <video
               v-if="u.srcObject"
               :id="u.id"
@@ -43,6 +62,7 @@
               autoplay
             ></video>
             <div v-if="u.srcObject" class="user">{{ u.userId }}</div>
+          </div>
         </div>
 
         {{ mode }}
@@ -59,13 +79,17 @@ import MeetingInfo from '~/components/MeetingInfo.vue'
 
 export default {
   name: 'User',
-  layout: 'defaultuser',
-  // layout: 'classic',
+  layout: 'defaultroom',
   components: {
-    MeetingInfo
+    MeetingInfo,
+    Grid: () =>
+      process.client
+        ? import('vue-js-grid')
+        : Promise.resolve({ render: (h) => h('div') })
   },
   data() {
     return {
+      items: ['a', 'b', 'c'],
       thatName: '',
       bandwidth: 1000,
       avTrackConstraint: {},
@@ -149,7 +173,7 @@ export default {
     }
   },
   mounted() {
-    // this.isPauseVideo = !this.$store.state.enablevideo
+    this.isPauseVideo = !this.$store.state.enablevideo
     this.userExit()
     this.initConference()
   },
@@ -794,8 +818,8 @@ export default {
             userId: event.participant.userId,
             role: event.participant.role,
             local,
-            // video: event.participant.permission.publish.video,
-            // audio: event.participant.permission.publish.audio,
+            video: event.participant.permission.publish.video,
+            audio: event.participant.permission.publish.audio,
             srcObject: null
           })
 
@@ -860,14 +884,10 @@ video {
   display: block;
   height: 20px;
   position: relative;
-  left: -20%;
-  transform: translateX(-20%);
-  bottom: 0%;
+  left: -50%;
+  transform: translateX(-50%);
+  bottom: -70%;
   color: rgba(255, 255, 255, 1);
 }
-
-.columncenter {
-  border-left: 0px;
-  border-right: 0px;
-}
 </style>
+
