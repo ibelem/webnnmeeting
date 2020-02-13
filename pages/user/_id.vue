@@ -2,6 +2,10 @@
   <div class="columns">
     <div class="column is-one-fifth">
       <section class="section">
+        <a @click="leaveMeeting" href="/" class="leave">
+          Leave
+        </a>
+        {{ mode }}
         <div class="home-center">{{ $route.params.user }}</div>
         <MeetingInfo />
         <div>
@@ -33,21 +37,17 @@
       </section>
     </div>
     <div class="column columncenter">
-      <div class="video-panel">
-        <div v-if="users.length > 0" v-for="u in users">
-            <video
-              v-if="u.srcObject"
-              :id="u.id"
-              :src-object.prop.camel="u.srcObject"
-              playsinline
-              autoplay
-            ></video>
-            <div v-if="u.srcObject" class="user">{{ u.userId }}</div>
-        </div>
-
-        {{ mode }}
-        <div style="margin: 10px; font-size: 11px;">{{ users }}</div>
+      <div class="videoset" v-if="users.length > 0" v-for="u in users">
+        <video
+          v-if="u.srcObject"
+          :id="u.id"
+          :src-object.prop.camel="u.srcObject"
+          playsinline
+          autoplay
+        ></video>
+        <!-- <div v-if="u.srcObject" class="user">{{ u.userId }}</div> -->
       </div>
+      <div style="margin: 10px; font-size: 11px;">{{ users }}</div>
     </div>
     <div class="column is-one-fifth">Auto</div>
   </div>
@@ -239,12 +239,13 @@ export default {
                 ? (local = true)
                 : (local = false)
 
+              console.log('HHHHHHHHHHHHHHHHHHHHHHHHH' + _this.enablevideo)
               _this.users.push({
                 id: participant.id,
                 userId: participant.userId,
                 role: participant.role,
                 local,
-                video: !_this.isPauseVideo,
+                video: _this.enablevideo,
                 audio: _this.isPauseAudio,
                 srcObject: null
               })
@@ -851,12 +852,34 @@ export default {
 }
 </script>
 <style scope>
+body {
+  background: transparent;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh !important;
+  margin-top: 0rem;
+  justify-content: flex-start;
+  align-items: center;
+  cursor: pointer;
+}
+
+.videoset {
+  display: inline-block;
+  margin-top: -23px;
+  margin-bottom: -22px;
+}
+
 video {
   width: 240px;
   height: 180px;
+  max-width: 240px;
 }
 
-.user {
+.userA {
   display: block;
   height: 20px;
   position: relative;
@@ -869,5 +892,7 @@ video {
 .columncenter {
   border-left: 0px;
   border-right: 0px;
+  padding: 0px;
+  text-align: left;
 }
 </style>

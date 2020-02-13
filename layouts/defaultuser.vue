@@ -29,25 +29,21 @@
                 Simplified Chinese
               </b-navbar-item>
             </b-navbar-dropdown>
-            <b-navbar-item @click="leaveMeeting" href="/" class="leave">
-                Leave
-            </b-navbar-item>
           </template>
         </b-navbar>
       </section>
     </div>
 
-    <div id="shadow"></div>
-    <div id="content">
-      <div id="slider" :data-images="slideimage"></div>
-      <!-- Hero content: will be in the middle -->
-      <div class="hero-body">
-        <div class="container has-text-centered">
-          <nuxt />
-        </div>
+    <!-- Hero content: will be in the middle -->
+    <div class="hero-body">
+      <div class="container has-text-centered">
+        <nuxt />
       </div>
-      <HomeFooter />
     </div>
+    <HomeFooter />
+
+    <div id="shadow"></div>
+
   </section>
 </template>
 
@@ -58,24 +54,11 @@ export default {
   head: {
     script: [
       { src: '../js/socket.io.js', defer: true },
-      { src: '../js/adapter-7.0.0.js', defer: true },
-      { src: '../js/three.js', defer: true },
-      { src: '../js/gsap.js', defer: true },
-      { src: '../js/sketch.js', defer: true }
+      { src: '../js/adapter-7.0.0.js', defer: true }
     ]
   },
   components: {
     HomeFooter
-  },
-  data() {
-    return {
-      slideimage: [
-        '../img/01.jpg',
-        '../img/02.jpg',
-        '../img/03.jpg',
-        '../img/04.jpg'
-      ]
-    }
   }
 }
 </script>
