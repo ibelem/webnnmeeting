@@ -1,40 +1,53 @@
 <template>
-  <div class="columns">
-    <div class="column is-one-fifth">
-      <section class="section">
-        <a @click="leaveMeeting" href="/" class="leave">
-          Leave
-        </a>
-        {{ mode }}
-        <div class="home-center">{{ $route.params.user }}</div>
-        <MeetingInfo />
-        <div>
-          {{ this.$store.state.subscribetype }}<br />
-          {{ this.$store.state.enablevideo }}<br />
-          {{ this.$store.state.resolution }}<br />
-        </div>
-        <div class="userlist">
-          <div v-for="u in users">
-            {{ u.userId }}
-            <b-icon v-if="u.video"
-                icon="video"
-                size="is-small">
-            </b-icon>
-            <b-icon v-else
-                icon="video-off"
-                size="is-small">
-            </b-icon>
-            <b-icon v-if="u.audio"
-                icon="volume-high"
-                size="is-small">
-            </b-icon>
-            <b-icon v-else
-                icon="volume-off"
-                size="is-small">
-            </b-icon>
+  <div class="columns user">
+    <div class="column nopadding is-one-fifth">
+      <div class="isleft pd">PARTICIPANTS</div>
+      <div class="isleft pd2">Presenters ({{ this.$store.state.participants.number }})</div>
+      <div class="userlist">
+        <div v-for="u in users" class="columns">
+          <div class="column ull isleft is-three-quarters">
+              <b-icon
+                  class="ulicon"
+                  icon="account"
+                  size="is-small">
+              </b-icon>
+              <span class="ulu">{{ u.userId }}</span>
+          </div>
+          <div class="column ulr">
+              <b-icon v-if="u.video"
+                  icon="video"
+                  size="is-small">
+              </b-icon>
+              <b-icon v-else
+                  icon="video-off"
+                  size="is-small">
+              </b-icon>
+              <b-icon v-if="u.muted"
+                  icon="volume-off"
+                  size="is-small">
+              </b-icon>
+              <b-icon v-else
+                  icon="volume-high"
+                  size="is-small">
+              </b-icon>
           </div>
         </div>
-      </section>
+      </div>
+      <div class="issplit"></div>
+      <div class="isleft pd">CONVERSATION</div>
+      <div class="conversation">
+        <div class="cslist">
+          Conversation List
+        </div>
+        <b-field>
+          <b-input
+            placeholder="..."
+            type="text"
+          ></b-input>
+          <b-button icon-left="send">
+          </b-button>
+        </b-field>
+      </div>
     </div>
     <div class="column columncenter">
       <div class="videoset" v-if="users.length > 0" v-for="u in users">
@@ -47,9 +60,21 @@
         ></video>
         <!-- <div v-if="u.srcObject" class="user">{{ u.userId }}</div> -->
       </div>
+    </div>
+    <div class="column is-one-fifth">
+      <a @click="leaveMeeting" href="/" class="leave">
+        Leave
+      </a>
+      {{ mode }}
+      <div class="home-center">{{ $route.params.user }}</div>
+      <MeetingInfo />
+      <div>
+        {{ this.$store.state.subscribetype }}<br />
+        {{ this.$store.state.enablevideo }}<br />
+        {{ this.$store.state.resolution }}<br />
+      </div>
       <div style="margin: 10px; font-size: 11px;">{{ users }}</div>
     </div>
-    <div class="column is-one-fifth">Auto</div>
   </div>
 </template>
 <script>
@@ -59,13 +84,16 @@ import MeetingInfo from '~/components/MeetingInfo.vue'
 
 export default {
   name: 'User',
-  layout: 'defaultuser',
+  // middleware: 'layout',
+  // layout: ({ userlayout }) => userlayout ? 'userbgimg' : 'userbgcanvas',
   // layout: 'classic',
+  layout: 'userbgimg',
   components: {
     MeetingInfo
   },
   data() {
     return {
+      conversation: {},
       thatName: '',
       bandwidth: 1000,
       avTrackConstraint: {},
@@ -212,6 +240,7 @@ export default {
           },
           video: false
         }
+        this.isAudioOnly = true
       }
       console.log(this.avTrackConstraint)
       const _this = this
@@ -245,8 +274,7 @@ export default {
                 userId: participant.userId,
                 role: participant.role,
                 local,
-                video: _this.enablevideo,
-                audio: _this.isPauseAudio,
+                muted: true,
                 srcObject: null
               })
 
@@ -449,7 +477,7 @@ export default {
       }
     },
     toggleVideo() {
-      if (!this.localPublication || !this.enablevideo) {
+      if (!this.localPublication || this.isAudioOnly) {
         return
       }
 
@@ -556,7 +584,7 @@ export default {
       console.log('==== END addVideo END ====')
     },
     chgMutePic(clientId, muted) {
-      console.log('TODO, change MutePic')
+      console.log('TODO, change MutePic -----------------' + clientId + ' muted: ' + muted)
     },
     refreshMuteState() {
       this.refreshMute = setInterval(() => {
@@ -591,6 +619,7 @@ export default {
       this.subList = {}
       this.streamObj = {}
       this.streamIndices = {}
+      this.localStream = null
       this.isAudioOnly = false
       clearInterval(this.refreshMute)
     },
@@ -620,7 +649,8 @@ export default {
     subscribeStream(stream) {
       console.log('=====  subscribeStream(stream) =====')
       console.log('stream.id: ' + stream.id)
-      this.room.subscribe(stream, { video: this.enablevideo }).then(
+      const videoOption = !this.isAudioOnly;
+      this.room.subscribe(stream, { video: videoOption }).then(
         (subscription) => {
           console.log(stream)
           const uid = stream.orgin
@@ -796,7 +826,7 @@ export default {
             role: event.participant.role,
             local,
             // video: event.participant.permission.publish.video,
-            // audio: event.participant.permission.publish.audio,
+            muted: true,
             srcObject: null
           })
 
@@ -873,20 +903,14 @@ body {
   margin-bottom: -22px;
 }
 
+canvas {
+  z-index: -1000;
+}
+
 video {
   width: 240px;
   height: 180px;
   max-width: 240px;
-}
-
-.userA {
-  display: block;
-  height: 20px;
-  position: relative;
-  left: -20%;
-  transform: translateX(-20%);
-  bottom: 0%;
-  color: rgba(255, 255, 255, 1);
 }
 
 .columncenter {
@@ -894,5 +918,6 @@ video {
   border-right: 0px;
   padding: 0px;
   text-align: left;
+  min-height: 60vh;
 }
 </style>

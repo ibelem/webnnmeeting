@@ -34,7 +34,6 @@
       </section>
     </div>
 
-    <div id="shadow"></div>
     <div id="slider" :data-images="slideimage"></div>
     <!-- Hero content: will be in the middle -->
     <div id="hero-body" class="hero-body">
@@ -43,6 +42,7 @@
       </div>
     </div>
     <HomeFooter />
+    <div id="shadow"></div>
   </section>
 </template>
 
@@ -52,6 +52,8 @@ import HomeFooter from '~/components/HomeFooter.vue'
 export default {
   head: {
     script: [
+      { src: '../js/socket.io.js', defer: true },
+      { src: '../js/adapter-7.0.0.js', defer: true },
       { src: '../js/three.js', defer: true },
       { src: '../js/gsap.js', defer: true },
       { src: '../js/sketch.js', defer: true }

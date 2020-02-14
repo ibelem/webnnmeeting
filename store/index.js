@@ -1,4 +1,5 @@
 // export const strict = false
+
 export const state = () => ({
   participants: {
     number: 0
@@ -10,7 +11,8 @@ export const state = () => ({
     height: 720
   },
   enablevideo: true,
-  users: []
+  users: [],
+  layout: 'userbgimg'
 })
 
 export const mutations = {
@@ -34,5 +36,8 @@ export const mutations = {
   },
   setUsers(state, data) {
     state.users = data
+  },
+  setLayout(state, data) {
+    state.layout = data
   }
 }

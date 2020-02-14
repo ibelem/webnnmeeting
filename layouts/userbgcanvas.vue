@@ -1,5 +1,5 @@
 <template>
-  <section class="hero is-fullheight home">
+  <section class="hero is-fullheight home content--canvas">
     <!-- Hero head: will stick at the top -->
     <div class="hero-head">
       <section class="section container">
@@ -34,15 +34,16 @@
       </section>
     </div>
 
-    <div id="shadow"></div>
-    <div id="slider" :data-images="slideimage"></div>
     <!-- Hero content: will be in the middle -->
-    <div id="hero-body" class="hero-body">
+    <div class="hero-body">
       <div class="container has-text-centered">
         <nuxt />
       </div>
     </div>
     <HomeFooter />
+
+    <div id="shadow"></div>
+
   </section>
 </template>
 
@@ -52,51 +53,28 @@ import HomeFooter from '~/components/HomeFooter.vue'
 export default {
   head: {
     script: [
-      { src: '../js/three.js', defer: true },
-      { src: '../js/gsap.js', defer: true },
-      { src: '../js/sketch.js', defer: true }
+      { src: '../js/socket.io.js', defer: true },
+      { src: '../js/adapter-7.0.0.js', defer: true },
+      { src: '../js/canvasbg/noise.min.js', defer: true },
+      { src: '../js/canvasbg/shift.js', defer: true }
     ]
   },
   components: {
     HomeFooter
-  },
-  data() {
-    return {
-      slideimage: [
-        '../img/01.jpg',
-        '../img/02.jpg',
-        '../img/03.jpg',
-        '../img/04.jpg'
-      ]
-    }
   }
 }
 </script>
 <style scope>
-.home,
-.navbar-item,
-.navbar-link {
-  color: rgba(255, 255, 255, 1);
+.leave:focus, .leave:hover, .leave.is-active {
+  background-color: rgba(0, 0, 0, 0.1) !important;
 }
 
-.hero-body {
-  padding: 0;
+.navbar-menu.is-active {
+  background-color: rgba(0, 0, 0, 0.2);
 }
 
-.titlea {
-  font-size: 1.5rem;
-  font-style: italic;
-  display: block;
-  width: 100%;
-}
-
-.slogan {
-  display: block;
-  font-weight: 300;
-  font-style: italic;
-  font-size: 0.8rem;
-  letter-spacing: -0.01em;
-  width: 100%;
+.navbar-dropdown .navbar-item:hover, .navbar-link:hover {
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
 @media screen and (min-width: 1024px) {

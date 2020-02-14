@@ -5,7 +5,7 @@
     </div>
     <div v-else class="webnn-not-supported">
       Your browser doesn't support Web Neural Network API, machine learning
-      relevant features are disabled.
+      features are disabled.
     </div>
   </div>
 </template>

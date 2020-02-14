@@ -13,7 +13,7 @@ class Sketch {
     this.duration = opts.duration || 1
     this.debug = opts.debug || false
     this.easing = opts.easing || 'easeInOut'
-    this.clicker = document.getElementById('content')
+    this.clicker = document.getElementById('hero-body')
     this.container = document.getElementById('slider')
     this.images = this.container.getAttribute('data-images').split(',')
     this.width = this.container.offsetWidth
@@ -136,7 +136,7 @@ class Sketch {
         texture2: { type: 'f', value: this.textures[1] },
         displacement: {
           type: 'f',
-          value: new THREE.TextureLoader().load('img/disp1.jpg')
+          value: new THREE.TextureLoader().load('../img/disp1.jpg')
         },
         resolution: { type: 'v4', value: new THREE.Vector4() }
       },
