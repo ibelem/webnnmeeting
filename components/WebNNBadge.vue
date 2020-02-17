@@ -24,8 +24,10 @@ export default {
     updateWebNNStatus() {
       if (navigator.ml && navigator.ml.getNeuralNetworkContext()) {
         this.webmlstatus = true
+        this.$store.commit('setWebNN', true)
       } else {
         this.webmlstatus = false
+        this.$store.commit('setWebNN', false)
       }
     }
   },

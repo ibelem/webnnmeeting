@@ -169,6 +169,7 @@ body, button, input, select, textarea {
   width: 184px;
   display: flex;
   justify-content: left;
+  font-size: 0.8rem;
 }
 
 .videocontrolai .button:first-child, .videocontrolai .button:last-child {

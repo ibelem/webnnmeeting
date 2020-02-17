@@ -46,8 +46,18 @@
       </div>
       <div class="videocontrol">
         <div v-show="isshowaimenu" class="videocontrolai">
-          <b-button icon-left="blur">Blur background</b-button>
-          <b-button icon-left="image-multiple">Change background</b-button>
+          <b-button v-if="this.$store.state.supportwenmm" icon-left="blur"
+            >Blur background</b-button
+          >
+          <b-button v-else icon-left="blur" disabled>Blur background</b-button>
+          <b-button
+            v-if="this.$store.state.supportwenmm"
+            icon-left="image-multiple"
+            >Change background</b-button
+          >
+          <b-button v-else icon-left="image-multiple" disabled
+            >Change background</b-button
+          >
           <b-button icon-left="fullscreen">Enter full screen</b-button>
         </div>
         <b-button class="date">{{ date }}</b-button>
