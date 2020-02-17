@@ -9,7 +9,7 @@ module.exports = {
   },
   restapiserver: {
     host: '127.0.0.1',
-    // httpport: 8082,
+    httpport: 8082,
     httpsport: 8081,
     sampleroomparticipantspath: '/rooms/5df9d3661b3282c0ef1a5ee3/participants'
   },
@@ -18,7 +18,7 @@ module.exports = {
     httpsport: 8080
   },
   certificate: {
-    cert: '/home/belem/github/webnnmeeting/webnn-veritas.crt',
-    key: '/home/belem/github/webnnmeeting/webnn-veritas.key'
+    cert: './webnn-veritas.crt',
+    key: './webnn-veritas.key'
   }
 }

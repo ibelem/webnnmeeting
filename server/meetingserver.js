@@ -14,12 +14,12 @@ const app = express()
 const config = require('../config')
 const rest = require('./authrequest')
 
-const corsOptions = {
-  origin: ':8080',
-  optionsSuccessStatus: 200,
-  methods:['GET','POST', 'PUT', 'PATCH', 'OPTIONS', 'DELETE']
-  // alloweHeaders:['Content-Type','Authorization']
-}
+// const corsOptions = {
+//   origin: ':8080',
+//   optionsSuccessStatus: 200,
+//   methods: ['GET', 'POST', 'PUT', 'PATCH', 'OPTIONS', 'DELETE']
+//   // alloweHeaders:['Content-Type','Authorization']
+// }
 
 // Directory 'public' for static files
 // app.use(express.static(__dirname + '/html'))
@@ -115,10 +115,10 @@ prepareWebNNRoom
         'WebNN Meeting Rest API Server HTTPS Port: ' +
           config.restapiserver.httpsport
       )
-      console.log(
-        'WebNN Meeting Rest API Server HTTP Port: ' +
-          config.restapiserver.httpport
-      )
+      // console.log(
+      //   'WebNN Meeting Rest API Server HTTP Port: ' +
+      //     config.restapiserver.httpport
+      // )
     } catch (e) {
       console.log(e)
     }

@@ -43,7 +43,6 @@
     <HomeFooter />
 
     <div id="shadow"></div>
-
   </section>
 </template>
 
@@ -63,7 +62,9 @@ export default {
 }
 </script>
 <style scope>
-.leave:focus, .leave:hover, .leave.is-active {
+.leave:focus,
+.leave:hover,
+.leave.is-active {
   background-color: rgba(0, 0, 0, 0.1) !important;
 }
 
@@ -71,7 +72,8 @@ export default {
   background-color: rgba(0, 0, 0, 0.2);
 }
 
-.navbar-dropdown .navbar-item:hover, .navbar-link:hover {
+.navbar-dropdown .navbar-item:hover,
+.navbar-link:hover {
   background-color: rgba(0, 0, 0, 0.4);
 }
 

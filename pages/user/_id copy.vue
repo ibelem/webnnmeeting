@@ -12,22 +12,10 @@
         <div class="userlist">
           <div v-for="u in users">
             {{ u.userId }}
-            <b-icon v-if="u.video"
-                icon="video"
-                size="is-small">
-            </b-icon>
-            <b-icon v-else
-                icon="video-off"
-                size="is-small">
-            </b-icon>
-            <b-icon v-if="u.audio"
-                icon="volume-high"
-                size="is-small">
-            </b-icon>
-            <b-icon v-else
-                icon="volume-off"
-                size="is-small">
-            </b-icon>
+            <b-icon v-if="u.video" icon="video" size="is-small"> </b-icon>
+            <b-icon v-else icon="video-off" size="is-small"> </b-icon>
+            <b-icon v-if="u.audio" icon="volume-high" size="is-small"> </b-icon>
+            <b-icon v-else icon="volume-off" size="is-small"> </b-icon>
           </div>
         </div>
       </section>
@@ -890,4 +878,3 @@ video {
   color: rgba(255, 255, 255, 1);
 }
 </style>
-

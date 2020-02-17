@@ -2,34 +2,20 @@
   <div class="columns user">
     <div class="column nopadding is-one-fifth">
       <div class="isleft pd">PARTICIPANTS</div>
-      <div class="isleft pd2">Presenters ({{ this.$store.state.participants.number }})</div>
+      <div class="isleft pd2">
+        Presenters ({{ this.$store.state.participants.number }})
+      </div>
       <div class="userlist">
         <div v-for="u in users" class="columns">
           <div class="column ull isleft is-three-quarters">
-              <b-icon
-                  class="ulicon"
-                  icon="account"
-                  size="is-small">
-              </b-icon>
-              <span class="ulu">{{ u.userId }}</span>
+            <b-icon class="ulicon" icon="account" size="is-small"> </b-icon>
+            <span class="ulu">{{ u.userId }}</span>
           </div>
           <div class="column ulr">
-              <b-icon v-if="u.video"
-                  icon="video"
-                  size="is-small">
-              </b-icon>
-              <b-icon v-else
-                  icon="video-off"
-                  size="is-small">
-              </b-icon>
-              <b-icon v-if="u.muted"
-                  icon="volume-off"
-                  size="is-small">
-              </b-icon>
-              <b-icon v-else
-                  icon="volume-high"
-                  size="is-small">
-              </b-icon>
+            <b-icon v-if="u.video" icon="video" size="is-small"> </b-icon>
+            <b-icon v-else icon="video-off" size="is-small"> </b-icon>
+            <b-icon v-if="u.muted" icon="volume-off" size="is-small"> </b-icon>
+            <b-icon v-else icon="volume-high" size="is-small"> </b-icon>
           </div>
         </div>
       </div>
@@ -40,17 +26,13 @@
           Conversation List
         </div>
         <b-field>
-          <b-input
-            placeholder="..."
-            type="text"
-          ></b-input>
-          <b-button icon-left="send">
-          </b-button>
+          <b-input placeholder="..." type="text"></b-input>
+          <b-button icon-left="send"> </b-button>
         </b-field>
       </div>
     </div>
     <div class="column columncenter">
-      <div class="videoset" v-if="users.length > 0" v-for="u in users">
+      <div v-if="users.length > 0" v-for="u in users" class="videoset">
         <video
           v-if="u.srcObject"
           :id="u.id"
@@ -584,7 +566,9 @@ export default {
       console.log('==== END addVideo END ====')
     },
     chgMutePic(clientId, muted) {
-      console.log('TODO, change MutePic -----------------' + clientId + ' muted: ' + muted)
+      console.log(
+        'TODO, change MutePic -----------------' + clientId + ' muted: ' + muted
+      )
     },
     refreshMuteState() {
       this.refreshMute = setInterval(() => {
@@ -649,7 +633,7 @@ export default {
     subscribeStream(stream) {
       console.log('=====  subscribeStream(stream) =====')
       console.log('stream.id: ' + stream.id)
-      const videoOption = !this.isAudioOnly;
+      const videoOption = !this.isAudioOnly
       this.room.subscribe(stream, { video: videoOption }).then(
         (subscription) => {
           console.log(stream)

@@ -10,8 +10,7 @@ export default {
       { src: '../js/adapter-7.0.0.js', defer: true }
     ]
   },
-  components: {
-  },
+  components: {},
   data() {
     return {
       test: ''
