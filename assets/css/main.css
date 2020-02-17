@@ -97,6 +97,12 @@ body, button, input, select, textarea {
   height: 36px;
   margin: -1rem auto;
   text-align: center;
+  display: none;
+}
+
+.columncenter:hover .videocontrol {
+  transition: all 5000ms cubic-bezier(0.420, 0.000, 1.000, 1.000);
+  display: block;
 }
 
 .videocontrol:first-child {

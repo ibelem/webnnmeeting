@@ -91,9 +91,9 @@ import MeetingInfo from '~/components/MeetingInfo.vue'
 export default {
   name: 'User',
   // middleware: 'layout',
-  // layout: ({ userlayout }) => userlayout ? 'userbgimg' : 'userbgcanvas',
+  layout: ({ userlayout }) => (userlayout ? 'userbgimg' : 'userbgcanvas'),
   // layout: 'classic',
-  layout: 'userbgimg',
+  // layout: 'userbgimg',
   components: {
     MeetingInfo
   },
