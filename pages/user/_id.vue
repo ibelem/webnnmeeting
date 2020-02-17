@@ -32,21 +32,35 @@
       </div>
     </div>
     <div class="column columncenter">
-      <div v-if="users.length > 0" v-for="u in users" class="videoset">
-        <video
-          v-if="u.srcObject"
-          :id="u.id"
-          :src-object.prop.camel="u.srcObject"
-          playsinline
-          autoplay
-        ></video>
-        <div v-if="u.srcObject" class="user">{{ u.userId }}</div>
+      <div class="videos">
+        <div v-if="users.length > 0" v-for="u in users" class="videoset">
+          <video
+            v-if="u.srcObject"
+            :id="u.id"
+            :src-object.prop.camel="u.srcObject"
+            playsinline
+            autoplay
+          ></video>
+          <div v-if="u.srcObject" class="user">{{ u.userId }}</div>
+        </div>
+      </div>
+      <div class="videocontrol">
+        <div v-show="isshowaimenu" class="videocontrolai">
+          <b-button icon-left="blur">Blur background</b-button>
+          <b-button icon-left="image-multiple">Change background</b-button>
+          <b-button icon-left="fullscreen">Enter full screen</b-button>
+        </div>
+        <b-button class="date">{{ date }}</b-button>
+        <b-button icon-left="video"></b-button>
+        <b-button icon-left="microphone"></b-button>
+        <b-button icon-left="projector-screen"></b-button>
+        <b-button @click="showAiMenu" icon-left="dots-horizontal"></b-button>
+        <b-button icon-left="message-reply-text"></b-button>
+        <b-button icon-left="account-group"></b-button>
+        <b-button @click="leaveMeeting" icon-left="phone-hangup"></b-button>
       </div>
     </div>
     <div class="column is-one-fifth">
-      <a @click="leaveMeeting" href="/" class="leave">
-        Leave
-      </a>
       {{ mode }}
       <div class="home-center">{{ $route.params.user }}</div>
       <MeetingInfo />
@@ -75,6 +89,8 @@ export default {
   },
   data() {
     return {
+      isshowaimenu: false,
+      date: new Date(),
       conversation: {},
       thatName: '',
       bandwidth: 1000,
@@ -158,8 +174,16 @@ export default {
       return mediasource
     }
   },
+  beforeDestroy() {
+    if (this.timer) {
+      clearInterval(this.timer)
+    }
+  },
   mounted() {
-    // this.isPauseVideo = !this.$store.state.enablevideo
+    this.timer = setInterval(() => {
+      const d = new Date()
+      this.date = d.toLocaleTimeString()
+    }, 1000)
     this.userExit()
     this.initConference()
   },
@@ -596,7 +620,11 @@ export default {
       }
 
       if (this.room) {
-        this.room.leave()
+        try {
+          this.room.leave()
+        } catch (ex) {
+          console.log('>>>>>>>>>>>>> room.leave error: ' + ex)
+        }
       }
 
       this.users = []
@@ -625,7 +653,7 @@ export default {
           console.error('Illegal mode name')
       }
 
-      console.log('TOTO changeto new model: ' + this.model)
+      console.log('TOTO change to new model: ' + this.model)
       // update canvas size in all video panels
       // $('.player').trigger('resizeVideo')
       // setTimeout(resizeStream, 500, newMode)
@@ -861,6 +889,13 @@ export default {
           }
         }
       })
+    },
+    showAiMenu() {
+      if (!this.isshowaimenu) {
+        this.isshowaimenu = true
+      } else {
+        this.isshowaimenu = false
+      }
     }
   }
 }
@@ -894,14 +929,18 @@ video {
 
 .videoset .user {
   position: relative;
-  top: -8px;
   text-align: center;
-  margin-top: -12px;
+  top: -7px;
+  padding: 4px 0.75rem;
+  margin-top: -20px;
   font-size: 0.6rem;
+  height: 20px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .videoset .user:hover {
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: rgba(0, 0, 0, 0.2);
 }
 
 canvas {
