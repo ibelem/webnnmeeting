@@ -1,6 +1,6 @@
 body, button, input, select, textarea {
   font-family: 'Lato', sans-serif !important;
-  font-weight: 200 !important;
+  /* font-weight: 200 !important; */
 }
 
 .navbar > .container .navbar-brand, .container > .navbar .navbar-brand {
@@ -70,12 +70,41 @@ body, button, input, select, textarea {
 
 .user .conversation {
   min-height: 300px;
+  max-height: 320px;
   display: flex;
   flex-direction: column;
 }
 
 .user .conversation .cslist {
   flex: 1;
+}
+
+.userlist {
+  max-height: 200px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+/* Let's get this party started */
+::-webkit-scrollbar {
+  width: 2px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.2); 
+  border-radius: 1px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  border-radius: 1px;
+  background: rgba(255, 255, 255, 0.4);
+  box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.2); 
+}
+
+::-webkit-scrollbar-thumb:window-inactive {
+  background: rgba(0, 0, 0, 0.2);
 }
 
 .notices .toast.is-warning {
@@ -216,14 +245,31 @@ body::scrollbar {
 }
 
 #shadow {
-  position: fixed;
-  top: 0;
-  left: 0;
+  background: rgba(0, 0, 0, 0.5);
+  position:fixed;
+  top:0;
+  left:0;
+  z-index: -1;
   width: 100vw;
   height: 100vh;
-  z-index: -1;
-  background: rgba(0, 0, 0, 0.5);
+  /* opacity: 0.8; */
+  /* background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab); */
+  /* background: linear-gradient(-45deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.4)); */
+	/* animation: gradient 15s ease infinite;
+  transition:all 2s ease; */
 }
+
+/* @keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+} */
 
 .content {
   display: flex;

@@ -1,3 +1,3 @@
-export default function (ctx) {
+export default function(ctx) {
   ctx.userlayout = true
 }

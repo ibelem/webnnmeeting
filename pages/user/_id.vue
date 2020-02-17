@@ -40,7 +40,7 @@
           playsinline
           autoplay
         ></video>
-        <!-- <div v-if="u.srcObject" class="user">{{ u.userId }}</div> -->
+        <div v-if="u.srcObject" class="user">{{ u.userId }}</div>
       </div>
     </div>
     <div class="column is-one-fifth">
@@ -883,18 +883,29 @@ body {
 
 .videoset {
   display: inline-block;
-  margin-top: -23px;
-  margin-bottom: -22px;
+  margin-bottom: -13px;
+  width: calc(100% / 4);
+  overflow: hidden;
+}
+
+video {
+  width: 100%;
+}
+
+.videoset .user {
+  position: relative;
+  top: -8px;
+  text-align: center;
+  margin-top: -12px;
+  font-size: 0.6rem;
+}
+
+.videoset .user:hover {
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
 canvas {
   z-index: -1000;
-}
-
-video {
-  width: 240px;
-  height: 180px;
-  max-width: 240px;
 }
 
 .columncenter {

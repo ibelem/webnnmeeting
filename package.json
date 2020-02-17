@@ -31,8 +31,7 @@
     "express": "^4.16.4",
     "nuxt": "^2.11.0",
     "nuxt-buefy": "^0.3.21",
-    "socket.io": "^2.3.0",
-    "vue-js-grid": "^1.0.1"
+    "socket.io": "^2.3.0"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^1.0.1",
