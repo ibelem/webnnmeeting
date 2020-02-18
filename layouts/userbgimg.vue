@@ -14,10 +14,10 @@
           </template>
           <template slot="end">
             <b-navbar-dropdown label="Theme">
-              <b-navbar-item href="#">
+              <b-navbar-item @click="setBgImg" href="#">
                 Classic
               </b-navbar-item>
-              <b-navbar-item href="#">
+              <b-navbar-item @click="setCanvas" href="#">
                 Immersive
               </b-navbar-item>
             </b-navbar-dropdown>
@@ -61,6 +61,14 @@ export default {
   },
   components: {
     HomeFooter
+  },
+  methods: {
+    setBgImg() {
+      this.$store.commit('setLayout', 'userbgimg')
+    },
+    setCanvas() {
+      this.$store.commit('setLayout', 'userbgcanvas')
+    }
   },
   data() {
     return {

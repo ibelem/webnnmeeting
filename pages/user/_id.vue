@@ -14,8 +14,9 @@
           <div class="column ulr">
             <b-icon v-if="u.video" icon="video" size="is-small"> </b-icon>
             <b-icon v-else icon="video-off" size="is-small"> </b-icon>
-            <b-icon v-if="u.muted" icon="volume-off" size="is-small"> </b-icon>
-            <b-icon v-else icon="volume-high" size="is-small"> </b-icon>
+            <b-icon v-if="u.muted" icon="microphone-off" size="is-small"> </b-icon>
+            <b-icon v-else icon="microphone-high" size="is-small"> </b-icon>
+            <b-icon icon="projector-screen" size="is-small"> </b-icon>
           </div>
         </div>
       </div>

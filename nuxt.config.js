@@ -36,6 +36,9 @@ module.exports = {
    ** Customize the progress-bar color
    */
   loading: { color: '#fff' },
+  router: {
+    middleware: ['userlayout']
+  },
   /*
    ** Global CSS
    */

@@ -1,3 +1,3 @@
 export default function(ctx) {
-  ctx.userlayout = true
+  ctx.userlayout = ctx.store.state.layout
 }
