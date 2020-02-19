@@ -10,10 +10,10 @@
           icon="account"
         ></b-input>
         <p class="control">
-          <a @click="join" :href="roomuser" class="button join">
+          <button @click="join" class="button join">
             <span class="insider"></span>
             <i class="mdi mdi-near-me mdi-24px"></i>
-          </a>
+          </button>
         </p>
       </b-field>
       <div class="settings">
@@ -21,20 +21,20 @@
           <template v-for="st in subscribetypes">
             <b-radio-button
               @change.native="updateSubscribeType"
-              v-model="activesubscribetype"
+              v-model="subscribetype"
               :native-value="st"
             >
               {{ st }}
             </b-radio-button>
           </template>
         </b-field>
-        <b-tabs v-model="activevideo" @change="updateEnableVideo" class="two">
+        <b-tabs v-model="enablevideo" @change="updateVideo" class="two">
           <template v-for="videooption in videooptions">
             <b-tab-item :label="videooption"></b-tab-item>
           </template>
         </b-tabs>
         <b-tabs
-          v-model="activeresolution"
+          v-model="resolution"
           @change="updateResolutions"
           class="three"
         >
@@ -44,14 +44,7 @@
         </b-tabs>
       </div>
     </div>
-    <section class="section">
-      <MeetingInfo />
-      <div>
-        {{ this.$store.state.subscribetype }} /
-        {{ this.$store.state.enablevideo }} /
-        {{ this.$store.state.resolution }}
-      </div>
-    </section>
+    <MeetingInfo />
   </section>
 </template>
 
@@ -66,31 +59,26 @@ export default {
   data() {
     return {
       user: '',
-      activesubscribetype: 'forward',
+      subscribetype: 'forward',
       subscribetypes: ['forward', 'mix'],
-      activeresolution: 2,
+      resolution: 2,
       resolutions: ['320x240', '640x480', '1280x720'],
-      activevideo: 1,
+      enablevideo: 1,
       videooptions: ['Audio Only', 'Video and Audio']
-    }
-  },
-  computed: {
-    roomuser() {
-      return '/user/' + this.user
     }
   },
   methods: {
     updateSubscribeType() {
-      this.$store.commit('setSubscribeType', this.activesubscribetype)
+      this.$store.commit('setSubscribeType', this.subscribetype)
     },
-    updateEnableVideo() {
+    updateVideo() {
       let ev
-      this.activevideo ? (ev = true) : (ev = false)
+      this.enablevideo ? (ev = true) : (ev = false)
       this.$store.commit('setEnableVideo', ev)
     },
     updateResolutions() {
       let rswidth, rsheight
-      switch (this.activeresolution) {
+      switch (this.resolution) {
         case 0:
           rswidth = 320
           rsheight = 240
@@ -124,7 +112,14 @@ export default {
         e.preventDefault()
       }
       if (this.user.length >= 2 && this.user.length <= 48) {
-        location.href = this.roomuser
+        this.$router.push({
+            path: '/user/' + this.user,
+            query: {
+              t: this.subscribetype,
+              r: this.resolution,
+              v: this.enablevideo
+            }
+        })
       }
     },
     emptyName() {

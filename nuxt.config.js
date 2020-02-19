@@ -37,7 +37,7 @@ module.exports = {
    */
   loading: { color: '#fff' },
   router: {
-    middleware: ['userlayout']
+    middleware: ['dynamiclayout']
   },
   /*
    ** Global CSS

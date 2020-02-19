@@ -3,6 +3,7 @@
 export const state = () => ({
   supportwenmm: false,
   participants: {
+    name: [],
     number: 0
   },
   subscribetype: 'forward',
@@ -13,7 +14,7 @@ export const state = () => ({
   },
   enablevideo: true,
   users: [],
-  layout: 'userbgimg'
+  layout: 'scenery'
 })
 
 export const mutations = {
@@ -22,6 +23,9 @@ export const mutations = {
   },
   setParticipantsnumber(state, data) {
     state.participants.number = data
+  },
+  setParticipantsname(state, data) {
+    state.participants.name = data
   },
   setSubscribeType(state, data) {
     state.subscribetype = data

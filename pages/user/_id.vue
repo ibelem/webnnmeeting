@@ -1,86 +1,96 @@
 <template>
-  <div class="columns user">
-    <div class="column nopadding is-one-fifth">
-      <div class="isleft pd">PARTICIPANTS</div>
-      <div class="isleft pd2">
-        Presenters ({{ this.$store.state.participants.number }})
-      </div>
-      <div class="userlist">
-        <div v-for="u in users" class="columns">
-          <div class="column ull isleft is-three-quarters">
-            <b-icon class="ulicon" icon="account" size="is-small"> </b-icon>
-            <span class="ulu">{{ u.userId }}</span>
-          </div>
-          <div class="column ulr">
-            <b-icon v-if="u.video" icon="video" size="is-small"> </b-icon>
-            <b-icon v-else icon="video-off" size="is-small"> </b-icon>
-            <b-icon v-if="u.muted" icon="microphone-off" size="is-small"> </b-icon>
-            <b-icon v-else icon="microphone-high" size="is-small"> </b-icon>
-            <b-icon icon="projector-screen" size="is-small"> </b-icon>
-          </div>
-        </div>
-      </div>
-      <div class="issplit"></div>
-      <div class="isleft pd">CONVERSATION</div>
-      <div class="conversation">
-        <div class="cslist">
-          Conversation List
-        </div>
-        <b-field>
-          <b-input placeholder="..." type="text"></b-input>
-          <b-button icon-left="send"> </b-button>
-        </b-field>
-      </div>
+  <div>
+    <div class="indicator">
+      <span id="fps">{{ fps }}</span>
     </div>
-    <div class="column columncenter">
-      <div class="videos">
-        <div v-if="users.length > 0" v-for="u in users" class="videoset">
-          <video
-            v-if="u.srcObject"
-            :id="u.id"
-            :src-object.prop.camel="u.srcObject"
-            playsinline
-            autoplay
-          ></video>
-          <div v-if="u.srcObject" class="user">{{ u.userId }}</div>
+    <div class="columns user">
+      <div v-show="showparticipants || showconversation" class="column cl nopadding is-one-fifth">
+        <div v-show="showparticipants" id="layoutparticipants">
+          <div class="isleft pd">PARTICIPANTS</div>
+          <div class="isleft pd2">
+            Presenters ({{ this.$store.state.participants.number }})
+          </div>
+          
+          <div class="userlist">
+            <div v-for="u in users" class="columns">
+              <div class="column ull isleft is-three-quarters">
+                <b-icon class="ulicon" icon="account" size="is-small"> </b-icon>
+                <span class="ulu">{{ u.userId }}</span>
+              </div>
+              <div class="column ulr">
+                <b-icon v-if="u.video" icon="video" size="is-small"> </b-icon>
+                <b-icon v-else icon="video-off" size="is-small"> </b-icon>
+                <b-icon v-if="u.muted" icon="microphone-off" size="is-small"> </b-icon>
+                <b-icon v-else icon="microphone-high" size="is-small"> </b-icon>
+                <b-icon icon="projector-screen" size="is-small"> </b-icon>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div v-show="showparticipants && showconversation" class="issplit"></div>
+        <div v-show="showconversation" id="layoutconversation">
+          <div class="isleft pd">CONVERSATION</div>
+          <div class="conversation">
+            <div class="cslist">
+              Conversation List
+            </div>
+            <b-field>
+              <b-input placeholder="..." type="text"></b-input>
+              <b-button icon-left="send"> </b-button>
+            </b-field>
+          </div>
         </div>
       </div>
-      <div class="videocontrol">
-        <div v-show="isshowaimenu" class="videocontrolai">
-          <b-button v-if="this.$store.state.supportwenmm" icon-left="blur"
-            >Blur background</b-button
-          >
-          <b-button v-else icon-left="blur" disabled>Blur background</b-button>
-          <b-button
-            v-if="this.$store.state.supportwenmm"
-            icon-left="image-multiple"
-            >Change background</b-button
-          >
-          <b-button v-else icon-left="image-multiple" disabled
-            >Change background</b-button
-          >
-          <b-button icon-left="fullscreen">Enter full screen</b-button>
+      <div class="column columncenter">
+        <div class="videos">
+          <div v-if="users.length > 0" v-for="u in users" class="videoset">
+            <video
+              v-if="u.srcObject"
+              :id="u.id"
+              :src-object.prop.camel="u.srcObject"
+              playsinline
+              autoplay
+            ></video>
+            <div v-if="u.srcObject" class="user">{{ u.userId }}</div>
+          </div>
         </div>
-        <b-button class="date">{{ date }}</b-button>
-        <b-button icon-left="video"></b-button>
-        <b-button icon-left="microphone"></b-button>
-        <b-button icon-left="projector-screen"></b-button>
-        <b-button @click="showAiMenu" icon-left="dots-horizontal"></b-button>
-        <b-button icon-left="message-reply-text"></b-button>
-        <b-button icon-left="account-group"></b-button>
-        <b-button @click="leaveMeeting" icon-left="phone-hangup"></b-button>
+        <div class="videocontrol">
+          <div v-show="showaimenu" class="videocontrolai">
+            <b-button v-if="this.$store.state.supportwenmm" icon-left="blur"
+              >Blur background</b-button
+            >
+            <b-button v-else icon-left="blur" disabled>Blur background</b-button>
+            <b-button
+              v-if="this.$store.state.supportwenmm"
+              icon-left="image-multiple"
+              >Change background</b-button
+            >
+            <b-button v-else icon-left="image-multiple" disabled
+              >Change background</b-button
+            >
+            <b-button icon-left="fullscreen">Enter full screen</b-button>
+          </div>
+          <b-button class="date"><Clock /></Clock></b-button>
+          <b-button icon-left="video"></b-button>
+          <b-button icon-left="microphone"></b-button>
+          <b-button icon-left="projector-screen"></b-button>
+          <b-button @click="showAiMenu" icon-left="dots-horizontal"></b-button>
+          <b-button @click="toggleConversation" icon-left="message-reply-text"></b-button>
+          <b-button @click="toggleParticipants" icon-left="account-group"></b-button>
+          <b-button @click="leaveMeeting" icon-left="phone-hangup"></b-button>
+        </div>
       </div>
-    </div>
-    <div class="column is-one-fifth">
-      {{ mode }}
-      <div class="home-center">{{ $route.params.user }}</div>
-      <MeetingInfo />
-      <div>
-        {{ this.$store.state.subscribetype }}<br />
-        {{ this.$store.state.enablevideo }}<br />
-        {{ this.$store.state.resolution }}<br />
+      <div class="column is-one-fifth">
+        {{ mode }}
+        <div class="home-center">{{ $route.params.user }}</div>
+        <MeetingInfo />
+        <div>
+          {{ this.subscribeType }}<br />
+          EnableVideo: {{ this.enablevideo }}<br />
+          {{ this.resolutionwidth }} x {{ this.resolutionheight }} <br />
+        </div>
+        <div style="margin: 10px; font-size: 11px;">{{ users }}</div>
       </div>
-      <div style="margin: 10px; font-size: 11px;">{{ users }}</div>
     </div>
   </div>
 </template>
@@ -88,20 +98,25 @@
 import Owt from '~/assets/js/owt/owt'
 import { mixStream, createToken, getStreams } from '~/assets/js/rest'
 import MeetingInfo from '~/components/MeetingInfo.vue'
+import Clock from '~/components/Clock.vue'
 
 export default {
   name: 'User',
   // middleware: 'layout',
-  layout: ({ userlayout }) => (userlayout ? 'userbgimg' : 'userbgcanvas'),
+  layout: ({ dynamiclayout }) => {
+    return dynamiclayout
+  },
   // layout: 'classic',
   // layout: 'userbgimg',
   components: {
-    MeetingInfo
+    MeetingInfo, Clock
   },
   data() {
     return {
-      isshowaimenu: false,
-      date: new Date(),
+      fps: 0,
+      showparticipants: false,
+      showconversation: false,
+      showaimenu: false,
       conversation: {},
       thatName: '',
       bandwidth: 1000,
@@ -169,17 +184,54 @@ export default {
     }
   },
   computed: {
+    showparticipantsandconversation() {
+      showparticipants && showconversation
+    },
     subscribeType() {
-      return this.$store.state.subscribetype
+      return this.$route.query.t
+      // return this.$store.state.subscribetype
     },
     resolutionwidth() {
-      return this.$store.state.resolution.width
+      let w
+      switch (this.$route.query.r) {
+        case "0":
+          w = 320
+          break
+        case "1":
+          w = 640
+          break
+        case "2":
+          w = 1280
+          break
+        default:
+          w = 1280
+      }
+      return w
     },
     resolutionheight() {
-      return this.$store.state.resolution.height
+      let h
+      switch (this.$route.query.r) {
+        case "0":
+          h = 240
+          break
+        case "1":
+          h = 480
+          break
+        case "2":
+          h = 720
+          break
+        default:
+          h = 720
+      }
+      return h
     },
     enablevideo() {
-      return this.$store.state.enablevideo
+      if(this.$route.query.v == "0") {
+        return false
+      } else {
+        return true
+      }
+      // return this.$store.state.enablevideo
     },
     srcobject(mediasource) {
       return mediasource
@@ -191,10 +243,6 @@ export default {
     }
   },
   mounted() {
-    this.timer = setInterval(() => {
-      const d = new Date()
-      this.date = d.toLocaleTimeString()
-    }, 1000)
     this.userExit()
     this.initConference()
   },
@@ -259,6 +307,8 @@ export default {
         }
         this.isAudioOnly = true
       }
+      console.log(this.enablevideo)
+      console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
       console.log(this.avTrackConstraint)
       const _this = this
       createToken(this.roomId, this.localName, 'presenter', function(response) {
@@ -284,8 +334,6 @@ export default {
               _this.localName === participant.userId
                 ? (local = true)
                 : (local = false)
-
-              console.log('HHHHHHHHHHHHHHHHHHHHHHHHH' + _this.enablevideo)
               _this.users.push({
                 id: participant.id,
                 userId: participant.userId,
@@ -902,11 +950,17 @@ export default {
       })
     },
     showAiMenu() {
-      if (!this.isshowaimenu) {
-        this.isshowaimenu = true
+      if (!this.showaimenu) {
+        this.showaimenu = true
       } else {
-        this.isshowaimenu = false
+        this.showaimenu = false
       }
+    }, 
+    toggleParticipants() {
+      this.showparticipants = !this.showparticipants
+    },
+    toggleConversation() {
+      this.showconversation = !this.showconversation
     }
   }
 }
@@ -959,10 +1013,19 @@ canvas {
 }
 
 .columncenter {
-  border-left: 0px;
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
   border-right: 0px;
   padding: 0px;
   text-align: left;
   min-height: 60vh;
+}
+
+.cl {
+  border-right: 0px;
+}
+
+.indicator {
+  height: 120px;
+  width: 100%;
 }
 </style>

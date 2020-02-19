@@ -1,15 +1,14 @@
 <template>
   <section class="hero is-fullheight home">
     <Nav />
-    <div id="shadow"></div>
     <div id="slider" :data-images="slideimage"></div>
-    <!-- Hero content: will be in the middle -->
     <div id="hero-body" class="hero-body">
       <div class="container has-text-centered">
         <nuxt />
       </div>
     </div>
     <Footer />
+    <div id="shadow"></div>
   </section>
 </template>
 
@@ -20,6 +19,8 @@ import Footer from '~/components/Footer.vue'
 export default {
   head: {
     script: [
+      { src: '../js/socket.io.js', defer: true },
+      { src: '../js/adapter-7.0.0.js', defer: true },
       { src: '../js/three.js', defer: true },
       { src: '../js/gsap.js', defer: true },
       { src: '../js/sketch.js', defer: true }
@@ -28,6 +29,7 @@ export default {
   components: {
     Nav, Footer
   },
+  methods: {},
   data() {
     return {
       slideimage: [

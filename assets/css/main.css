@@ -3,15 +3,7 @@ body, button, input, select, textarea {
   /* font-weight: 200 !important; */
 }
 
-.navbar > .container .navbar-brand, .container > .navbar .navbar-brand {
-  margin-left: -1.5rem !important;
-}
-
 @media (max-width: 768px) {
-  .navbar > .container .navbar-brand, .container > .navbar .navbar-brand {
-    margin-left: 0rem !important;
-  }
-
   .columns {
     margin: 0px !important;
   }
@@ -41,7 +33,6 @@ body, button, input, select, textarea {
 .user .control {
   width: 80%;
 }
-
 
 .user .control .input:hover, .user .control .input:focus {
   background-color: rgba(0, 0, 0, 0.1);
@@ -97,7 +88,7 @@ body, button, input, select, textarea {
   height: 36px;
   margin: -1rem auto;
   text-align: center;
-  display: none;
+  display: block;
 }
 
 .columncenter:hover .videocontrol {

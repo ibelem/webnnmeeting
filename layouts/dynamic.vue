@@ -1,0 +1,33 @@
+<template>
+  <section class="hero is-fullheight home content--canvas">
+    <Nav />
+    <div class="hero-body">
+      <div class="container has-text-centered">
+        <nuxt />
+      </div>
+    </div>
+    <Footer />
+    <div id="shadow"></div>
+  </section>
+</template>
+
+<script>
+import Nav from '~/components/Nav.vue'
+import Footer from '~/components/Footer.vue'
+
+export default {
+  head: {
+    script: [
+      { src: '../js/socket.io.js', defer: true },
+      { src: '../js/adapter-7.0.0.js', defer: true },
+      { src: '../js/canvasbg/noise.min.js', defer: true },
+      { src: '../js/canvasbg/shift.js', defer: true }
+    ]
+  },
+  components: {
+    Nav, Footer
+  },
+  method: {}
+}
+</script>
+<style scope></style>

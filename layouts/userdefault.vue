@@ -1,53 +1,19 @@
 <template>
   <section class="hero is-fullheight home">
-    <!-- Hero head: will stick at the top -->
-    <div class="hero-head">
-      <section class="section container">
-        <b-navbar>
-          <template slot="brand">
-            <b-navbar-item :to="{ path: '/' }" class="logo" tag="router-link">
-              <div class="titlea">
-                WebNN Meeting
-                <div class="slogan lg">meet you, meet happy</div>
-              </div>
-            </b-navbar-item>
-          </template>
-          <template slot="end">
-            <b-navbar-dropdown label="Theme">
-              <b-navbar-item href="#">
-                Classic
-              </b-navbar-item>
-              <b-navbar-item href="#">
-                Immersive
-              </b-navbar-item>
-            </b-navbar-dropdown>
-            <b-navbar-dropdown label="EN">
-              <b-navbar-item href="#">
-                English
-              </b-navbar-item>
-              <b-navbar-item href="#">
-                Simplified Chinese
-              </b-navbar-item>
-            </b-navbar-dropdown>
-          </template>
-        </b-navbar>
-      </section>
-    </div>
-
-    <!-- Hero content: will be in the middle -->
+    <Nav />
     <div class="hero-body">
       <div class="container has-text-centered">
         <nuxt />
       </div>
     </div>
-    <HomeFooter />
-
+    <Footer />
     <div id="shadow"></div>
   </section>
 </template>
 
 <script>
-import HomeFooter from '~/components/HomeFooter.vue'
+import Nav from '~/components/Nav.vue'
+import Footer from '~/components/Footer.vue'
 
 export default {
   head: {
@@ -57,7 +23,7 @@ export default {
     ]
   },
   components: {
-    HomeFooter
+    Nav, Footer
   }
 }
 </script>
