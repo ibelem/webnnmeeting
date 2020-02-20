@@ -1,7 +1,8 @@
 <template>
   <div>
     <div class="indicator">
-      <span id="fps">{{ fps }}</span>
+      <div id="fps">{{ showfps }}</div>
+      <canvas ref="localcanvas" id="localcanvas"></canvas>
     </div>
     <div class="columns user">
       <div v-show="showparticipants || showconversation" class="column cl nopadding is-one-fifth">
@@ -43,15 +44,23 @@
       </div>
       <div class="column columncenter">
         <div class="videos">
-          <div v-if="users.length > 0" v-for="u in users" class="videoset">
+          <div v-show="localuser.srcObject" class="videoset">
             <video
-              v-if="u.srcObject"
-              :id="u.id"
+              :src-object.prop.camel="localuser.srcObject"
+              playsinline
+              autoplay
+              ref="localvideo"
+            ></video>
+            <div class="user">{{ localuser.userId }}</div>
+          </div>
+          <div v-show="users.length > 0 && u.srcObject && !u.local" v-for="u in users" class="videoset">
+            <video
+              v-show="u.srcObject && !u.local"
               :src-object.prop.camel="u.srcObject"
               playsinline
               autoplay
             ></video>
-            <div v-if="u.srcObject" class="user">{{ u.userId }}</div>
+            <div v-show="u.srcObject && !u.local" class="user">{{ u.userId }}</div>
           </div>
         </div>
         <div class="videocontrol">
@@ -96,6 +105,7 @@
 </template>
 <script>
 import Owt from '~/assets/js/owt/owt'
+import { Stats, fps } from '~/assets/js/fps'
 import { mixStream, createToken, getStreams } from '~/assets/js/rest'
 import MeetingInfo from '~/components/MeetingInfo.vue'
 import Clock from '~/components/Clock.vue'
@@ -113,7 +123,11 @@ export default {
   },
   data() {
     return {
-      fps: 0,
+      showfps: 0,
+      timer: null,
+      stats: null,
+      ctx: null,
+      participantid: null,
       showparticipants: false,
       showconversation: false,
       showaimenu: false,
@@ -127,6 +141,14 @@ export default {
       localId: null,
       localScreenId: null,
       users: [],
+      localuser: {
+        id: null,
+        userId: null,
+        role: null,
+        local: null,
+        muted: null,
+        srcObject: null
+      },
       progressTimeOut: null,
       smallRadius: 60,
       largeRadius: 120,
@@ -244,7 +266,12 @@ export default {
   },
   mounted() {
     this.userExit()
+    this.initStats()
     this.initConference()
+    // this.$nextTick(() => {
+    //   this.videoToCanvas()
+    // })
+    this.videoToCanvas()
   },
   created() {
     if (process.browser) {
@@ -255,8 +282,26 @@ export default {
     this.userExit()
   },
   methods: {
-    l(data) {
-      console.log(data)
+    videoToCanvas() {
+      console.log(this.$refs)
+      console.log(this.$refs.localcanvas)
+      console.log(this.$refs.localvideo)
+      this.ctx = this.$refs.localcanvas.getContext('2d')
+      this.drawImage()
+      // let frame = this.ctx1.getImageData(0, 0, this.width, this.height);
+    },
+    drawImage(){
+      this.stats.begin()
+      this.ctx.drawImage(this.$refs.localvideo, 0, 0, this.$refs.localcanvas.width, this.$refs.localcanvas.height)
+      this.showfps = fps
+      this.stats.end()
+      this.timer = requestAnimationFrame(this.drawImage)
+    },
+    stopDrawing() {
+      cancelAnimationFrame(this.timer)
+    },
+    initStats() {
+      this.stats = new Stats()
     },
     setUsers() {
       this.$store.commit('setUsers', this.users)
@@ -342,7 +387,12 @@ export default {
                 muted: true,
                 srcObject: null
               })
-
+              _this.localuser.id = participant.id
+              _this.localuser.userId = participant.userId
+              _this.localuser.role = participant.role,
+              _this.localuser.local = local
+              _this.localuser.muted = true
+              _this.localuser.srcObject = null
               // _this.setUsers()
             })
             _this.createLocal()
@@ -407,7 +457,6 @@ export default {
           console.log('this.localStream')
           console.log(_this.localStream)
           _this.addVideo(_this.localStream, true)
-
           _this.room.publish(_this.localStream).then(
             (publication) => {
               _this.localPublication = publication
@@ -607,6 +656,8 @@ export default {
           const newusers = this.users.map((p) =>
             p.local === true ? { ...p, srcObject: stream.mediaStream } : p
           )
+          this.localuser.srcObject = stream.mediaStream
+
           console.log('newusers')
           console.log(newusers)
           this.users = newusers
@@ -1008,10 +1059,6 @@ video {
   background-color: rgba(0, 0, 0, 0.2);
 }
 
-canvas {
-  z-index: -1000;
-}
-
 .columncenter {
   border-left: 1px solid rgba(255, 255, 255, 0.2);
   border-right: 0px;
@@ -1027,5 +1074,13 @@ canvas {
 .indicator {
   height: 120px;
   width: 100%;
+}
+
+#localcanvas {
+  display: block;
+  height: 100px;
+  width: 200px;
+  z-index: 1000;
+  border: 1px solid red;
 }
 </style>

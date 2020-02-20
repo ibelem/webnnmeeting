@@ -1,19 +1,19 @@
-var fps
-var Stats = function() {
+// var fps = document.querySelector('#fps')
+const Stats = function() {
     var beginTime = (performance || Date).now(),
         prevTime = beginTime,
-        frames = 0;
-    var fpsPanel = new Stats.Panel();
+        frames = 0
+    var fpsPanel = new Stats.Panel()
     return {
         begin: function() {
             beginTime = (performance || Date).now()
         },
         end: function() {
-            frames++;
-            var time = (performance || Date).now();
+            frames++
+            var time = (performance || Date).now()
             if (time > prevTime + 1000) {
-                fpsPanel.update((frames * 1000) / (time - prevTime), 100);
-                prevTime = time;
+                fpsPanel.update((frames * 1000) / (time - prevTime), 100)
+                prevTime = time
                 frames = 0
             }
             return time
@@ -24,18 +24,18 @@ var Stats = function() {
     }
 }
 
+let fps
 Stats.Panel = function() {
     var min = Infinity,
         max = 0,
-        round = Math.round;
+        round = Math.round
     return {
         update: function(value, maxValue) {
-            min = Math.min(min, value);
-            max = Math.max(max, value);
-            var fpsnow = round(value);
-            fps.innerHTML = fpsnow + ' FPS'
+            min = Math.min(min, value)
+            max = Math.max(max, value)
+            fps = round(value)
         }
     }
 }
 
-export default Status
+export { Stats, fps }

@@ -30,4 +30,8 @@ export default {
   method: {}
 }
 </script>
-<style scope></style>
+<style scope>
+.content--canvas canvas {
+  z-index: -1000;
+}
+</style>
