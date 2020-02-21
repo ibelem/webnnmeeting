@@ -2,7 +2,6 @@
   <div>
     <div class="indicator">
       <div id="fps">{{ showfps }}</div>
-      <canvas ref="localcanvas" id="localcanvas"></canvas>
     </div>
     <div class="columns user">
       <div v-show="showparticipants || showconversation" class="column cl nopadding is-one-fifth">
@@ -45,13 +44,18 @@
       <div class="column columncenter">
         <div class="videos">
           <div v-show="localuser.srcObject" class="videoset">
+            <canvas ref="localcanvas" id="localcanvas"></canvas>
+            <div class="user">{{ localuser.userId }} CANVAS</div>
+          </div>
+          <div v-show="localuser.srcObject" class="videoset">
             <video
               :src-object.prop.camel="localuser.srcObject"
               playsinline
               autoplay
               ref="localvideo"
+              id="localvideo"
             ></video>
-            <div class="user">{{ localuser.userId }}</div>
+            <div class="user">{{ localuser.userId }} VIDEO</div>
           </div>
           <div v-show="users.length > 0 && u.srcObject && !u.local" v-for="u in users" class="videoset">
             <video
@@ -79,7 +83,7 @@
             >
             <b-button icon-left="fullscreen">Enter full screen</b-button>
           </div>
-          <b-button class="date"><Clock /></Clock></b-button>
+          <b-button class="date"><Clock /></b-button>
           <b-button icon-left="video"></b-button>
           <b-button icon-left="microphone"></b-button>
           <b-button icon-left="projector-screen"></b-button>
@@ -98,7 +102,7 @@
           EnableVideo: {{ this.enablevideo }}<br />
           {{ this.resolutionwidth }} x {{ this.resolutionheight }} <br />
         </div>
-        <div style="margin: 10px; font-size: 11px;">{{ users }}</div>
+        <div>{{ users }}</div>
       </div>
     </div>
   </div>
@@ -123,11 +127,12 @@ export default {
   },
   data() {
     return {
+      clock: new Date(),
+      mill: 0,
       showfps: 0,
       timer: null,
       stats: null,
       ctx: null,
-      participantid: null,
       showparticipants: false,
       showconversation: false,
       showaimenu: false,
@@ -266,6 +271,11 @@ export default {
   },
   mounted() {
     this.userExit()
+    setInterval(() => {
+      const d = new Date()
+      this.clock = d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds()
+      this.mill = d.getMilliseconds()
+    }, 1)
     this.initStats()
     this.initConference()
     // this.$nextTick(() => {
@@ -278,26 +288,37 @@ export default {
       addEventListener('beforeunload', this.userExit, false)
     }
   },
-  destroyed() {
-    this.userExit()
-  },
+  // destroyed() {
+  //   this.userExit()
+  // },
   methods: {
     videoToCanvas() {
       console.log(this.$refs)
       console.log(this.$refs.localcanvas)
       console.log(this.$refs.localvideo)
       this.ctx = this.$refs.localcanvas.getContext('2d')
-      this.drawImage()
+      this.ctx.imageSmoothingQuality = 'high'
+      this.ctx.imageSmoothingEnabled = true
+      this.animate()
       // let frame = this.ctx1.getImageData(0, 0, this.width, this.height);
     },
-    drawImage(){
-      this.stats.begin()
-      this.ctx.drawImage(this.$refs.localvideo, 0, 0, this.$refs.localcanvas.width, this.$refs.localcanvas.height)
-      this.showfps = fps
-      this.stats.end()
-      this.timer = requestAnimationFrame(this.drawImage)
+    animate(){
+      const localcanvas = this.$refs.localcanvas
+      const localvideo = this.$refs.localvideo
+
+      try {
+        localcanvas.width = localvideo.offsetWidth
+        localcanvas.height = localvideo.offsetHeight
+        this.stats.begin()
+        this.ctx.drawImage(localvideo, 0, 0, localcanvas.width, localcanvas.height)
+        this.showfps = fps
+        this.stats.end()
+        this.timer = requestAnimationFrame(this.animate)
+      } catch (err) {
+        console.log(err)
+      }
     },
-    stopDrawing() {
+    stopAnimate() {
       cancelAnimationFrame(this.timer)
     },
     initStats() {
@@ -308,7 +329,8 @@ export default {
     },
     leaveMeeting() {
       this.userExit()
-      this.$router.push({ name: 'index' })
+      // this.$router.push({ name: 'index' })
+      location.href = '../../'
     },
     initConference() {
       console.log('==== initConference ====')
@@ -1072,15 +1094,7 @@ video {
 }
 
 .indicator {
-  height: 120px;
+  height: 60px;
   width: 100%;
-}
-
-#localcanvas {
-  display: block;
-  height: 100px;
-  width: 200px;
-  z-index: 1000;
-  border: 1px solid red;
 }
 </style>

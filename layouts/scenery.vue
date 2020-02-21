@@ -19,11 +19,11 @@ import Footer from '~/components/Footer.vue'
 export default {
   head: {
     script: [
-      { src: '../js/socket.io.js', defer: true },
-      { src: '../js/adapter-7.0.0.js', defer: true },
-      { src: '../js/three.js', defer: true },
-      { src: '../js/gsap.js', defer: true },
-      { src: '../js/sketch.js', defer: true }
+      { src: '../../js/socket.io.js', defer: true },
+      { src: '../../js/adapter-7.0.0.js', defer: true },
+      { src: '../../js/three.js', defer: true },
+      { src: '../../js/gsap.js', defer: true },
+      { src: '../../js/sketch.js', defer: true }
     ]
   },
   components: {
@@ -33,10 +33,10 @@ export default {
   data() {
     return {
       slideimage: [
-        '../img/01.jpg',
-        '../img/02.jpg',
-        '../img/03.jpg',
-        '../img/04.jpg'
+        '../../img/01.jpg',
+        '../../img/02.jpg',
+        '../../img/03.jpg',
+        '../../img/04.jpg'
       ]
     }
   }

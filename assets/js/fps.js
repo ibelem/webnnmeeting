@@ -1,4 +1,3 @@
-// var fps = document.querySelector('#fps')
 const Stats = function() {
     var beginTime = (performance || Date).now(),
         prevTime = beginTime,

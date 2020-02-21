@@ -78,7 +78,7 @@ body, button, input, select, textarea {
 }
 
 .videos {
-  min-height: 519px;
+  min-height: 400px;
   flex: 1;
 }
 
@@ -119,13 +119,17 @@ body, button, input, select, textarea {
 
 .videocontrol .button:hover {
   box-shadow: inset 0 3px 9px rgba(0, 0, 0, 0.25);
-  color: rgb(204, 255, 144);
+  color: rgba( 255, 255, 255, 1.0);
   border: 1px solid rgba(0, 0, 0, 0.2) !important;
 }
 
 .videocontrol .button:active {
   box-shadow: inset 0 3px 9px rgba(0, 0, 0, 0.25);
   border: 1px solid rgba(0, 0, 0, 0.2) !important;
+}
+
+.videocontrol .button .icon:hover {
+  color: rgba( 255, 255, 255, 1.0);
 }
 
 .videocontrol .date {

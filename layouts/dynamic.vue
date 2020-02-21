@@ -7,7 +7,6 @@
       </div>
     </div>
     <Footer />
-    <div id="shadow"></div>
   </section>
 </template>
 

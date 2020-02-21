@@ -112,14 +112,17 @@ export default {
         e.preventDefault()
       }
       if (this.user.length >= 2 && this.user.length <= 48) {
-        this.$router.push({
-            path: '/user/' + this.user,
-            query: {
-              t: this.subscribetype,
-              r: this.resolution,
-              v: this.enablevideo
-            }
-        })
+        // this.$router.push({
+        //     path: '/user/' + this.user,
+        //     query: {
+        //       t: this.subscribetype,
+        //       r: this.resolution,
+        //       v: this.enablevideo
+        //     }
+        // })
+        let path = '/user/' + this.user
+        let query = '/?t=' + this.subscribetype + '&r=' + this.resolution + '&v=' + this.enablevideo
+        location.href = path + query
       }
     },
     emptyName() {

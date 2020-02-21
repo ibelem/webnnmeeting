@@ -1,5 +1,5 @@
 <template>
-  <span id="clock">{{ this.clock }}:<span class="mill">{{ mill }}</span></span>
+  <span id="clock"><span>{{ this.clock }}</span>:<span class="mill">{{ this.mill }}</span></span>
 </template>
 
 <script>
@@ -11,7 +11,7 @@ export default {
     }
   },
   mounted() {
-    this.timer = setInterval(() => {
+    setInterval(() => {
       const d = new Date()
       this.clock = d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds()
       this.mill = d.getMilliseconds()

@@ -33,7 +33,7 @@ export default {
     // will try websocket in the future
     setInterval(() => {
       this.fetchParticipant()
-    }, 5000)
+    }, 3000)
   },
   methods: {
     async fetchParticipant() {
