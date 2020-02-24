@@ -19,8 +19,8 @@ export default {
     script: [
       { src: '../js/socket.io.js', defer: true },
       { src: '../js/adapter-7.0.0.js', defer: true },
-      { src: '../js/canvasbg/noise.min.js', defer: true },
-      { src: '../js/canvasbg/shift.js', defer: true }
+      { src: '../js/dynamic/noise.min.js', defer: true },
+      { src: '../js/dynamic/shift.js', defer: true }
     ]
   },
   components: {
