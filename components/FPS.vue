@@ -5,15 +5,13 @@
 export default {
   name: 'FPS',
   head: {
-    script: [
-      { src: '../js/fps.js', defer: true }
-    ]
+    script: [{ src: '../js/fps.js', defer: true }]
   },
   data() {
     return {
       test: ''
     }
-  },
+  }
 }
 </script>
 <style scope></style>

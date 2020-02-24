@@ -26,7 +26,8 @@ export default {
     ]
   },
   components: {
-    Nav, Footer
+    Nav,
+    Footer
   },
   data() {
     return {

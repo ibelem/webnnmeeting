@@ -6,16 +6,18 @@
           <b-navbar-item :to="{ path: '/' }" class="logo" tag="router-link">
             <div class="titlea">
               WebNN Meeting
-              <div class="slogan lg">meet you, meet happy {{ this.$store.state.layout }}</div>
+              <div class="slogan lg">
+                meet you, meet happy {{ this.$store.state.layout }}
+              </div>
             </div>
           </b-navbar-item>
         </template>
         <template slot="end">
           <b-navbar-dropdown label="Theme">
-            <b-navbar-item @click="setLayout" id="scenery" href="#">
+            <b-navbar-item id="scenery" @click="setLayout" href="#">
               Scenery
             </b-navbar-item>
-            <b-navbar-item @click="setLayout" id="dynamic" href="#">
+            <b-navbar-item id="dynamic" @click="setLayout" href="#">
               Dynamic
             </b-navbar-item>
             <b-navbar-item id="immersive" href="#">

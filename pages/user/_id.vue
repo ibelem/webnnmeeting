@@ -1,16 +1,16 @@
 <template>
   <div>
-    <div class="indicator">
-      <div id="fps">{{ showfps }}</div>
-    </div>
     <div class="columns user">
-      <div v-show="showparticipants || showconversation" class="column cl nopadding is-one-fifth">
-        <div v-show="showparticipants" id="layoutparticipants">
+      <div
+        v-show="showparticipants || showconversation"
+        class="column cl nopadding is-one-fifth"
+      >
+        <div id="layoutparticipants" v-show="showparticipants">
           <div class="isleft pd">PARTICIPANTS</div>
           <div class="isleft pd2">
             Presenters ({{ this.$store.state.participants.number }})
           </div>
-          
+
           <div class="userlist">
             <div v-for="u in users" class="columns">
               <div class="column ull isleft is-three-quarters">
@@ -20,15 +20,19 @@
               <div class="column ulr">
                 <b-icon v-if="u.video" icon="video" size="is-small"> </b-icon>
                 <b-icon v-else icon="video-off" size="is-small"> </b-icon>
-                <b-icon v-if="u.muted" icon="microphone-off" size="is-small"> </b-icon>
+                <b-icon v-if="u.muted" icon="microphone-off" size="is-small">
+                </b-icon>
                 <b-icon v-else icon="microphone-high" size="is-small"> </b-icon>
                 <b-icon icon="projector-screen" size="is-small"> </b-icon>
               </div>
             </div>
           </div>
         </div>
-        <div v-show="showparticipants && showconversation" class="issplit"></div>
-        <div v-show="showconversation" id="layoutconversation">
+        <div
+          v-show="showparticipants && showconversation"
+          class="issplit"
+        ></div>
+        <div id="layoutconversation" v-show="showconversation">
           <div class="isleft pd">CONVERSATION</div>
           <div class="conversation">
             <div class="cslist">
@@ -44,27 +48,33 @@
       <div class="column columncenter">
         <div class="videos">
           <div v-show="localuser.srcObject" class="videoset">
-            <canvas ref="localcanvas" id="localcanvas"></canvas>
+            <canvas id="localcanvas" ref="localcanvas"></canvas>
             <div class="user">{{ localuser.userId }} CANVAS</div>
           </div>
           <div v-show="localuser.srcObject" class="videoset">
             <video
+              id="localvideo"
+              ref="localvideo"
               :src-object.prop.camel="localuser.srcObject"
               playsinline
               autoplay
-              ref="localvideo"
-              id="localvideo"
             ></video>
             <div class="user">{{ localuser.userId }} VIDEO</div>
           </div>
-          <div v-show="users.length > 0 && u.srcObject && !u.local" v-for="u in users" class="videoset">
+          <div
+            v-show="users.length > 0 && u.srcObject && !u.local"
+            v-for="u in users"
+            class="videoset"
+          >
             <video
               v-show="u.srcObject && !u.local"
               :src-object.prop.camel="u.srcObject"
               playsinline
               autoplay
             ></video>
-            <div v-show="u.srcObject && !u.local" class="user">{{ u.userId }}</div>
+            <div v-show="u.srcObject && !u.local" class="user">
+              {{ u.userId }}
+            </div>
           </div>
         </div>
         <div class="videocontrol">
@@ -72,7 +82,9 @@
             <b-button v-if="this.$store.state.supportwenmm" icon-left="blur"
               >Blur background</b-button
             >
-            <b-button v-else icon-left="blur" disabled>Blur background</b-button>
+            <b-button v-else icon-left="blur" disabled
+              >Blur background</b-button
+            >
             <b-button
               v-if="this.$store.state.supportwenmm"
               icon-left="image-multiple"
@@ -88,8 +100,14 @@
           <b-button icon-left="microphone"></b-button>
           <b-button icon-left="projector-screen"></b-button>
           <b-button @click="showAiMenu" icon-left="dots-horizontal"></b-button>
-          <b-button @click="toggleConversation" icon-left="message-reply-text"></b-button>
-          <b-button @click="toggleParticipants" icon-left="account-group"></b-button>
+          <b-button
+            @click="toggleConversation"
+            icon-left="message-reply-text"
+          ></b-button>
+          <b-button
+            @click="toggleParticipants"
+            icon-left="account-group"
+          ></b-button>
           <b-button @click="leaveMeeting" icon-left="phone-hangup"></b-button>
         </div>
       </div>
@@ -98,9 +116,10 @@
         <div class="home-center">{{ $route.params.user }}</div>
         <MeetingInfo />
         <div>
-          {{ this.subscribeType }}<br />
-          EnableVideo: {{ this.enablevideo }}<br />
-          {{ this.resolutionwidth }} x {{ this.resolutionheight }} <br />
+          {{ showfps }}<br />
+          {{ subscribeType }}<br />
+          EnableVideo: {{ enablevideo }}<br />
+          {{ resolutionwidth }} x {{ resolutionheight }} <br />
         </div>
         <div>{{ users }}</div>
       </div>
@@ -123,12 +142,11 @@ export default {
   // layout: 'classic',
   // layout: 'userbgimg',
   components: {
-    MeetingInfo, Clock
+    MeetingInfo,
+    Clock
   },
   data() {
     return {
-      clock: new Date(),
-      mill: 0,
       showfps: 0,
       timer: null,
       stats: null,
@@ -212,7 +230,7 @@ export default {
   },
   computed: {
     showparticipantsandconversation() {
-      showparticipants && showconversation
+      return this.showparticipants && this.showconversation
     },
     subscribeType() {
       return this.$route.query.t
@@ -221,13 +239,13 @@ export default {
     resolutionwidth() {
       let w
       switch (this.$route.query.r) {
-        case "0":
+        case '0':
           w = 320
           break
-        case "1":
+        case '1':
           w = 640
           break
-        case "2":
+        case '2':
           w = 1280
           break
         default:
@@ -238,13 +256,13 @@ export default {
     resolutionheight() {
       let h
       switch (this.$route.query.r) {
-        case "0":
+        case '0':
           h = 240
           break
-        case "1":
+        case '1':
           h = 480
           break
-        case "2":
+        case '2':
           h = 720
           break
         default:
@@ -253,7 +271,7 @@ export default {
       return h
     },
     enablevideo() {
-      if(this.$route.query.v == "0") {
+      if (this.$route.query.v === '0') {
         return false
       } else {
         return true
@@ -271,11 +289,6 @@ export default {
   },
   mounted() {
     this.userExit()
-    setInterval(() => {
-      const d = new Date()
-      this.clock = d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds()
-      this.mill = d.getMilliseconds()
-    }, 1)
     this.initStats()
     this.initConference()
     // this.$nextTick(() => {
@@ -302,7 +315,7 @@ export default {
       this.animate()
       // let frame = this.ctx1.getImageData(0, 0, this.width, this.height);
     },
-    animate(){
+    animate() {
       const localcanvas = this.$refs.localcanvas
       const localvideo = this.$refs.localvideo
 
@@ -310,7 +323,13 @@ export default {
         localcanvas.width = localvideo.offsetWidth
         localcanvas.height = localvideo.offsetHeight
         this.stats.begin()
-        this.ctx.drawImage(localvideo, 0, 0, localcanvas.width, localcanvas.height)
+        this.ctx.drawImage(
+          localvideo,
+          0,
+          0,
+          localcanvas.width,
+          localcanvas.height
+        )
         this.showfps = fps
         this.stats.end()
         this.timer = requestAnimationFrame(this.animate)
@@ -375,7 +394,7 @@ export default {
         this.isAudioOnly = true
       }
       console.log(this.enablevideo)
-      console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
+      console.log('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^')
       console.log(this.avTrackConstraint)
       const _this = this
       createToken(this.roomId, this.localName, 'presenter', function(response) {
@@ -411,7 +430,7 @@ export default {
               })
               _this.localuser.id = participant.id
               _this.localuser.userId = participant.userId
-              _this.localuser.role = participant.role,
+              _this.localuser.role = participant.role
               _this.localuser.local = local
               _this.localuser.muted = true
               _this.localuser.srcObject = null
@@ -1028,7 +1047,7 @@ export default {
       } else {
         this.showaimenu = false
       }
-    }, 
+    },
     toggleParticipants() {
       this.showparticipants = !this.showparticipants
     },

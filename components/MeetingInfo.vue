@@ -1,12 +1,12 @@
 <template>
   <div class="meetinginfo">
-    <div v-if="this.participantsnumber > 1">
-      {{ this.participantsnumber }} participants online
+    <div v-if="participantsnumber > 1">
+      {{ participantsnumber }} participants online
     </div>
-    <div v-else>{{ this.participantsnumber }} participant online</div>
+    <div v-else>{{ participantsnumber }} participant online</div>
 
-    <div v-if="this.participantsnumber >0" id="flips">
-      {{ this.participantsname }}
+    <div id="flips" v-if="participantsnumber > 0">
+      {{ participantsname }}
     </div>
   </div>
 </template>
@@ -45,7 +45,9 @@ export default {
         config.restapiserver.sampleroomparticipantspath
       const res = await axios.get(url)
       this.participantsnumber = Object.keys(res.data).length
-      this.participantsname = res.data.map((d)=> { return d.user })
+      this.participantsname = res.data.map((d) => {
+        return d.user
+      })
       this.$store.commit('setParticipantsnumber', this.participantsnumber)
       this.$store.commit('setParticipantsname', this.participantsname)
     }

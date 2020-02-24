@@ -33,13 +33,9 @@
             <b-tab-item :label="videooption"></b-tab-item>
           </template>
         </b-tabs>
-        <b-tabs
-          v-model="resolution"
-          @change="updateResolutions"
-          class="three"
-        >
-          <template v-for="resolution in resolutions">
-            <b-tab-item :label="resolution"></b-tab-item>
+        <b-tabs v-model="resolution" @change="updateResolutions" class="three">
+          <template v-for="r in resolutions">
+            <b-tab-item :label="r"></b-tab-item>
           </template>
         </b-tabs>
       </div>
@@ -120,8 +116,14 @@ export default {
         //       v: this.enablevideo
         //     }
         // })
-        let path = '/user/' + this.user
-        let query = '/?t=' + this.subscribetype + '&r=' + this.resolution + '&v=' + this.enablevideo
+        const path = '/user/' + this.user
+        const query =
+          '/?t=' +
+          this.subscribetype +
+          '&r=' +
+          this.resolution +
+          '&v=' +
+          this.enablevideo
         location.href = path + query
       }
     },

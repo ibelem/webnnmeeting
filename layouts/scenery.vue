@@ -27,9 +27,9 @@ export default {
     ]
   },
   components: {
-    Nav, Footer
+    Nav,
+    Footer
   },
-  methods: {},
   data() {
     return {
       slideimage: [
@@ -39,7 +39,8 @@ export default {
         '../../img/04.jpg'
       ]
     }
-  }
+  },
+  methods: {}
 }
 </script>
 <style scope>

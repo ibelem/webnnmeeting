@@ -1,40 +1,42 @@
 const Stats = function() {
-    var beginTime = (performance || Date).now(),
-        prevTime = beginTime,
+  let beginTime = (performance || Date).now()
+  let prevTime = beginTime
+  let frames = 0
+  const fpsPanel = new Stats.Panel()
+  return {
+    begin() {
+      beginTime = (performance || Date).now()
+    },
+    end() {
+      frames++
+      const time = (performance || Date).now()
+      if (time > prevTime + 1000) {
+        fpsPanel.update((frames * 1000) / (time - prevTime), 100)
+        prevTime = time
         frames = 0
-    var fpsPanel = new Stats.Panel()
-    return {
-        begin: function() {
-            beginTime = (performance || Date).now()
-        },
-        end: function() {
-            frames++
-            var time = (performance || Date).now()
-            if (time > prevTime + 1000) {
-                fpsPanel.update((frames * 1000) / (time - prevTime), 100)
-                prevTime = time
-                frames = 0
-            }
-            return time
-        },
-        update: function() {
-            beginTime = this.end()
-        }
+      }
+      return time
+    },
+    update() {
+      beginTime = this.end()
     }
+  }
 }
 
-let fps
+// eslint-disable-next-line import/no-mutable-exports
+let fps = 0
+
 Stats.Panel = function() {
-    var min = Infinity,
-        max = 0,
-        round = Math.round
-    return {
-        update: function(value, maxValue) {
-            min = Math.min(min, value)
-            max = Math.max(max, value)
-            fps = round(value)
-        }
+  let min = Infinity
+  let max = 0
+  const round = Math.round
+  return {
+    update(value, maxValue) {
+      min = Math.min(min, value)
+      max = Math.max(max, value)
+      fps = round(value)
     }
+  }
 }
 
 export { Stats, fps }

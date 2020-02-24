@@ -23,7 +23,8 @@ export default {
     ]
   },
   components: {
-    Nav, Footer
+    Nav,
+    Footer
   }
 }
 </script>
