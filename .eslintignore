@@ -1,3 +1,4 @@
 assets/js/owt/**/*.js
-assets/js/owt/semanticsegmentation/*.js
-static/ss/**/*.js
+assets/js/wenn/**/*.js
+static/js/webnn/**/*.js
+static/js/ss/**/*.js

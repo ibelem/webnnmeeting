@@ -96,6 +96,7 @@
             <b-button icon-left="fullscreen">Enter full screen</b-button>
           </div>
           <b-button class="date"><Clock /></b-button>
+          <b-button @click="ssBlur" icon-left="account-box"></b-button>
           <b-button icon-left="video"></b-button>
           <b-button icon-left="microphone"></b-button>
           <b-button icon-left="projector-screen"></b-button>
@@ -122,6 +123,13 @@
           {{ resolutionwidth }} x {{ resolutionheight }} <br />
         </div>
         <div>{{ users }}</div>
+      </div>
+    </div>
+    <div id="status" class="columns">
+      <div class="column">
+        <b-progress :value="progress" class="nnprogress" show-value>
+          {{ progress }}
+        </b-progress>
       </div>
     </div>
   </div>
@@ -187,8 +195,12 @@ video {
   border-right: 0px;
 }
 
-.indicator {
-  height: 60px;
-  width: 100%;
+#status .column {
+  padding: 0;
+}
+
+.nnprogress .progress {
+  height: 1px;
+  border-radius: 0px;
 }
 </style>

@@ -18,6 +18,8 @@ export default {
   },
   data() {
     return {
+      progress: 0,
+      progresstimer: null,
       showfps: 0,
       timer: null,
       stats: null,
@@ -176,6 +178,16 @@ export default {
   //   this.userExit()
   // },
   methods: {
+    progressIncrease() {
+      this.progress = this.progress + 1
+      if (this.progress === 100) {
+        clearInterval(this.progresstimer)
+      }
+    },
+    ssBlur() {
+      this.progress = 0
+      this.progresstimer = setInterval(this.progressIncrease, 100)
+    },
     videoToCanvas() {
       console.log(this.$refs)
       console.log(this.$refs.localcanvas)
