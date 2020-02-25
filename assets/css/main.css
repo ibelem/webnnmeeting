@@ -56,18 +56,57 @@ body, button, input, select, textarea {
   border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.user .conversation {
-  min-height: 260px;
-  display: flex;
-  flex-direction: column;
+#send {
+  position: relative;
+  top: 0px;
 }
 
-.user .conversation .cslist {
-  flex: 1;
+.user .conversation {
+  height: 210px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  margin-top: 0.25rem;
+}
+
+.cslist {
+  padding: 0 0.75rem;
+  text-align: left;
+}
+
+.cslist:hover {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.cslist .columns {
+  margin: 0 !important;
+  padding: 0;
+}
+
+.cslist .columns .column {
+  padding: 0px;
+  font-size: 0.7rem;
+}
+
+.imtime {
+  text-align: left;
+  margin-right: 20px;
+  border: 0px !important;
+  padding: 0px;
+}
+
+.imuser {
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border: 0px !important;
+  max-height: 20px;
+  padding: 0px;
 }
 
 .userlist {
-  min-height: 200px;
+  min-height: 210px;
   overflow-y: scroll;
   overflow-x: hidden;
 }
@@ -203,7 +242,7 @@ body, button, input, select, textarea {
 }
 
 .notices .toast.is-warning {
-  color: rgba(255, 255, 255, 1.0) !important;
+  color: rgba(255, 255, 255, 0.4) !important;
 }
 
 .notices .toast {
@@ -348,7 +387,7 @@ body::scrollbar {
   width: 100vw;
   height: 100vh;
   /* opacity: 0.8; */
-  /* background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab); */
+  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
   /* background: linear-gradient(-45deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.4)); */
 	/* animation: gradient 15s ease infinite;
   transition:all 2s ease; */

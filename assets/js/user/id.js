@@ -1,6 +1,7 @@
 import Owt from '~/assets/js/owt/owt'
 import { Stats, fps } from '~/assets/js/fps'
 import { mixStream, createToken, getStreams } from '~/assets/js/rest'
+import getTime from 'assets/js/user/time'
 import MeetingInfo from '~/components/MeetingInfo.vue'
 import Clock from '~/components/Clock.vue'
 
@@ -20,6 +21,8 @@ export default {
     return {
       progress: 0,
       progresstimer: null,
+      textmsg: null,
+      textmsgs:[],
       showfps: 0,
       timer: null,
       stats: null,
@@ -161,6 +164,7 @@ export default {
     }
   },
   mounted() {
+    this.scrollToBottom()
     this.userExit()
     this.initStats()
     this.initConference()
@@ -173,6 +177,9 @@ export default {
     if (process.browser) {
       addEventListener('beforeunload', this.userExit, false)
     }
+  },
+  updated() {
+    this.scrollToBottom()
   },
   // destroyed() {
   //   this.userExit()
@@ -749,56 +756,30 @@ export default {
     },
     sendIm(msg, sender) {
       console.log('sendIm: To DO, msg: ' + msg + ' ' + 'sender: ' + sender)
-      // const time = new Date()
-      // let hour = time.getHours()
-      // hour = hour > 9 ? hour.toString() : '0' + hour.toString()
-      // let mini = time.getMinutes()
-      // mini = mini > 9 ? mini.toString() : '0' + mini.toString()
-      // let sec = time.getSeconds()
-      // sec = sec > 9 ? sec.toString() : '0' + sec.toString()
-      // const timeStr = hour + ':' + mini + ':' + sec
-      // if (msg === undefined) {
-      //   // send local msg
-      //   if ($('#text-send').val()) {
-      //     msg = $('#text-send').val()
-      //     const sendMsgInfo = JSON.stringify({
-      //       type: 'msg',
-      //       data: msg
-      //     })
-      //     $('#text-send')
-      //       .val('')
-      //       .height('18px')
-      //     $('#text-content').css('bottom', '30px')
-      //     sender = localId
-      //     console.info('ready to send message')
-      //     // send to server
-      //     if (localName !== null) {
-      //       room.send(sendMsgInfo).then(
-      //         () => {
-      //           console.info('begin to send message')
-      //           console.info(localName + 'send message: ' + msg)
-      //         },
-      //         (err) => {
-      //           console.error(localName + 'sned failed: ' + err)
-      //         }
-      //       )
-      //     }
-      //   } else {
-      //     return
-      //   }
-      // }
-
-      // const color = getColor(sender)
-      // const user = getUserFromId(sender)
-      // const name = user ? user['userId'] : 'System'
-      // if (name !== 'System') {
-      //   $('<p class="' + color + '">')
-      //     .html(timeStr + ' ' + name + '<br />')
-      //     .append(document.createTextNode(msg))
-      //     .appendTo('#text-content')
-      //   // scroll to bottom of text content
-      //   $('#text-content').scrollTop($('#text-content').prop('scrollHeight'))
-      // }
+      console.log(this.textmsg)
+ 
+      if (this.textmsg) {
+        const sendMsgInfo = JSON.stringify({
+          type: 'msg',
+          data: this.textmsg
+        })
+        sender = this.localId
+        console.log(sender)
+        console.info('ready to send message')
+        if (this.localName !== null) {
+          this.room.send(sendMsgInfo).then(
+            () => {
+              console.info('begin to send message')
+              console.info(this.localName + ' send message: ' + msg)
+            },
+            (err) => {
+              console.error(this.localName + ' send failed: ' + err)
+            }
+          )
+        }
+      } else {
+        return
+      }
     },
     addRoomEventListener() {
       this.room.addEventListener('streamadded', (streamEvent) => {
@@ -903,23 +884,13 @@ export default {
         const receivedMsg = JSON.parse(event.message)
         if (receivedMsg.type === 'msg') {
           if (receivedMsg.data !== undefined) {
-            // const time = new Date()
-            // let hour = time.getHours()
-            // hour = hour > 9 ? hour.toString() : '0' + hour.toString()
-            // let mini = time.getMinutes()
-            // mini = mini > 9 ? mini.toString() : '0' + mini.toString()
-            // let sec = time.getSeconds()
-            // sec = sec > 9 ? sec.toString() : '0' + sec.toString()
-            // const timeStr = hour + ':' + mini + ':' + sec
-            // const color = getColor(user.userId)
-            // $('<p class="' + color + '">')
-            //   .html(timeStr + ' ' + user.userId + '<br />')
-            //   .append(document.createTextNode(receivedMsg.data))
-            //   .appendTo('#text-content')
-            // $('#text-content').scrollTop(
-            //   $('#text-content').prop('scrollHeight')
-            // )
-            console.log('messagereceived to do')
+            let msg = {
+              time: getTime(),
+              user: user.userId,
+              message: receivedMsg.data
+            }
+            this.textmsgs.push(msg)
+            console.log('messagereceived')
           }
         }
       })
@@ -936,6 +907,14 @@ export default {
     },
     toggleConversation() {
       this.showconversation = !this.showconversation
+    },
+    scrollToBottom: function() {
+      this.$nextTick(() => {
+        const conversation = this.$refs.conversation
+        const userlist = this.$refs.userlist
+        conversation.scrollTop = conversation.scrollHeight
+        userlist.scrollTop = userlist.scrollHeight
+      })
     }
   }
 }

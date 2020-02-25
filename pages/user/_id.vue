@@ -11,7 +11,7 @@
             Presenters ({{ this.$store.state.participants.number }})
           </div>
 
-          <div class="userlist">
+          <div class="userlist" ref="userlist">
             <div v-for="u in users" class="columns">
               <div class="column ull isleft is-three-quarters">
                 <b-icon class="ulicon" icon="account" size="is-small"> </b-icon>
@@ -34,15 +34,18 @@
         ></div>
         <div id="layoutconversation" v-show="showconversation">
           <div class="isleft pd">CONVERSATION</div>
-          <div class="conversation">
-            <div class="cslist">
-              Conversation List
+          <div class="conversation" ref="conversation">
+            <div v-show="textmsgs" v-for="t in textmsgs" class="cslist">
+              <div class="columns">
+              <span class="imtime column">{{ t.time }}</span><span class="imuser column">{{ t.user }}</span>
+              </div>
+              <div class="im">{{ t.message }}</div>
             </div>
-            <b-field>
-              <b-input placeholder="..." type="text"></b-input>
-              <b-button icon-left="send"> </b-button>
-            </b-field>
           </div>
+          <b-field id="send">
+            <b-input v-model="textmsg" @keyup.native.enter="sendIm" placeholder="..." type="text"></b-input>
+            <b-button @click="sendIm" icon-left="send"> </b-button>
+          </b-field>
         </div>
       </div>
       <div class="column columncenter">

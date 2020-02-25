@@ -1,23 +1,23 @@
 <template>
   <span id="clock">
     <span>{{ clock }}</span>
-    :
     <span class="mill">{{ mill }}</span>
   </span>
 </template>
 
 <script>
+import getTime from 'assets/js/user/time'
 export default {
   data() {
     return {
-      clock: new Date(),
+      clock: null,
       mill: 0
     }
   },
   mounted() {
     setInterval(() => {
       const d = new Date()
-      this.clock = d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds()
+      this.clock = getTime() + ':'
       this.mill = d.getMilliseconds()
     }, 1)
   }
