@@ -103,6 +103,7 @@ body, button, input, select, textarea {
   border: 0px !important;
   max-height: 20px;
   padding: 0px;
+  text-align: right;
 }
 
 .userlist {

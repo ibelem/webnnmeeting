@@ -1,7 +1,9 @@
+import config from '~/config'
 import Owt from '~/assets/js/owt/owt'
 import { Stats, fps } from '~/assets/js/fps'
 import { mixStream, createToken, getStreams } from '~/assets/js/rest'
 import getTime from 'assets/js/user/time'
+import { semanticSegmentationRunner } from '~/assets/js/webnn/util/runner'
 import MeetingInfo from '~/components/MeetingInfo.vue'
 import Clock from '~/components/Clock.vue'
 
@@ -19,6 +21,9 @@ export default {
   },
   data() {
     return {
+      runner: null,
+      inferencetime: null,
+      renderer: null,
       progress: 0,
       progresstimer: null,
       textmsg: null,
@@ -191,9 +196,75 @@ export default {
         clearInterval(this.progresstimer)
       }
     },
-    ssBlur() {
-      this.progress = 0
-      this.progresstimer = setInterval(this.progressIncrease, 100)
+    initRenderer() {
+      this.renderer = new Renderer(this.$refs.sscanvas);
+      this.renderer.setup()
+    },
+    getClippedSize (source) {
+      let width = config.semanticsegmentation.inputSize[0];
+      let imWidth = source.naturalWidth | source.videoWidth;
+      let imHeight = source.naturalHeight | source.videoHeight;
+      let resizeRatio = Math.max(Math.max(imWidth, imHeight) / width, 1);
+      let scaledWidth = Math.floor(imWidth / resizeRatio);
+      let scaledHeight = Math.floor(imHeight / resizeRatio);
+      return [scaledWidth, scaledHeight]; 
+    },
+    drawResultComponents(data, source) {
+      this.renderer.uploadNewTexture(source, this.getClippedSize(source))
+      this.renderer.drawOutputs(data)
+      this.renderer.highlightHoverLabel(this.hoverPos);
+    },
+    initRunner() {
+      this.runner = new semanticSegmentationRunner(config.semanticsegmentation, null)
+    },
+    handleInferencedResult (result, source) {
+      const showInferenceTime = (time) => {
+        try {
+          this.inferencetime = time.toFixed(2)
+          console.log(`Inference time: ${this.inferencetime} ms`);
+        } catch (e) {
+          console.log(e);
+        }
+      }
+    
+      try {
+        showInferenceTime(result.time);
+        this.drawResultComponents(result.drawData, source);
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    async runPredict (source) {
+      let inputSize = config.semanticsegmentation.inputSize;
+      let options = {
+        inputSize: config.semanticsegmentation.inputSize,
+        preOptions: config.semanticsegmentation.preOptions || {},
+        imageChannels: 4, // RGBA
+        drawWH: [inputSize[1], inputSize[0]],
+      };
+      let ret = await this.runner.predict(source, options)
+      return ret;
+    },
+    async startPredictCamera() {
+          this.stats.begin();
+          let ret = await this.runPredict(this.$refs.localvideo)     
+          this.handleInferencedResult(ret, this.$refs.localvideo)
+          this.stats.end();
+          setTimeout(this.startPredictCamera, 0);
+    },
+    async ssBlur() {
+      // this.progress = 0
+      // this.progresstimer = setInterval(this.progressIncrease, 100)
+      this.initRenderer()
+      this.initRunner()
+      if (this.runner !== null) {
+        await this.runner.loadModel()
+        await this.runner.initModel("WebGL", "none")
+        let stream = this.localuser.srcObject
+        // this.track = stream.getTracks()[0];
+        await this.startPredictCamera()
+      }
+
     },
     videoToCanvas() {
       console.log(this.$refs)
@@ -203,7 +274,7 @@ export default {
       this.ctx.imageSmoothingQuality = 'high'
       this.ctx.imageSmoothingEnabled = true
       this.animate()
-      // let frame = this.ctx1.getImageData(0, 0, this.width, this.height);
+      // let frame = this.ctx1.getImageData(0, 0, this.width, this.height)
     },
     animate() {
       const localcanvas = this.$refs.localcanvas

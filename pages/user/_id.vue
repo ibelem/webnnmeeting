@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div>
+      <canvas id="sscanvas" ref="sscanvas"></canvas>
+    </div>
     <div class="columns user">
       <div
         v-show="showparticipants || showconversation"
@@ -116,6 +119,7 @@
         </div>
       </div>
       <div class="column is-one-fifth">
+        <div ref="inferenceTime">{{ inferencetime }}</div>
         {{ mode }}
         <div class="home-center">{{ $route.params.user }}</div>
         <MeetingInfo />
