@@ -3,7 +3,7 @@ import Owt from '~/assets/js/owt/owt'
 import { Stats, fps } from '~/assets/js/fps'
 import { mixStream, createToken, getStreams } from '~/assets/js/rest'
 import getTime from 'assets/js/user/time'
-import { semanticSegmentationRunner } from '~/assets/js/webnn/util/runner'
+import { baseRunner, semanticSegmentationRunner } from '~/assets/js/webnn/util/runner'
 import MeetingInfo from '~/components/MeetingInfo.vue'
 import Clock from '~/components/Clock.vue'
 
@@ -21,10 +21,15 @@ export default {
   },
   data() {
     return {
+      dropFiles: [],
+      baserunner: null,
       runner: null,
+      canvastoggle: false,
       inferencetime: null,
       renderer: null,
       progress: 0,
+      loadedsize: 0,
+      totalsize: 0,
       progresstimer: null,
       textmsg: null,
       textmsgs:[],
@@ -176,7 +181,7 @@ export default {
     // this.$nextTick(() => {
     //   this.videoToCanvas()
     // })
-    this.videoToCanvas()
+    // this.videoToCanvas()
   },
   created() {
     if (process.browser) {
@@ -190,83 +195,133 @@ export default {
   //   this.userExit()
   // },
   methods: {
+    updateProgress(ev) {
+      if (ev.lengthComputable) {
+        this.totalsize = ev.total / (1000 * 1000)
+        this.totalsize= this.totalsize.toFixed(1)
+        this.loadedsize = ev.loaded / (1000 * 1000)
+        this.loadedsize = this.loadedsize.toFixed(1)
+        this.progress = ev.loaded / ev.total * 100
+        this.progress = this.progress.toFixed(0)
+        // this.updateLoadingComponent(loadedSize.toFixed(1), totalSize.toFixed(1), percentComplete);
+      }
+    },
+    deleteDropFile(index) {
+      this.dropFiles.splice(index, 1)
+    },
     progressIncrease() {
       this.progress = this.progress + 1
       if (this.progress === 100) {
         clearInterval(this.progresstimer)
       }
     },
-    initRenderer() {
-      this.renderer = new Renderer(this.$refs.sscanvas);
+    initRenderer(effect) {
+      this.renderer = new Renderer(this.$refs.sscanvas)
+      this.renderer.effect = effect
       this.renderer.setup()
     },
-    getClippedSize (source) {
-      let width = config.semanticsegmentation.inputSize[0];
-      let imWidth = source.naturalWidth | source.videoWidth;
-      let imHeight = source.naturalHeight | source.videoHeight;
-      let resizeRatio = Math.max(Math.max(imWidth, imHeight) / width, 1);
-      let scaledWidth = Math.floor(imWidth / resizeRatio);
-      let scaledHeight = Math.floor(imHeight / resizeRatio);
-      return [scaledWidth, scaledHeight]; 
+    async updateSSBackground() {
+      let files = this.$refs.bgimg.files
+      console.log(files)
+      if (files.length > 0) {
+        let img = new Image()
+        img.src = URL.createObjectURL(files[0])
+        this.renderer.backgroundImageSource = img
+      } else {
+        this.renderer.backgroundImageSource = null
+      }
     },
-    drawResultComponents(data, source) {
+    getClippedSize (source) {
+      const width = config.semanticsegmentation.inputSize[0]
+      let imWidth = source.naturalWidth | source.videoWidth
+      let imHeight = source.naturalHeight | source.videoHeight
+      let resizeRatio = Math.max(Math.max(imWidth, imHeight) / width, 1)
+      let scaledWidth = Math.floor(imWidth / resizeRatio)
+      let scaledHeight = Math.floor(imHeight / resizeRatio)
+      return [scaledWidth, scaledHeight]
+    },
+    async drawResultComponents(data, source) {
+      console.log('NNNNNNNNNNNNNNNNNNNNN')
+      console.log(this.getClippedSize(source))
       this.renderer.uploadNewTexture(source, this.getClippedSize(source))
+      
+      this.renderer.refineEdgeRadius = 0
+
+      // Clear Background
+      // this.renderer.backgroundImageSource = nul
+
+      // this.renderer.effect = "blur"
+      // this.renderer.blurRadius = 20
       this.renderer.drawOutputs(data)
-      this.renderer.highlightHoverLabel(this.hoverPos);
     },
     initRunner() {
-      this.runner = new semanticSegmentationRunner(config.semanticsegmentation, null)
+      this.baserunner = new baseRunner(config.semanticsegmentation, this.updateProgress)
+      this.runner = new semanticSegmentationRunner(config.semanticsegmentation, this.updateProgress)
     },
-    handleInferencedResult (result, source) {
+    async handleInferencedResult (result, source) {
       const showInferenceTime = (time) => {
         try {
           this.inferencetime = time.toFixed(2)
-          console.log(`Inference time: ${this.inferencetime} ms`);
+          console.log(`Inference time: ${this.inferencetime} ms`)
         } catch (e) {
-          console.log(e);
+          console.log(e)
         }
       }
-    
       try {
-        showInferenceTime(result.time);
-        this.drawResultComponents(result.drawData, source);
+        showInferenceTime(result.time)
+        this.stats.begin()
+        await this.drawResultComponents(result.drawData, source)
+        this.showfps = fps
+        this.stats.end()
       } catch (e) {
-        console.log(e);
+        console.log(e)
       }
     },
     async runPredict (source) {
-      let inputSize = config.semanticsegmentation.inputSize;
+      let inputSize = config.semanticsegmentation.inputSize
       let options = {
         inputSize: config.semanticsegmentation.inputSize,
         preOptions: config.semanticsegmentation.preOptions || {},
         imageChannels: 4, // RGBA
         drawWH: [inputSize[1], inputSize[0]],
-      };
+      }
       let ret = await this.runner.predict(source, options)
-      return ret;
+      return ret
     },
     async startPredictCamera() {
-          this.stats.begin();
-          let ret = await this.runPredict(this.$refs.localvideo)     
-          this.handleInferencedResult(ret, this.$refs.localvideo)
-          this.stats.end();
-          setTimeout(this.startPredictCamera, 0);
+      let ret = await this.runPredict(this.$refs.localvideo)     
+      await this.handleInferencedResult(ret, this.$refs.localvideo)
+      setTimeout(this.startPredictCamera, 0)
     },
-    async ssBlur() {
+    async ss() {
       // this.progress = 0
       // this.progresstimer = setInterval(this.progressIncrease, 100)
-      this.initRenderer()
+      // if(!this.canvastoggle) {
       this.initRunner()
       if (this.runner !== null) {
-        await this.runner.loadModel()
-        await this.runner.initModel("WebGL", "none")
-        let stream = this.localuser.srcObject
-        // this.track = stream.getTracks()[0];
-        await this.startPredictCamera()
+        if(!this.canvastoggle) {
+          await this.runner.loadModel()
+          await this.runner.initModel("WebGL", "none")
+          let stream = this.localuser.srcObject
+          // this.track = stream.getTracks()[0]
+          this.canvastoggle = !this.canvastoggle
+          await this.startPredictCamera()
+        } else {
+          this.canvastoggle = !this.canvastoggle
+          try { this.baserunner.deleteAll() } catch (e) { }
+        }
       }
-
     },
-    videoToCanvas() {
+    async ssBlur() {
+      this.initRenderer("blur")
+      this.ss()
+    },
+    async ssBg() {
+      this.initRenderer("image")
+      await this.updateSSBackground()
+      this.ss()
+    },
+    async videoToCanvas() {
       console.log(this.$refs)
       console.log(this.$refs.localcanvas)
       console.log(this.$refs.localvideo)
@@ -276,7 +331,7 @@ export default {
       this.animate()
       // let frame = this.ctx1.getImageData(0, 0, this.width, this.height)
     },
-    animate() {
+    async animate() {
       const localcanvas = this.$refs.localcanvas
       const localvideo = this.$refs.localvideo
 

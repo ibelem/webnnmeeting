@@ -1,8 +1,5 @@
 <template>
   <div>
-    <div>
-      <canvas id="sscanvas" ref="sscanvas"></canvas>
-    </div>
     <div class="columns user">
       <div
         v-show="showparticipants || showconversation"
@@ -54,10 +51,11 @@
       <div class="column columncenter">
         <div class="videos">
           <div v-show="localuser.srcObject" class="videoset">
-            <canvas id="localcanvas" ref="localcanvas"></canvas>
+            <canvas v-show="canvastoggle" id="sscanvas" ref="sscanvas"></canvas>
+            <!-- <canvas v-show="!canvastoggle" id="localcanvas" ref="localcanvas"></canvas> -->
             <div class="user">{{ localuser.userId }} CANVAS</div>
           </div>
-          <div v-show="localuser.srcObject" class="videoset">
+          <div v-show="localuser.srcObject && !canvastoggle" class="videoset">
             <video
               id="localvideo"
               ref="localvideo"
@@ -85,18 +83,18 @@
         </div>
         <div class="videocontrol">
           <div v-show="showaimenu" class="videocontrolai">
-            <b-button v-if="this.$store.state.supportwenmm" icon-left="blur"
+            <b-button @click="ssBlur" v-if="this.$store.state.supportwenmm" icon-left="blur"
               >Blur background</b-button
             >
-            <b-button v-else icon-left="blur" disabled
+            <b-button @click="ssBlur" v-else icon-left="blur" disabled
               >Blur background</b-button
             >
-            <b-button
+            <b-button @click="ssBg"
               v-if="this.$store.state.supportwenmm"
               icon-left="image-multiple"
               >Change background</b-button
             >
-            <b-button v-else icon-left="image-multiple" disabled
+            <b-button @click="ssBg" v-else icon-left="image-multiple" disabled
               >Change background</b-button
             >
             <b-button icon-left="fullscreen">Enter full screen</b-button>
@@ -118,25 +116,34 @@
           <b-button @click="leaveMeeting" icon-left="phone-hangup"></b-button>
         </div>
       </div>
-      <div class="column is-one-fifth">
+      <div class="column rightoptions is-one-fifth">
         <div ref="inferenceTime">{{ inferencetime }}</div>
         {{ mode }}
-        <div class="home-center">{{ $route.params.user }}</div>
+
+        <div id="bgimage" class="">
+          <input @change="updateSSBackground" type="file" name="f" id="bgimg" ref="bgimg" accept="image/*" class="inputfile inputf">
+          <label for="input"><svg width="20" height="17" viewBox="0 0 20 17">
+              <path d="M10 0l-5.2 4.9h3.3v5.1h3.8v-5.1h3.3l-5.2-4.9zm9.3 11.5l-3.2-2.1h-2l3.4 2.6h-3.5c-.1 0-.2.1-.2.1l-.8 2.3h-6l-.8-2.2c-.1-.1-.1-.2-.2-.2h-3.6l3.4-2.6h-2l-3.2 2.1c-.4.3-.7 1-.6 1.5l.6 3.1c.1.5.7.9 1.2.9h16.3c.6 0 1.1-.4 1.3-.9l.6-3.1c.1-.5-.2-1.2-.7-1.5z"></path>
+            </svg>
+            <span>Pick Image</span>
+          </label>
+        </div>
+
         <MeetingInfo />
         <div>
+          Show SS: {{ canvastoggle }}
           {{ showfps }}<br />
           {{ subscribeType }}<br />
           EnableVideo: {{ enablevideo }}<br />
           {{ resolutionwidth }} x {{ resolutionheight }} <br />
         </div>
-        <div>{{ users }}</div>
+        <!-- <div>{{ users }}</div> -->
       </div>
     </div>
     <div id="status" class="columns">
       <div class="column">
-        <b-progress :value="progress" class="nnprogress" show-value>
-          {{ progress }}
-        </b-progress>
+        {{ loadedsize }} / {{ totalsize }}MB {{ progress }}%
+        <b-progress :value="progress" class="nnprogress" show-value></b-progress>
       </div>
     </div>
   </div>
@@ -167,7 +174,6 @@ body {
   display: inline-block;
   margin-bottom: -13px;
   width: calc(100% / 4);
-  overflow: hidden;
 }
 
 video {
@@ -209,5 +215,64 @@ video {
 .nnprogress .progress {
   height: 1px;
   border-radius: 0px;
+  background: transparent;
+}
+
+.upload .upload-draggable {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0px;
+}
+
+.rightoptions.column {
+  padding: 0.75rem 0px;
+}
+
+.inputfile {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+.inputfile+label {
+  max-width: 100%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+  display: inline-block;
+  overflow: hidden;
+  padding: 0.25rem 1.25rem;
+}
+
+.inputfile:focus+label,
+.inputfile.has-focus+label {
+  outline: 1px dotted #000;
+  outline: -webkit-focus-ring-color auto 5px;
+}
+
+.inputfile+label svg {
+  width: 1em;
+  height: 1em;
+  vertical-align: middle;
+  fill: currentColor;
+  margin-top: -0.25em;
+  margin-right: 0.25em;
+}
+
+.inputfile+label span {
+  font-size: 0.8rem;
+}
+
+.inputf+label {
+  color: rgba(255, 255, 255, 0.9);
+  border: 1px solid currentColor;
+}
+
+.inputf:focus+label,
+.inputf.has-focus+label,
+.inputf+label:hover {
+  color: rgba(255, 255, 255, 1.0);
 }
 </style>

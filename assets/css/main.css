@@ -27,7 +27,7 @@ body, button, input, select, textarea {
   background-color: transparent;
   border-radius: 0;
   border: 0px;
-  color: rgba(255, 255, 255, 1.0);
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .user .control {
@@ -41,7 +41,7 @@ body, button, input, select, textarea {
 .user .button .icon:hover {
   transition: all 0.5s ease;
   transform: rotate(-30deg);
-  color: rgb(204, 255, 144);
+  color: rgba(255, 255, 255, 1.0);
 }
 
 .user .button {
@@ -154,18 +154,17 @@ body, button, input, select, textarea {
   background-image: linear-gradient(to bottom,#3c3c3c 0,#222 100%);
   background-repeat: repeat-x;
   margin: 0 -2px 0 -2px;
-  color: rgba(255, 255, 255, 1.0);
+  color: rgba(255, 255, 255, 0.9);
 }
 
-.videocontrol .button:hover {
+.videocontrol .button:hover, .videocontrol .button:active {
   box-shadow: inset 0 3px 9px rgba(0, 0, 0, 0.25);
   color: rgba( 255, 255, 255, 1.0);
   border: 1px solid rgba(0, 0, 0, 0.2) !important;
 }
 
-.videocontrol .button:active {
-  box-shadow: inset 0 3px 9px rgba(0, 0, 0, 0.25);
-  border: 1px solid rgba(0, 0, 0, 0.2) !important;
+.videocontrol .button span:not(:hover) {
+  color: rgba( 255, 255, 255, 0.9);
 }
 
 .videocontrol .button .icon:hover {
@@ -243,7 +242,7 @@ body, button, input, select, textarea {
 }
 
 .notices .toast.is-warning {
-  color: rgba(255, 255, 255, 0.4) !important;
+  color: rgba(255, 255, 255, 1.0) !important;
 }
 
 .notices .toast {

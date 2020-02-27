@@ -1112,8 +1112,8 @@ const loadUrl = async (url, binary, progress, outstandingRequest) => {
 };
 
 const prepareInputTensor = (source, optoins, inputTensor) => {
-  source.width = source.videoWidth || source.naturalWidth;
-  source.height = source.videoHeight || source.naturalHeight;
+  source.width = source.videoWidth || source.naturalWidth || source.offsetWidth;
+  source.height = source.videoHeight || source.naturalHeight || source.offsetHeight;
   let tensor = inputTensor[0];
   const width = optoins.inputSize[1];
   const height = optoins.inputSize[0];
