@@ -2,7 +2,7 @@ import config from '~/config'
 import Owt from '~/assets/js/owt/owt'
 import { Stats, fps } from '~/assets/js/fps'
 import { mixStream, createToken, getStreams } from '~/assets/js/rest'
-import getTime from 'assets/js/user/time'
+import getTime from '~/assets/js/user/time'
 import { baseRunner, semanticSegmentationRunner } from '~/assets/js/webnn/util/runner'
 import MeetingInfo from '~/components/MeetingInfo.vue'
 import Clock from '~/components/Clock.vue'
@@ -21,10 +21,14 @@ export default {
   },
   data() {
     return {
-      dropFiles: [],
       baserunner: null,
       runner: null,
-      canvastoggle: false,
+      ssmode: false,
+      videostream: null,
+      stvstream: null,
+      stvtimer: null,
+      sstimer: null,
+      sspublishtimer: null,
       inferencetime: null,
       renderer: null,
       progress: 0,
@@ -195,6 +199,9 @@ export default {
   //   this.userExit()
   // },
   methods: {
+    fullscreen() {
+      console.log('fullscreen')
+    },
     updateProgress(ev) {
       if (ev.lengthComputable) {
         this.totalsize = ev.total / (1000 * 1000)
@@ -202,12 +209,9 @@ export default {
         this.loadedsize = ev.loaded / (1000 * 1000)
         this.loadedsize = this.loadedsize.toFixed(1)
         this.progress = ev.loaded / ev.total * 100
-        this.progress = this.progress.toFixed(0)
+        this.progress = Number(this.progress.toFixed(0))
         // this.updateLoadingComponent(loadedSize.toFixed(1), totalSize.toFixed(1), percentComplete);
       }
-    },
-    deleteDropFile(index) {
-      this.dropFiles.splice(index, 1)
     },
     progressIncrease() {
       this.progress = this.progress + 1
@@ -241,8 +245,8 @@ export default {
       return [scaledWidth, scaledHeight]
     },
     async drawResultComponents(data, source) {
-      console.log('NNNNNNNNNNNNNNNNNNNNN')
-      console.log(this.getClippedSize(source))
+      // console.log('NNNNNNNNNNNNNNNNNNNNN')
+      // console.log(this.getClippedSize(source))
       this.renderer.uploadNewTexture(source, this.getClippedSize(source))
       
       this.renderer.refineEdgeRadius = 0
@@ -257,6 +261,13 @@ export default {
     initRunner() {
       this.baserunner = new baseRunner(config.semanticsegmentation, this.updateProgress)
       this.runner = new semanticSegmentationRunner(config.semanticsegmentation, this.updateProgress)
+    },
+    getSSStream() {
+      // this.stvstream = this.renderer.canvasStream
+      console.log('TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT')
+      this.stvstream = this.$refs.sscanvas.captureStream()
+      console.log(this.stvstream)
+      this.$refs.ssvideo.srcObject = this.$refs.sscanvas.captureStream()
     },
     async handleInferencedResult (result, source) {
       const showInferenceTime = (time) => {
@@ -291,24 +302,33 @@ export default {
     async startPredictCamera() {
       let ret = await this.runPredict(this.$refs.localvideo)     
       await this.handleInferencedResult(ret, this.$refs.localvideo)
-      setTimeout(this.startPredictCamera, 0)
+      this.sstimer = requestAnimationFrame(this.startPredictCamera)
+    },
+    stopPredictCamera() {
+      cancelAnimationFrame(this.sstimer)
+      this.ssmode = false
     },
     async ss() {
       // this.progress = 0
       // this.progresstimer = setInterval(this.progressIncrease, 100)
-      // if(!this.canvastoggle) {
+      // if(!this.ssmode) {
       this.initRunner()
       if (this.runner !== null) {
-        if(!this.canvastoggle) {
+        if(!this.ssmode) {
           await this.runner.loadModel()
           await this.runner.initModel("WebGL", "none")
           let stream = this.localuser.srcObject
           // this.track = stream.getTracks()[0]
-          this.canvastoggle = !this.canvastoggle
+          this.ssmode = !this.ssmode
+          this.getSSStream()
           await this.startPredictCamera()
+          // await this.publishLocal()
         } else {
-          this.canvastoggle = !this.canvastoggle
-          try { this.baserunner.deleteAll() } catch (e) { }
+          this.ssmode = !this.ssmode
+          try { 
+            this.stopPredictCamera()
+            this.baserunner.deleteAll()
+          } catch (e) { }
         }
       }
     },
@@ -496,77 +516,135 @@ export default {
       })
       console.log('==== END initConference END ====')
     },
-    createLocal() {
+    async publishLocal() {
+      // if(this.ssmode) {
+      //   let _this = this
+      //   this.localStream = new Owt.Base.LocalStream(
+      //     _this.stvstream,
+      //     new Owt.Base.StreamSourceInfo('mic', 'camera')
+      //   )
+      // } else {
+      //   this.localStream = new Owt.Base.LocalStream(
+      //     _this.videostream,
+      //     new Owt.Base.StreamSourceInfo('mic', 'camera')
+      //   )
+      // }
+
+      console.log('STVStream::::::::::::::::: ' + this.stvstream)
+
+      let publication = await this.room.publish(this.localStream)
+      this.localPublication = publication
+      // this.isPauseAudio = false
+      // this.toggleAudio()
+      // this.isPauseVideo = true
+      // this.toggleVideo()
+      mixStream(this.roomId, this.localPublication.id, 'common')
+      this.streamObj[this.localStream.id] = this.localStream
+      publication.addEventListener('error', (err) => {
+        console.log(
+          'createLocal: Publication error: ' + err.error.message
+        )
+      })
+
+      // this.room.publish(this.localStream).then(
+      //   (publication) => {
+      //     this.localPublication = publication
+      //     // this.isPauseAudio = false
+      //     // this.toggleAudio()
+      //     // this.isPauseVideo = true
+      //     // this.toggleVideo()
+      //     mixStream(this.roomId, this.localPublication.id, 'common')
+      //     this.streamObj[this.localStream.id] = this.localStream
+      //     publication.addEventListener('error', (err) => {
+      //       console.log(
+      //         'createLocal: Publication error: ' + err.error.message
+      //       )
+      //     })
+      //   },
+      //   (err) => {
+      //     console.log('createLocal: Publish error: ' + err)
+      //   }
+      // )
+
+
+    },
+    async createLocal() {
       console.log('==== createLocal ====')
-      const _this = this
-      let mediaStream
-      Owt.Base.MediaStreamFactory.createMediaStream(
-        _this.avTrackConstraint
-      ).then(
-        (stream) => {
-          mediaStream = stream
-          _this.localStream = new Owt.Base.LocalStream(
-            mediaStream,
-            new Owt.Base.StreamSourceInfo('mic', 'camera')
-          )
-          _this.localId = _this.localStream.id
-          console.log('this.localId: ' + _this.localId)
-          console.log('this.localStream')
-          console.log(_this.localStream)
-          _this.addVideo(_this.localStream, true)
-          _this.room.publish(_this.localStream).then(
-            (publication) => {
-              _this.localPublication = publication
-              // _this.isPauseAudio = false
-              // _this.toggleAudio()
-              // _this.isPauseVideo = true
-              // _this.toggleVideo()
-              mixStream(_this.roomId, _this.localPublication.id, 'common')
-              _this.streamObj[this.localStream.id] = _this.localStream
-              publication.addEventListener('error', (err) => {
-                console.log(
-                  'createLocal: Publication error: ' + err.error.message
-                )
-              })
-            },
-            (err) => {
-              console.log('createLocal: Publish error: ' + err)
-            }
-          )
-        },
-        (err) => {
-          console.error('createLocal: Failed to create MediaStream, ' + err)
-          if (err.name === 'OverconstrainedError') {
-            // if (
-            //   confirm(
-            //     "your camrea can't support the resolution constraints, please leave room and select a lower resolution"
-            //   )
-            // ) {
-            //   userExit()
-            // }
-            this.$buefy.snackbar.open({
-              duration: 20000,
-              message: `Your camrea can't support the resolution constraints, select a lower resolution?`,
-              type: 'is-danger',
-              position: 'is-bottom-left',
-              actionText: 'Accept',
-              queue: false,
-              onAction: () => {
-                // Need to exit user
-                this.userExit()
-                if (this.resolutionwidth === 1280) {
-                  this.$store.commit('setResolutionWidth', 640)
-                  this.$store.commit('setResolutionHeight', 480)
-                } else if (this.resolutionwidth === 640) {
-                  this.$store.commit('setResolutionWidth', 320)
-                  this.$store.commit('setResolutionHeight', 240)
-                }
-                this.initConference()
-              }
-            })
-          }
-        }
+
+      let stream = await Owt.Base.MediaStreamFactory.createMediaStream(
+        this.avTrackConstraint
       )
+
+      this.videostream = stream
+
+      this.localStream = new Owt.Base.LocalStream(
+        stream,
+        new Owt.Base.StreamSourceInfo('mic', 'camera')
+      )
+
+      this.localId = this.localStream.id
+      console.log('this.localId: ' + this.localId)
+      console.log('this.localStream')
+      console.log(this.localStream)
+      this.addVideo(this.localStream, true)
+
+      await this.publishLocal()
+
+      // Todo Better Try ... Catch ... for await
+
+      // Owt.Base.MediaStreamFactory.createMediaStream(
+      //   _this.avTrackConstraint
+      // ).then(
+      //   (stream) => {
+      //     mediaStream = stream
+
+      //     _this.localStream = new Owt.Base.LocalStream(
+      //       mediaStream,
+      //       new Owt.Base.StreamSourceInfo('mic', 'camera')
+      //     )
+
+      //     _this.localId = _this.localStream.id
+      //     console.log('this.localId: ' + _this.localId)
+      //     console.log('this.localStream')
+      //     console.log(_this.localStream)
+      //     _this.addVideo(_this.localStream, true)
+
+      //     this.publishLocal()
+      //   },
+      //   (err) => {
+      //     console.error('createLocal: Failed to create MediaStream, ' + err)
+      //     if (err.name === 'OverconstrainedError') {
+      //       // if (
+      //       //   confirm(
+      //       //     "your camrea can't support the resolution constraints, please leave room and select a lower resolution"
+      //       //   )
+      //       // ) {
+      //       //   userExit()
+      //       // }
+      //       this.$buefy.snackbar.open({
+      //         duration: 20000,
+      //         message: `Your camrea can't support the resolution constraints, select a lower resolution?`,
+      //         type: 'is-danger',
+      //         position: 'is-bottom-left',
+      //         actionText: 'Accept',
+      //         queue: false,
+      //         onAction: () => {
+      //           // Need to exit user
+      //           this.userExit()
+      //           if (this.resolutionwidth === 1280) {
+      //             this.$store.commit('setResolutionWidth', 640)
+      //             this.$store.commit('setResolutionHeight', 480)
+      //           } else if (this.resolutionwidth === 640) {
+      //             this.$store.commit('setResolutionWidth', 320)
+      //             this.$store.commit('setResolutionHeight', 240)
+      //           }
+      //           this.initConference()
+      //         }
+      //       })
+      //     }
+      //   }
+      // )
+
       console.log('==== END createLocal END ====')
     },
     alertCert(signalingHost) {
@@ -772,7 +850,7 @@ export default {
               if (stream.media.audio) {
                 const clientId = stream.info.owner
                 const muted = stream.media.audio.status === 'inactive'
-                this.chgMutePic(clientId, muted)
+                // this.chgMutePic(clientId, muted)
               }
             }
           }

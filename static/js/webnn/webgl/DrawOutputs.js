@@ -1,6 +1,6 @@
 class Renderer {
   constructor(canvas) {
-
+    this._canvas = canvas
     this.gl = canvas.getContext('webgl2');
     if (this.gl === null) {
       throw new Error('Unable to initialize WebGL.');
@@ -139,6 +139,10 @@ class Renderer {
     this._setupImageShader();
     this.drawOutputs(this._segMap);
   }
+
+  // get canvasStream() {
+  //   return this._canvas.captureStream()
+  // }
 
   async setup() {
 

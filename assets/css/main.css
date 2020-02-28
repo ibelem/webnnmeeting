@@ -178,6 +178,8 @@ body, button, input, select, textarea {
   padding: 0px 0 0 0;
   height: 36px;
   overflow: hidden;
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
 }
 
 .videocontrol .button .icon {
@@ -191,6 +193,23 @@ body, button, input, select, textarea {
   transform: none !important;
 }
 
+.hcontrol {
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+  display: inline-block;
+  border-radius: 2px;
+}
+
+.button:focus,
+.btnfullscreen:focus {
+  outline: transparent none 0px !important;
+}
+
+.button:focus:not(:active),
+.button.is-focused:not(:active) {
+  box-shadow: 0 0 0 0 rgba(255, 255, 255, 0) !important;
+  color: rgba(255, 255, 255, 0.8);
+}
+
 .videocontrolai {
   width: 186px;
   margin: 0 auto;
@@ -201,7 +220,8 @@ body, button, input, select, textarea {
   text-align: left;
   background-image: linear-gradient(to bottom,#3c3c3c 0,#222 100%);
   background-repeat: repeat-x;
-  box-shadow: 1px 1px 4px rgba(0, 0, 0, 1.0);
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+  border-radius: 2px;
 }
 
 .videocontrolai .button {

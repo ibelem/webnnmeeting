@@ -7,7 +7,7 @@
             <div class="titlea">
               WebNN Meeting
               <div class="slogan lg">
-                meet you, meet happy {{ this.$store.state.layout }}
+                meet you, meet happy
               </div>
             </div>
           </b-navbar-item>

@@ -1,5 +1,13 @@
 <template>
   <div>
+    <div>
+      <video
+        id="ssvideo"
+        ref="ssvideo"
+        playsinline
+        autoplay
+      ></video>
+    </div>
     <div class="columns user">
       <div
         v-show="showparticipants || showconversation"
@@ -50,12 +58,15 @@
       </div>
       <div class="column columncenter">
         <div class="videos">
-          <div v-show="localuser.srcObject" class="videoset">
-            <canvas v-show="canvastoggle" id="sscanvas" ref="sscanvas"></canvas>
-            <!-- <canvas v-show="!canvastoggle" id="localcanvas" ref="localcanvas"></canvas> -->
-            <div class="user">{{ localuser.userId }} CANVAS</div>
+          <div v-show="localuser.srcObject && ssmode" class="videoset">
+            <canvas id="sscanvas" ref="sscanvas"></canvas>
+            <!-- <canvas v-show="!ssmode" id="localcanvas" ref="localcanvas"></canvas> -->
+            <div class="user">
+              <div class="username">{{ localuser.userId }} CANVAS</div>
+              <b-button @click="fullscreen" :id="localuser.id" :ref="localuser.id" icon-left="fullscreen" class="btnfullscreen"></b-button>
+            </div>
           </div>
-          <div v-show="localuser.srcObject && !canvastoggle" class="videoset">
+          <div v-show="localuser.srcObject && !ssmode" class="videoset">
             <video
               id="localvideo"
               ref="localvideo"
@@ -63,7 +74,10 @@
               playsinline
               autoplay
             ></video>
-            <div class="user">{{ localuser.userId }} VIDEO</div>
+            <div class="user">
+              <div class="username">{{ localuser.userId }} VIDEO</div>
+              <b-button @click="fullscreen" :id="localuser.id" :ref="localuser.id" icon-left="fullscreen" class="btnfullscreen"></b-button>
+            </div>
           </div>
           <div
             v-show="users.length > 0 && u.srcObject && !u.local"
@@ -76,8 +90,11 @@
               playsinline
               autoplay
             ></video>
-            <div v-show="u.srcObject && !u.local" class="user">
+            <div class="user">
+              <div v-show="u.srcObject && !u.local" class="username">
               {{ u.userId }}
+              </div>
+              <b-button @click="fullscreen" :id="u.id" :ref="u.id" icon-left="fullscreen" class="btnfullscreen"></b-button>
             </div>
           </div>
         </div>
@@ -97,23 +114,24 @@
             <b-button @click="ssBg" v-else icon-left="image-multiple" disabled
               >Change background</b-button
             >
-            <b-button icon-left="fullscreen">Enter full screen</b-button>
+            <b-button @click="stopPredictCamera" icon-left="fullscreen">stopPredictCamera</b-button>
           </div>
-          <b-button class="date"><Clock /></b-button>
-          <b-button @click="ssBlur" icon-left="account-box"></b-button>
-          <b-button icon-left="video"></b-button>
-          <b-button icon-left="microphone"></b-button>
-          <b-button icon-left="projector-screen"></b-button>
-          <b-button @click="showAiMenu" icon-left="dots-horizontal"></b-button>
-          <b-button
-            @click="toggleConversation"
-            icon-left="message-reply-text"
-          ></b-button>
-          <b-button
-            @click="toggleParticipants"
-            icon-left="account-group"
-          ></b-button>
-          <b-button @click="leaveMeeting" icon-left="phone-hangup"></b-button>
+          <div class="hcontrol">
+            <b-button class="date"><Clock /></b-button>
+            <b-button icon-left="video"></b-button>
+            <b-button icon-left="microphone"></b-button>
+            <b-button icon-left="projector-screen"></b-button>
+            <b-button @click="showAiMenu" icon-left="dots-horizontal"></b-button>
+            <b-button
+              @click="toggleConversation"
+              icon-left="message-reply-text"
+            ></b-button>
+            <b-button
+              @click="toggleParticipants"
+              icon-left="account-group"
+            ></b-button>
+            <b-button @click="leaveMeeting" icon-left="phone-hangup"></b-button>
+          </div>
         </div>
       </div>
       <div class="column rightoptions is-one-fifth">
@@ -122,22 +140,23 @@
 
         <div id="bgimage" class="">
           <input @change="updateSSBackground" type="file" name="f" id="bgimg" ref="bgimg" accept="image/*" class="inputfile inputf">
-          <label for="input"><svg width="20" height="17" viewBox="0 0 20 17">
+          <label for="bgimg">
+            <svg width="20" height="17" viewBox="0 0 20 17">
               <path d="M10 0l-5.2 4.9h3.3v5.1h3.8v-5.1h3.3l-5.2-4.9zm9.3 11.5l-3.2-2.1h-2l3.4 2.6h-3.5c-.1 0-.2.1-.2.1l-.8 2.3h-6l-.8-2.2c-.1-.1-.1-.2-.2-.2h-3.6l3.4-2.6h-2l-3.2 2.1c-.4.3-.7 1-.6 1.5l.6 3.1c.1.5.7.9 1.2.9h16.3c.6 0 1.1-.4 1.3-.9l.6-3.1c.1-.5-.2-1.2-.7-1.5z"></path>
             </svg>
-            <span>Pick Image</span>
           </label>
+          <span>Choose background image</span>
         </div>
 
         <MeetingInfo />
         <div>
-          Show SS: {{ canvastoggle }}
+          Show SS: {{ ssmode }}
           {{ showfps }}<br />
           {{ subscribeType }}<br />
           EnableVideo: {{ enablevideo }}<br />
           {{ resolutionwidth }} x {{ resolutionheight }} <br />
         </div>
-        <!-- <div>{{ users }}</div> -->
+        <div>{{ users }}</div>
       </div>
     </div>
     <div id="status" class="columns">
@@ -149,7 +168,7 @@
   </div>
 </template>
 <script>
-import id from 'assets/js/user/id'
+import id from '~/assets/js/user/id'
 export default {
   ...id
 }
@@ -274,5 +293,36 @@ video {
 .inputf.has-focus+label,
 .inputf+label:hover {
   color: rgba(255, 255, 255, 1.0);
+}
+
+.username {
+  display: inline-block;
+  width: 93%;
+  overflow: hidden;
+}
+
+.btnfullscreen {
+  color: rgba(255, 255, 255, 0.9);
+  display: inline-block;
+  width: 10px !important;
+  height: 10px;
+  margin-top: -6px;
+  padding: 0px;
+}
+
+.btnfullscreen:hover {
+  color: rgba(255, 255, 255, 1.0);
+  background: transparent !important;
+}
+
+.btnfullscreen .icon:hover {
+  transform: rotate(0deg) !important;
+  transform: scale(1.4) !important;
+}
+
+#ssvideo {
+  width: 320px;
+  border: 1px solid red;
+  z-index: 3000;
 }
 </style>

@@ -1,12 +1,12 @@
 <template>
-  <span id="clock">
+  <div id="clock">
     <span>{{ clock }}</span>
     <span class="mill">{{ mill }}</span>
-  </span>
+  </div>
 </template>
 
 <script>
-import getTime from 'assets/js/user/time'
+import getTime from '~/assets/js/user/time'
 export default {
   data() {
     return {
@@ -27,6 +27,10 @@ export default {
 <style scope>
 .mill {
   width: 24px;
+  display: inline-block;
+}
+
+.clock {
   display: inline-block;
 }
 </style>
