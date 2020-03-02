@@ -18,8 +18,8 @@ module.exports = {
     httpsport: 8080
   },
   certificate: {
-    cert: './webnn-veritas.crt',
-    key: './webnn-veritas.key'
+    cert: '/home/belem/github/webnnmeeting/webnn-veritas.crt',
+    key: '/home/belem/github/webnnmeeting/webnn-veritas.key'
   },
   semanticsegmentation: {
     modelName: 'Deeplab 224 Atrous (TFLite)',
@@ -52,5 +52,4 @@ module.exports = {
     // intro: 'Equivalent to the model above (without dilated suffix) but only available on platforms that natively support atrous convolution.',
     // paperUrl: 'https://arxiv.org/abs/1802.02611'
   }
-
 }

@@ -28,6 +28,8 @@ export default {
 .mill {
   width: 24px;
   display: inline-block;
+  text-align: left;
+  margin-left: -3px;
 }
 
 .clock {

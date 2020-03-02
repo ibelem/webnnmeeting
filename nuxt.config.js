@@ -1,7 +1,6 @@
+/* eslint-disable prettier/prettier */
 const fs = require('fs')
-const path = require('path')
 const config = require('./config.js')
-
 /* eslint-disable prettier/prettier */
 module.exports = {
   mode: 'universal',
@@ -28,7 +27,7 @@ module.exports = {
         rel: 'stylesheet',
         type: 'text/css',
         href:
-          'https://fonts.googleapis.com/css?family=Lato:300,300i,400,400i&display=swap'
+          '../../css/font/font.css?family=Lato:300,300i,400,400i&display=swap'
       }
     ]
   },

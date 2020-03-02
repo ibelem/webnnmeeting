@@ -28,3 +28,20 @@ $ npm run start
 # generate static project
 $ npm run generate
 ```
+
+Update `.node_modules/nuxt-buefy/modules.js` for faster loading due to network issue:
+
+``` const defaults = {
+    css: true,
+    materialDesignIcons: true,
+    materialDesignIconsHRef: '//cdn.materialdesignicons.com/2.4.85/css/materialdesignicons.min.css'
+}
+```
+
+to
+
+``` const defaults = {
+    css: true,
+    materialDesignIcons: true,
+    materialDesignIconsHRef: '../css/materialdesignicons/2.4.85/materialdesignicons.min.css'
+```

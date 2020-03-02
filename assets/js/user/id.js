@@ -3,7 +3,11 @@ import Owt from '~/assets/js/owt/owt'
 import { Stats, fps } from '~/assets/js/fps'
 import { mixStream, createToken, getStreams } from '~/assets/js/rest'
 import getTime from '~/assets/js/user/time'
-import { baseRunner, semanticSegmentationRunner } from '~/assets/js/webnn/util/runner'
+import {
+  baseRunner,
+  semanticSegmentationRunner
+} from '~/assets/js/webnn/util/runner'
+import Renderer from '~/assets/js/webnn/webgl/DrawOutputs'
 import MeetingInfo from '~/components/MeetingInfo.vue'
 import Clock from '~/components/Clock.vue'
 
@@ -36,7 +40,7 @@ export default {
       totalsize: 0,
       progresstimer: null,
       textmsg: null,
-      textmsgs:[],
+      textmsgs: [],
       showfps: 0,
       timer: null,
       stats: null,
@@ -205,10 +209,10 @@ export default {
     updateProgress(ev) {
       if (ev.lengthComputable) {
         this.totalsize = ev.total / (1000 * 1000)
-        this.totalsize= this.totalsize.toFixed(1)
+        this.totalsize = this.totalsize.toFixed(1)
         this.loadedsize = ev.loaded / (1000 * 1000)
         this.loadedsize = this.loadedsize.toFixed(1)
-        this.progress = ev.loaded / ev.total * 100
+        this.progress = (ev.loaded / ev.total) * 100
         this.progress = Number(this.progress.toFixed(0))
         // this.updateLoadingComponent(loadedSize.toFixed(1), totalSize.toFixed(1), percentComplete);
       }
@@ -221,46 +225,50 @@ export default {
     },
     initRenderer(effect) {
       this.renderer = new Renderer(this.$refs.sscanvas)
+      this.renderer.refineEdgeRadius = 2
+      this.renderer.blurRadius = 4
       this.renderer.effect = effect
       this.renderer.setup()
     },
-    async updateSSBackground() {
-      let files = this.$refs.bgimg.files
+    updateSSBackground() {
+      const files = this.$refs.bgimg.files
       console.log(files)
       if (files.length > 0) {
-        let img = new Image()
+        const img = new Image()
+        img.onload = () => {
+          this.renderer.backgroundImageSource = img
+        }
         img.src = URL.createObjectURL(files[0])
-        this.renderer.backgroundImageSource = img
       } else {
         this.renderer.backgroundImageSource = null
       }
     },
-    getClippedSize (source) {
+    getClippedSize(source) {
       const width = config.semanticsegmentation.inputSize[0]
-      let imWidth = source.naturalWidth | source.videoWidth
-      let imHeight = source.naturalHeight | source.videoHeight
-      let resizeRatio = Math.max(Math.max(imWidth, imHeight) / width, 1)
-      let scaledWidth = Math.floor(imWidth / resizeRatio)
-      let scaledHeight = Math.floor(imHeight / resizeRatio)
+      const imWidth = source.naturalWidth | source.videoWidth
+      const imHeight = source.naturalHeight | source.videoHeight
+      const resizeRatio = Math.max(Math.max(imWidth, imHeight) / width, 1)
+      const scaledWidth = Math.floor(imWidth / resizeRatio)
+      const scaledHeight = Math.floor(imHeight / resizeRatio)
       return [scaledWidth, scaledHeight]
     },
     async drawResultComponents(data, source) {
       // console.log('NNNNNNNNNNNNNNNNNNNNN')
       // console.log(this.getClippedSize(source))
       this.renderer.uploadNewTexture(source, this.getClippedSize(source))
-      
-      this.renderer.refineEdgeRadius = 0
-
-      // Clear Background
-      // this.renderer.backgroundImageSource = nul
-
-      // this.renderer.effect = "blur"
-      // this.renderer.blurRadius = 20
-      this.renderer.drawOutputs(data)
+      await this.renderer.drawOutputs(data)
     },
     initRunner() {
-      this.baserunner = new baseRunner(config.semanticsegmentation, this.updateProgress)
-      this.runner = new semanticSegmentationRunner(config.semanticsegmentation, this.updateProgress)
+      // eslint-disable-next-line new-cap
+      this.baserunner = new baseRunner(
+        config.semanticsegmentation,
+        this.updateProgress
+      )
+      // eslint-disable-next-line new-cap
+      this.runner = new semanticSegmentationRunner(
+        config.semanticsegmentation,
+        this.updateProgress
+      )
     },
     getSSStream() {
       // this.stvstream = this.renderer.canvasStream
@@ -269,7 +277,7 @@ export default {
       console.log(this.stvstream)
       this.$refs.ssvideo.srcObject = this.$refs.sscanvas.captureStream()
     },
-    async handleInferencedResult (result, source) {
+    async handleInferencedResult(result, source) {
       const showInferenceTime = (time) => {
         try {
           this.inferencetime = time.toFixed(2)
@@ -288,60 +296,52 @@ export default {
         console.log(e)
       }
     },
-    async runPredict (source) {
-      let inputSize = config.semanticsegmentation.inputSize
-      let options = {
+    async runPredict(source) {
+      const inputSize = config.semanticsegmentation.inputSize
+      const options = {
         inputSize: config.semanticsegmentation.inputSize,
         preOptions: config.semanticsegmentation.preOptions || {},
         imageChannels: 4, // RGBA
-        drawWH: [inputSize[1], inputSize[0]],
+        drawWH: [inputSize[1], inputSize[0]]
       }
-      let ret = await this.runner.predict(source, options)
+      const ret = await this.runner.predict(source, options)
       return ret
     },
     async startPredictCamera() {
-      let ret = await this.runPredict(this.$refs.localvideo)     
+      const ret = await this.runPredict(this.$refs.localvideo)
       await this.handleInferencedResult(ret, this.$refs.localvideo)
       this.sstimer = requestAnimationFrame(this.startPredictCamera)
     },
-    stopPredictCamera() {
-      cancelAnimationFrame(this.sstimer)
+    stopSS() {
       this.ssmode = false
+      try {
+        this.stvstream = this.videostream
+        cancelAnimationFrame(this.sstimer)
+        this.baserunner.deleteAll()
+      } catch (e) {}
     },
     async ss() {
       // this.progress = 0
       // this.progresstimer = setInterval(this.progressIncrease, 100)
-      // if(!this.ssmode) {
+      this.ssmodel = true
       this.initRunner()
-      if (this.runner !== null) {
-        if(!this.ssmode) {
-          await this.runner.loadModel()
-          await this.runner.initModel("WebGL", "none")
-          let stream = this.localuser.srcObject
-          // this.track = stream.getTracks()[0]
-          this.ssmode = !this.ssmode
-          this.getSSStream()
-          await this.startPredictCamera()
-          // await this.publishLocal()
-        } else {
-          this.ssmode = !this.ssmode
-          try { 
-            this.stopPredictCamera()
-            this.baserunner.deleteAll()
-          } catch (e) { }
-        }
+      if (this.runner) {
+        await this.runner.loadModel()
+        await this.runner.initModel('WebML', 'sustained')
+        this.getSSStream()
+        await this.startPredictCamera()
+        await this.publishLocal()
       }
     },
     async ssBlur() {
-      this.initRenderer("blur")
+      await this.initRenderer('blur')
       this.ss()
     },
     async ssBg() {
-      this.initRenderer("image")
-      await this.updateSSBackground()
+      await this.initRenderer('image')
       this.ss()
     },
-    async videoToCanvas() {
+    videoToCanvas() {
       console.log(this.$refs)
       console.log(this.$refs.localcanvas)
       console.log(this.$refs.localvideo)
@@ -351,7 +351,7 @@ export default {
       this.animate()
       // let frame = this.ctx1.getImageData(0, 0, this.width, this.height)
     },
-    async animate() {
+    animate() {
       const localcanvas = this.$refs.localcanvas
       const localvideo = this.$refs.localvideo
 
@@ -517,22 +517,17 @@ export default {
       console.log('==== END initConference END ====')
     },
     async publishLocal() {
-      // if(this.ssmode) {
-      //   let _this = this
-      //   this.localStream = new Owt.Base.LocalStream(
-      //     _this.stvstream,
-      //     new Owt.Base.StreamSourceInfo('mic', 'camera')
-      //   )
-      // } else {
-      //   this.localStream = new Owt.Base.LocalStream(
-      //     _this.videostream,
-      //     new Owt.Base.StreamSourceInfo('mic', 'camera')
-      //   )
-      // }
+      const _this = this
+      if (!this.ssmode) {
+        this.stvstream = this.videostream
+      }
 
-      console.log('STVStream::::::::::::::::: ' + this.stvstream)
+      this.localStream = new Owt.Base.LocalStream(
+        _this.stvstream,
+        new Owt.Base.StreamSourceInfo('mic', 'camera')
+      )
 
-      let publication = await this.room.publish(this.localStream)
+      const publication = await this.room.publish(this.localStream)
       this.localPublication = publication
       // this.isPauseAudio = false
       // this.toggleAudio()
@@ -541,9 +536,7 @@ export default {
       mixStream(this.roomId, this.localPublication.id, 'common')
       this.streamObj[this.localStream.id] = this.localStream
       publication.addEventListener('error', (err) => {
-        console.log(
-          'createLocal: Publication error: ' + err.error.message
-        )
+        console.log('createLocal: Publication error: ' + err.error.message)
       })
 
       // this.room.publish(this.localStream).then(
@@ -565,20 +558,19 @@ export default {
       //     console.log('createLocal: Publish error: ' + err)
       //   }
       // )
-
-
     },
     async createLocal() {
       console.log('==== createLocal ====')
 
-      let stream = await Owt.Base.MediaStreamFactory.createMediaStream(
+      const stream = await Owt.Base.MediaStreamFactory.createMediaStream(
         this.avTrackConstraint
       )
 
       this.videostream = stream
+      this.stvstream = stream
 
       this.localStream = new Owt.Base.LocalStream(
-        stream,
+        this.stvstream,
         new Owt.Base.StreamSourceInfo('mic', 'camera')
       )
 
@@ -848,7 +840,9 @@ export default {
             if (stream.type === 'forward') {
               this.forwardStreamMap.set(stream.id, stream)
               if (stream.media.audio) {
+                // eslint-disable-next-line no-unused-vars
                 const clientId = stream.info.owner
+                // eslint-disable-next-line no-unused-vars
                 const muted = stream.media.audio.status === 'inactive'
                 // this.chgMutePic(clientId, muted)
               }
@@ -961,7 +955,7 @@ export default {
     sendIm(msg, sender) {
       console.log('sendIm: To DO, msg: ' + msg + ' ' + 'sender: ' + sender)
       console.log(this.textmsg)
- 
+
       if (this.textmsg) {
         const sendMsgInfo = JSON.stringify({
           type: 'msg',
@@ -982,7 +976,7 @@ export default {
           )
         }
       } else {
-        return
+        console.log('sendIm: no message')
       }
     },
     addRoomEventListener() {
@@ -1088,7 +1082,7 @@ export default {
         const receivedMsg = JSON.parse(event.message)
         if (receivedMsg.type === 'msg') {
           if (receivedMsg.data !== undefined) {
-            let msg = {
+            const msg = {
               time: getTime(),
               user: user.userId,
               message: receivedMsg.data
@@ -1112,7 +1106,7 @@ export default {
     toggleConversation() {
       this.showconversation = !this.showconversation
     },
-    scrollToBottom: function() {
+    scrollToBottom() {
       this.$nextTick(() => {
         const conversation = this.$refs.conversation
         const userlist = this.$refs.userlist
