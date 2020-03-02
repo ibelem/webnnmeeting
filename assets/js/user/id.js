@@ -250,6 +250,12 @@ export default {
       const resizeRatio = Math.max(Math.max(imWidth, imHeight) / width, 1)
       const scaledWidth = Math.floor(imWidth / resizeRatio)
       const scaledHeight = Math.floor(imHeight / resizeRatio)
+      console.log('width: ' + width)
+      console.log('imWidth x imHeight: ' + imWidth + 'x' + imHeight)
+      console.log('resizeRatio: ' + resizeRatio)
+      console.log(
+        'scaledWidth x scaledHeight: ' + scaledWidth + 'x' + scaledHeight
+      )
       return [scaledWidth, scaledHeight]
     },
     async drawResultComponents(data, source) {
@@ -270,7 +276,7 @@ export default {
         this.updateProgress
       )
     },
-    getSSStream() {
+    showSSStream() {
       // this.stvstream = this.renderer.canvasStream
       console.log('TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT')
       this.stvstream = this.$refs.sscanvas.captureStream()
@@ -323,14 +329,18 @@ export default {
     async ss() {
       // this.progress = 0
       // this.progresstimer = setInterval(this.progressIncrease, 100)
-      this.ssmodel = true
       this.initRunner()
       if (this.runner) {
         await this.runner.loadModel()
-        await this.runner.initModel('WebML', 'sustained')
-        this.getSSStream()
+        // await this.runner.initModel('WebML', 'sustained')
+        await this.runner.initModel('WebGL', 'none')
+        this.showSSStream()
+        this.ssmode = true
+        this.stvstream = this.$refs.sscanvas.captureStream()
         await this.startPredictCamera()
-        await this.publishLocal()
+        // this.room.leave()
+        // this.initConference()
+        // await this.publishLocal()
       }
     },
     async ssBlur() {
@@ -501,7 +511,6 @@ export default {
                 _this.subscribeStream(stream)
               }
             }
-
             _this.refreshMuteState()
             console.log('==== END createToken END ====')
           },
@@ -517,15 +526,9 @@ export default {
       console.log('==== END initConference END ====')
     },
     async publishLocal() {
-      const _this = this
-      if (!this.ssmode) {
-        this.stvstream = this.videostream
-      }
-
-      this.localStream = new Owt.Base.LocalStream(
-        _this.stvstream,
-        new Owt.Base.StreamSourceInfo('mic', 'camera')
-      )
+      console.log('===== publishLocal =====')
+      console.log(this.ssmode)
+      console.log(this.stvstream)
 
       const publication = await this.room.publish(this.localStream)
       this.localPublication = publication
@@ -567,7 +570,7 @@ export default {
       )
 
       this.videostream = stream
-      this.stvstream = stream
+      this.stvstream = this.videostream
 
       this.localStream = new Owt.Base.LocalStream(
         this.stvstream,
@@ -783,7 +786,12 @@ export default {
           const newusers = this.users.map((p) =>
             p.local === true ? { ...p, srcObject: stream.mediaStream } : p
           )
-          this.localuser.srcObject = stream.mediaStream
+
+          if (!this.ssmode) {
+            this.localuser.srcObject = stream.mediaStream
+          } else {
+            this.localuser.srcObject = this.stvstream
+          }
 
           console.log('newusers')
           console.log(newusers)

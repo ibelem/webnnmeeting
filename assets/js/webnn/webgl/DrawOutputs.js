@@ -611,7 +611,13 @@ class Renderer {
     if (this._clippedSize[0] !== clippedSize[0] ||
       this._clippedSize[1] !== clippedSize[1]) {
       this._clippedSize = clippedSize;
+
       this._zoom = this._fixedSize / this._clippedSize[0];
+
+      console.log('&&&&&&&&&&&&&&&&&&&')
+      console.log(this._fixedSize)
+      console.log(this._clippedSize[0])
+      console.log(this._zoom)
 
       // all FRAMEBUFFERs should be reconfigured when clippedSize changes 
       this.setup();
@@ -640,6 +646,7 @@ class Renderer {
 
     this.gl.canvas.width = this._clippedSize[0] * this._zoom;
     this.gl.canvas.height = this._clippedSize[1] * this._zoom;
+
     this.utils.setViewport(this.gl.drawingBufferWidth, this.gl.drawingBufferHeight);
 
     if (this._effect === 'label') {

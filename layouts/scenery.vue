@@ -59,10 +59,6 @@ export default {
       {
         src: '../../js/webnn/webgl/GuidedFilter.js',
         defer: true
-      },
-      {
-        src: '../../js/webnn/webgl/DrawOutputs.js',
-        defer: true
       }
     ]
   },

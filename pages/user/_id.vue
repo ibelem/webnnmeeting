@@ -59,37 +59,45 @@
       </div>
       <div class="column columncenter">
         <div class="videos">
-          <div v-show="localuser.srcObject && ssmode" class="videoset">
-            <canvas id="sscanvas" ref="sscanvas"></canvas>
-            <!-- <canvas v-show="!ssmode" id="localcanvas" ref="localcanvas"></canvas> -->
-            <div class="user">
-              <div class="username">{{ localuser.userId }} CANVAS</div>
-              <b-button
-                @click="fullscreen"
-                :id="localuser.id"
-                :ref="localuser.id"
-                icon-left="fullscreen"
-                class="btnfullscreen"
-              ></b-button>
+          <div v-show="localuser.srcObject && ssmode" class="videosetforcanvas">
+            <div class="scale">
+              <div class="v">
+                <canvas id="sscanvas" ref="sscanvas"></canvas>
+                <!-- <canvas v-show="!ssmode" id="localcanvas" ref="localcanvas"></canvas> -->
+                <div class="user">
+                  <div class="username">{{ localuser.userId }} CANVAS</div>
+                  <b-button
+                    @click="fullscreen"
+                    :id="localuser.id"
+                    :ref="localuser.id"
+                    icon-left="fullscreen"
+                    class="btnfullscreen"
+                  ></b-button>
+                </div>
+              </div>
             </div>
           </div>
           <div v-show="localuser.srcObject && !ssmode" class="videoset">
-            <video
-              id="localvideo"
-              ref="localvideo"
-              :src-object.prop.camel="localuser.srcObject"
-              playsinline
-              autoplay
-            ></video>
-            <div class="user">
-              <div class="username">{{ localuser.userId }} VIDEO</div>
-              <b-button
-                @click="fullscreen"
-                :id="localuser.id"
-                :ref="localuser.id"
-                icon-left="fullscreen"
-                class="btnfullscreen"
-              ></b-button>
+            <div class="scale">
+              <div class="v">
+                <video
+                  id="localvideo"
+                  ref="localvideo"
+                  :src-object.prop.camel="localuser.srcObject"
+                  playsinline
+                  autoplay
+                ></video>
+                <div class="user">
+                  <div class="username">{{ localuser.userId }} VIDEO</div>
+                  <b-button
+                    @click="fullscreen"
+                    :id="localuser.id"
+                    :ref="localuser.id"
+                    icon-left="fullscreen"
+                    class="btnfullscreen"
+                  ></b-button>
+                </div>
+              </div>
             </div>
           </div>
           <div
@@ -97,23 +105,27 @@
             v-for="u in users"
             class="videoset"
           >
-            <video
-              v-show="u.srcObject && !u.local"
-              :src-object.prop.camel="u.srcObject"
-              playsinline
-              autoplay
-            ></video>
-            <div class="user">
-              <div v-show="u.srcObject && !u.local" class="username">
-                {{ u.userId }}
+            <div class="scale">
+              <div class="v">
+                <video
+                  v-show="u.srcObject && !u.local"
+                  :src-object.prop.camel="u.srcObject"
+                  playsinline
+                  autoplay
+                ></video>
+                <div class="user">
+                  <div v-show="u.srcObject && !u.local" class="username">
+                    {{ u.userId }}
+                  </div>
+                  <b-button
+                    @click="fullscreen"
+                    :id="u.id"
+                    :ref="u.id"
+                    icon-left="fullscreen"
+                    class="btnfullscreen"
+                  ></b-button>
+                </div>
               </div>
-              <b-button
-                @click="fullscreen"
-                :id="u.id"
-                :ref="u.id"
-                icon-left="fullscreen"
-                class="btnfullscreen"
-              ></b-button>
             </div>
           </div>
         </div>
@@ -230,12 +242,35 @@ body {
 
 .videoset {
   display: inline-block;
-  margin-bottom: -13px;
+  margin-bottom: -7px;
   width: calc(100% / 4);
+  margin-right: -1px;
+  overflow: hidden;
 }
 
-video {
+.videosetforcanvas {
+  display: inline-block;
+  margin-bottom: -7px;
+  width: 513px;
+  margin-right: -1px;
+  overflow: hidden;
+}
+
+.videosetforcanvas canvas {
   width: 100%;
+}
+
+.scale {
+  width: 100%;
+  padding-bottom: 56.25%;
+  height: 0;
+  position: relative;
+}
+
+.v {
+  width: 100%;
+  height: 100%;
+  position: absolute;
 }
 
 .videoset .user {
@@ -357,6 +392,11 @@ video {
 .btnfullscreen .icon:hover {
   transform: rotate(0deg) !important;
   transform: scale(1.4) !important;
+}
+
+#sscanvas {
+  width: auto !important;
+  height: auto !important;
 }
 
 #ssvideo {
