@@ -14,12 +14,12 @@ const app = express()
 const config = require('../config')
 const rest = require('./authrequest')
 
-// const corsOptions = {
-//   origin: ':8080',
-//   optionsSuccessStatus: 200,
-//   methods: ['GET', 'POST', 'PUT', 'PATCH', 'OPTIONS', 'DELETE']
-//   // alloweHeaders:['Content-Type','Authorization']
-// }
+const corsOptions = {
+  origin: '*',
+  optionsSuccessStatus: 200,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'OPTIONS', 'DELETE']
+  // alloweHeaders:['Content-Type','Authorization']
+}
 
 // Directory 'public' for static files
 // app.use(express.static(__dirname + '/html'))
@@ -29,6 +29,12 @@ app.use(
     extended: true
   })
 )
+
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next()
+})
 
 // Set rejectUnauthorized to true for production use
 const request = rest(
@@ -77,7 +83,7 @@ prepareWebNNRoom
     console.log('sampleRoom Id:', webnnroom)
 
     // Create token API with default room
-    app.post('/createToken/', cors(), function(req, res) {
+    app.post('/createToken/', cors(corsOptions), function(req, res) {
       const tokenroom = req.body.room || webnnroom
       request('POST', '/v1/rooms/' + tokenroom + '/tokens', req.body)
         .then((imRes) => {
@@ -88,7 +94,7 @@ prepareWebNNRoom
     })
 
     // Route internal REST interface
-    app.use(cors(), function(req, res) {
+    app.use(cors(corsOptions), function(req, res) {
       request(req.method, '/v1' + req.path, req.body)
         .then((imRes) => {
           res.writeHead(imRes.statusCode, imRes.headers)

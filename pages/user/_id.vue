@@ -1,8 +1,9 @@
 <template>
   <div>
-    <div>
+    <!-- <div>
       <video id="ssvideo" ref="ssvideo" playsinline autoplay></video>
     </div>
+    -->
     <div class="columns user">
       <div
         v-show="showparticipants || showconversation"
@@ -132,21 +133,21 @@
         <div class="videocontrol">
           <div v-show="showaimenu" class="videocontrolai">
             <b-button
-              @click="ssBlur"
+              @click="ss('blur')"
               v-if="this.$store.state.supportwenmm"
               icon-left="blur"
               >Blur background</b-button
             >
-            <b-button @click="ssBlur" v-else icon-left="blur" disabled
+            <b-button @click="ss('blur')" v-else icon-left="blur" disabled
               >Blur background</b-button
             >
             <b-button
-              @click="ssBg"
+              @click="ss('image')"
               v-if="this.$store.state.supportwenmm"
               icon-left="image-multiple"
               >Change background</b-button
             >
-            <b-button @click="ssBg" v-else icon-left="image-multiple" disabled
+            <b-button @click="ss('image')" v-else icon-left="image-multiple" disabled
               >Change background</b-button
             >
             <b-button @click="stopSS" icon-left="fullscreen">Stop SS</b-button>

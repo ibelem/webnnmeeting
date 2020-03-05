@@ -73,6 +73,15 @@ const mixStream = function(room, stream, view, host) {
   )
 }
 
+const updateStream = function(room, stream, host) {
+  const jsonPatch = [{ op: 'replace', path: '/media/audio/status', value: 'inactive'}]
+  send('PATCH', '/rooms/' + room + '/streams/' + stream, jsonPatch, onResponse, host)
+}
+
+const deleteStream = function(room, stream, host) {
+  send('DELETE', '/rooms/' + room + '/streams/' + stream, onResponse, host);
+}
+
 const startStreamingIn = function(room, inUrl, host) {
   const options = {
     url: inUrl,
@@ -173,6 +182,8 @@ export {
   generateUrl,
   onResponse,
   mixStream,
+  updateStream,
+  deleteStream,
   startStreamingIn,
   createToken,
   getStreams,

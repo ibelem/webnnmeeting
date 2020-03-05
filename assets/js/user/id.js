@@ -1,7 +1,7 @@
 import config from '~/config'
 import Owt from '~/assets/js/owt/owt'
 import { Stats, fps } from '~/assets/js/fps'
-import { mixStream, createToken, getStreams } from '~/assets/js/rest'
+import { deleteStream, updateStream, mixStream, createToken, getStreams } from '~/assets/js/rest'
 import getTime from '~/assets/js/user/time'
 import {
   baseRunner,
@@ -29,8 +29,8 @@ export default {
       runner: null,
       ssmode: false,
       videostream: null,
-      stvstream: null,
-      stvtimer: null,
+      ssstream: null,
+      sstimer: null,
       sstimer: null,
       sspublishtimer: null,
       inferencetime: null,
@@ -276,13 +276,18 @@ export default {
         this.updateProgress
       )
     },
-    showSSStream() {
-      // this.stvstream = this.renderer.canvasStream
-      console.log('TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT')
-      this.stvstream = this.$refs.sscanvas.captureStream()
-      console.log(this.stvstream)
-      this.$refs.ssvideo.srcObject = this.$refs.sscanvas.captureStream()
+    getSSStream() {
+      this.ssstream = this.$refs.sscanvas.captureStream()
+      let audiotrack = this.videostream.getTracks().filter((track) => {
+        return track.kind === 'audio'
+      })[0]
+      this.ssstream.addTrack(audiotrack)
     },
+    // showSSStream() {
+    //   // this.ssstream = this.renderer.canvasStream
+    //   this.getSSStream()
+    //   this.$refs.ssvideo.srcObject = this.ssstream
+    // },
     async handleInferencedResult(result, source) {
       const showInferenceTime = (time) => {
         try {
@@ -318,43 +323,36 @@ export default {
       await this.handleInferencedResult(ret, this.$refs.localvideo)
       this.sstimer = requestAnimationFrame(this.startPredictCamera)
     },
-    stopSS() {
+    async stopSS() {
       this.ssmode = false
       try {
-        this.stvstream = this.videostream
+        this.ssstream = this.videostream
+        deleteStream(this.roomId, this.localPublication.id)
+        await this.publishLocal()
+        // updateStream(this.roomId, this.localPublication.id)
         cancelAnimationFrame(this.sstimer)
         this.baserunner.deleteAll()
       } catch (e) {}
     },
-    async ss() {
+    async ss(effect) {
       // this.progress = 0
       // this.progresstimer = setInterval(this.progressIncrease, 100)
       this.initRunner()
       if (this.runner) {
+        await this.initRenderer(effect)
         await this.runner.loadModel()
         // await this.runner.initModel('WebML', 'sustained')
         await this.runner.initModel('WebGL', 'none')
-        this.showSSStream()
+        // this.showSSStream()
         this.ssmode = true
-        this.stvstream = this.$refs.sscanvas.captureStream()
+        this.getSSStream()
         await this.startPredictCamera()
-        // this.room.leave()
-        // this.initConference()
-        // await this.publishLocal()
+        deleteStream(this.roomId, this.localPublication.id)
+        await this.publishLocal()
+        // updateStream(this.roomId, this.localPublication.id)
       }
     },
-    async ssBlur() {
-      await this.initRenderer('blur')
-      this.ss()
-    },
-    async ssBg() {
-      await this.initRenderer('image')
-      this.ss()
-    },
     videoToCanvas() {
-      console.log(this.$refs)
-      console.log(this.$refs.localcanvas)
-      console.log(this.$refs.localvideo)
       this.ctx = this.$refs.localcanvas.getContext('2d')
       this.ctx.imageSmoothingQuality = 'high'
       this.ctx.imageSmoothingEnabled = true
@@ -388,9 +386,6 @@ export default {
     },
     initStats() {
       this.stats = new Stats()
-    },
-    setUsers() {
-      this.$store.commit('setUsers', this.users)
     },
     leaveMeeting() {
       this.userExit()
@@ -439,9 +434,6 @@ export default {
         }
         this.isAudioOnly = true
       }
-      console.log(this.enablevideo)
-      console.log('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^')
-      console.log(this.avTrackConstraint)
       const _this = this
       createToken(this.roomId, this.localName, 'presenter', function(response) {
         console.log('==== createToken ====')
@@ -480,7 +472,6 @@ export default {
               _this.localuser.local = local
               _this.localuser.muted = true
               _this.localuser.srcObject = null
-              // _this.setUsers()
             })
             _this.createLocal()
             _this.streamObj = {}
@@ -528,7 +519,12 @@ export default {
     async publishLocal() {
       console.log('===== publishLocal =====')
       console.log(this.ssmode)
-      console.log(this.stvstream)
+      console.log(this.ssstream)
+
+      this.localStream = new Owt.Base.LocalStream(
+        this.ssstream,
+        new Owt.Base.StreamSourceInfo('mic', 'camera')
+      )
 
       const publication = await this.room.publish(this.localStream)
       this.localPublication = publication
@@ -570,10 +566,10 @@ export default {
       )
 
       this.videostream = stream
-      this.stvstream = this.videostream
+      this.ssstream = this.videostream
 
       this.localStream = new Owt.Base.LocalStream(
-        this.stvstream,
+        this.ssstream,
         new Owt.Base.StreamSourceInfo('mic', 'camera')
       )
 
@@ -782,16 +778,13 @@ export default {
       }
 
       if (stream.source.video !== 'screen-cast') {
+        
         if (isLocal) {
           const newusers = this.users.map((p) =>
             p.local === true ? { ...p, srcObject: stream.mediaStream } : p
           )
 
-          if (!this.ssmode) {
-            this.localuser.srcObject = stream.mediaStream
-          } else {
-            this.localuser.srcObject = this.stvstream
-          }
+          this.localuser.srcObject = this.ssstream
 
           console.log('newusers')
           console.log(newusers)
@@ -1028,6 +1021,14 @@ export default {
         } else if (stream.source.video === 'screen-cast') {
           this.thatName = 'Screen Sharing'
         }
+
+        console.log('+++++++++++++++++++++++++')
+        console.log('+++++++++++++++++++++++++')
+        console.log('streamadded')
+        console.log(stream.origin)
+        console.log(stream)
+        console.log(this.getUserFromId(stream.origin))
+        console.log(this.getUserFromId(stream.origin).userId)
         // add video of non-local streams
         if (this.getUserFromId(stream.origin)) {
           if (
@@ -1063,7 +1064,6 @@ export default {
             srcObject: null
           })
 
-          // this.setUsers()
           event.participant.addEventListener('left', () => {
             if (
               event.participant.id !== null &&

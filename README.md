@@ -43,5 +43,5 @@ to
 ``` const defaults = {
     css: true,
     materialDesignIcons: true,
-    materialDesignIconsHRef: '../css/materialdesignicons/2.4.85/materialdesignicons.min.css'
+    materialDesignIconsHRef: '../../css/materialdesignicons/2.4.85/materialdesignicons.min.css'
 ```
