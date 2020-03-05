@@ -75,7 +75,7 @@ export default {
     background-color: transparent;
     border-bottom-left-radius: 6px;
     border-bottom-right-radius: 6px;
-    border-top: 1px solid rgb(204, 255, 144);
+    border-top: 1px solid rgba(204, 255, 144, 1.0);
     box-shadow: 0 8px 8px rgba(10, 10, 10, 0.1);
     display: none;
     font-size: 0.875rem;

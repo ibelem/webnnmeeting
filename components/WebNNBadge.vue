@@ -45,6 +45,6 @@ export default {
   padding: 0 8px;
   font-style: italic;
   font-size: 0.8rem;
-  color: rgb(204, 255, 144);
+  color: rgba(204, 255, 144, 1.0);
 }
 </style>

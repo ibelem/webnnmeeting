@@ -8,6 +8,7 @@ import {
   semanticSegmentationRunner
 } from '~/assets/js/webnn/util/runner'
 import Renderer from '~/assets/js/webnn/webgl/DrawOutputs'
+import Control from '~/components/Control.vue'
 import MeetingInfo from '~/components/MeetingInfo.vue'
 import Clock from '~/components/Clock.vue'
 
@@ -20,11 +21,14 @@ export default {
   // layout: 'classic',
   // layout: 'userbgimg',
   components: {
+    Control,
     MeetingInfo,
     Clock
   },
   data() {
     return {
+      showparticipants: false,
+      showconversation: false,
       baserunner: null,
       runner: null,
       ssmode: false,
@@ -38,16 +42,12 @@ export default {
       progress: 0,
       loadedsize: 0,
       totalsize: 0,
-      progresstimer: null,
       textmsg: null,
       textmsgs: [],
       showfps: 0,
       timer: null,
       stats: null,
       ctx: null,
-      showparticipants: false,
-      showconversation: false,
-      showaimenu: false,
       conversation: {},
       thatName: '',
       bandwidth: 1000,
@@ -66,7 +66,6 @@ export default {
         muted: null,
         srcObject: null
       },
-      progressTimeOut: null,
       smallRadius: 60,
       largeRadius: 120,
       isMouseDown: false,
@@ -217,12 +216,6 @@ export default {
         // this.updateLoadingComponent(loadedSize.toFixed(1), totalSize.toFixed(1), percentComplete);
       }
     },
-    progressIncrease() {
-      this.progress = this.progress + 1
-      if (this.progress === 100) {
-        clearInterval(this.progresstimer)
-      }
-    },
     initRenderer(effect) {
       this.renderer = new Renderer(this.$refs.sscanvas)
       this.renderer.refineEdgeRadius = 2
@@ -336,16 +329,18 @@ export default {
     },
     async ss(effect) {
       // this.progress = 0
-      // this.progresstimer = setInterval(this.progressIncrease, 100)
       this.initRunner()
       if (this.runner) {
         await this.initRenderer(effect)
         await this.runner.loadModel()
         // await this.runner.initModel('WebML', 'sustained')
+        this.progress = 50
         await this.runner.initModel('WebGL', 'none')
+        this.progress = 66
         // this.showSSStream()
         this.ssmode = true
         this.getSSStream()
+        this.progress = 100
         await this.startPredictCamera()
         deleteStream(this.roomId, this.localPublication.id)
         await this.publishLocal()
@@ -518,9 +513,6 @@ export default {
     },
     async publishLocal() {
       console.log('===== publishLocal =====')
-      console.log(this.ssmode)
-      console.log(this.ssstream)
-
       this.localStream = new Owt.Base.LocalStream(
         this.ssstream,
         new Owt.Base.StreamSourceInfo('mic', 'camera')
@@ -574,9 +566,6 @@ export default {
       )
 
       this.localId = this.localStream.id
-      console.log('this.localId: ' + this.localId)
-      console.log('this.localStream')
-      console.log(this.localStream)
       this.addVideo(this.localStream, true)
 
       await this.publishLocal()
@@ -686,7 +675,6 @@ export default {
       }
 
       this.users.splice(index, 1)
-      console.log(this.users)
       console.log('====== END deleteUser END ' + id + '=====')
     },
     toggleAudio() {
@@ -762,13 +750,7 @@ export default {
     },
     addVideo(stream, isLocal) {
       console.log('==== addVideo ====')
-      console.log('this.localId: ' + this.localId)
-      console.log('this.localName: ' + this.localName)
-      console.log('this.users: ')
-      console.log(this.users)
       const uid = stream.origin
-      console.log(uid)
-
       // const id = stream.id
       // const uid = stream.origin
 
@@ -783,17 +765,11 @@ export default {
           const newusers = this.users.map((p) =>
             p.local === true ? { ...p, srcObject: stream.mediaStream } : p
           )
-
           this.localuser.srcObject = this.ssstream
-
-          console.log('newusers')
-          console.log(newusers)
           this.users = newusers
-          console.log(this.users)
         }
 
         if (!isLocal) {
-          console.log('$$$$$$$$$$$$$$$$$ ' + uid)
           if (uid) {
             const remoteusers = this.users.map((p) =>
               p.id === uid ? { ...p, srcObject: stream.mediaStream } : p
@@ -954,9 +930,6 @@ export default {
       console.log('===== END subscribeStream(stream) END =====')
     },
     sendIm(msg, sender) {
-      console.log('sendIm: To DO, msg: ' + msg + ' ' + 'sender: ' + sender)
-      console.log(this.textmsg)
-
       if (this.textmsg) {
         const sendMsgInfo = JSON.stringify({
           type: 'msg',
@@ -984,15 +957,9 @@ export default {
       this.room.addEventListener('streamadded', (streamEvent) => {
         console.log('==== room.addEventListener streamadded ====')
         const stream = streamEvent.stream
-        console.log('this.LocalStream')
-        console.log(this.localStream)
-        console.log(stream.id)
         if (this.localStream && this.localStream.id === stream.id) {
           return
         }
-
-        console.log(stream.source.audio)
-        console.log(stream.source.video)
 
         if (
           stream.source.audio === 'mixed' &&
@@ -1022,13 +989,6 @@ export default {
           this.thatName = 'Screen Sharing'
         }
 
-        console.log('+++++++++++++++++++++++++')
-        console.log('+++++++++++++++++++++++++')
-        console.log('streamadded')
-        console.log(stream.origin)
-        console.log(stream)
-        console.log(this.getUserFromId(stream.origin))
-        console.log(this.getUserFromId(stream.origin).userId)
         // add video of non-local streams
         if (this.getUserFromId(stream.origin)) {
           if (
@@ -1100,19 +1060,6 @@ export default {
           }
         }
       })
-    },
-    showAiMenu() {
-      if (!this.showaimenu) {
-        this.showaimenu = true
-      } else {
-        this.showaimenu = false
-      }
-    },
-    toggleParticipants() {
-      this.showparticipants = !this.showparticipants
-    },
-    toggleConversation() {
-      this.showconversation = !this.showconversation
     },
     scrollToBottom() {
       this.$nextTick(() => {

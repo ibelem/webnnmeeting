@@ -7,9 +7,8 @@ $body-font-weight: 200;
 $primary: #ffffff;
 $primary-invert: findColorInvert($primary);
 $info: #4ec7f3;
-$twitter: #9df9ef;
+$twitter: rgba(204, 255, 144, 1.0);
 $twitter-invert: findColorInvert($twitter);
-
 $warning: #dc143c;
 $danger: hsl(14, 100%, 53%);
 

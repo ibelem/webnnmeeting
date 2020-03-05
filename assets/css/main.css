@@ -58,11 +58,11 @@ body, button, input, select, textarea {
 
 #send {
   position: relative;
-  top: 0px;
+  top: 10px;
 }
 
 .user .conversation {
-  height: 210px;
+  height: 188px;
   display: flex;
   flex-direction: column;
   overflow-y: scroll;
@@ -107,7 +107,7 @@ body, button, input, select, textarea {
 }
 
 .userlist {
-  min-height: 210px;
+  height: 188px;
   overflow-y: scroll;
   overflow-x: hidden;
 }
@@ -118,36 +118,38 @@ body, button, input, select, textarea {
 }
 
 .videos {
-  min-height: 400px;
   flex: 1;
+  height: 100%;
 }
 
-.videocontrol {
+.meetingcontrol {
   border-top: 0px solid rgba(255, 255, 255, 0.2);
   padding-top: 8px;
   height: 36px;
-  margin: -1rem auto;
+  margin: -4rem auto 0 auto;
   text-align: center;
   display: block;
+  z-index: 999;
+
 }
 
-.columncenter:hover .videocontrol {
+.columncenter:hover .meetingcontrol {
   transition: all 5000ms cubic-bezier(0.420, 0.000, 1.000, 1.000);
   display: block;
 }
 
-.videocontrol:first-child {
+.meetingcontrol:first-child {
   border-top-left-radius: 2px;
   border-bottom-left-radius: 2px;
 }
 
-.videocontrol .button:last-child {
+.meetingcontrol .button:last-child {
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
   background: #dc143c;
 }
 
-.videocontrol .button {
+.meetingcontrol .button {
   margin-top: -8px;
   width: 48px;
   height: 36px;
@@ -157,21 +159,21 @@ body, button, input, select, textarea {
   color: rgba(255, 255, 255, 0.9);
 }
 
-.videocontrol .button:hover, .videocontrol .button:active {
+.meetingcontrol .button:hover, .meetingcontrol .button:active {
   box-shadow: inset 0 3px 9px rgba(0, 0, 0, 0.25);
   color: rgba( 255, 255, 255, 1.0);
   border: 1px solid rgba(0, 0, 0, 0.2) !important;
 }
 
-.videocontrol .button span:not(:hover) {
+.meetingcontrol .button span:not(:hover) {
   color: rgba( 255, 255, 255, 0.9);
 }
 
-.videocontrol .button .icon:hover {
+.meetingcontrol .button .icon:hover {
   color: rgba( 255, 255, 255, 1.0);
 }
 
-.videocontrol .date {
+.meetingcontrol .date {
   width: 100px !important;
   border-right: 1px solid rgba(0, 0, 0, 0.2) !important;
   font-size: 0.8rem;
@@ -182,13 +184,13 @@ body, button, input, select, textarea {
   border-bottom-left-radius: 2px;
 }
 
-.videocontrol .button .icon {
+.meetingcontrol .button .icon {
   margin-top: -4px;
   font-size: 1.4rem;
   color: rgba( 255, 255, 255, 1.0);
 }
 
-.videocontrol .button .icon:hover {
+.meetingcontrol .button .icon:hover {
   transition: none !important;
   transform: none !important;
 }
@@ -210,10 +212,10 @@ body, button, input, select, textarea {
   color: rgba(255, 255, 255, 0.8);
 }
 
-.videocontrolai {
+.meetingcontrolai {
   width: 186px;
   margin: 0 auto;
-  margin-top: -108px;
+  margin-top: -73px;
   position: relative;
   top: -10px;
   left: 120px;
@@ -224,20 +226,27 @@ body, button, input, select, textarea {
   border-radius: 2px;
 }
 
-.videocontrolai .button {
-  margin-left: 2px;
-  width: 184px;
+.meetingcontrolai .button {
+  width: 186px;
   display: flex;
   justify-content: left;
   font-size: 0.8rem;
 }
 
-.videocontrolai .button:first-child, .videocontrolai .button:last-child {
+.meetingcontrolai .button:first-child, .meetingcontrolai .button:last-child {
   border-radius: 0px;
 }
 
-.videocontrolai .button {
+.meetingcontrolai .button {
   background: transparent !important;
+}
+
+.meetingcontrol .btnactive {
+  background: #47cf73 !important;
+}
+
+.meetingcontrol .btnactive:hover {
+  background: rgba(204, 255, 144, 1.0) !important;
 }
 
 ::-webkit-scrollbar {
@@ -340,11 +349,11 @@ body, button, input, select, textarea {
 }
 
 .lg {
-  color: rgb(204, 255, 144);
+  color: rgba(204, 255, 144, 1.0);
 }
 
 a:hover {
-  color: rgb(204, 255, 144) !important;
+  color: rgba(204, 255, 144, 1.0) !important;
 }
 
 .page-enter-active, .page-leave-active {
@@ -406,8 +415,9 @@ body::scrollbar {
   z-index: -1;
   width: 100vw;
   height: 100vh;
-  /* opacity: 0.8; */
+  opacity: 1.0;
   background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  display: none;
   /* background: linear-gradient(-45deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.4)); */
 	/* animation: gradient 15s ease infinite;
   transition:all 2s ease; */
@@ -444,7 +454,19 @@ body::scrollbar {
   width: 100vw;
   height: 100vh;
   z-index: -2;
+  /* mask-image: linear-gradient(to bottom, transparent 25%, black 75%); */
 } 
+
+#slider:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  opacity: 0.6;
+}
 
 .footerbrackets a {
   color: #fff;

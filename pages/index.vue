@@ -224,21 +224,21 @@ export default {
 
 .settings .button.is-primary:focus:not(:active),
 .settings .button.is-primary.is-focused:not(:active) {
-  color: rgb(204, 255, 144) !important;
+  color: rgba(204, 255, 144, 1.0) !important;
   box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
 }
 
 .settings .button.is-primary {
-  color: rgb(204, 255, 144) !important;
+  color: rgba(204, 255, 144, 1.0) !important;
 }
 
 .settings .b-radio:hover {
   background-color: rgba(0, 0, 0, 0.2);
-  color: rgb(204, 255, 144) !important;
+  color: rgba(204, 255, 144, 1.0) !important;
 }
 
 .settings .is-focused {
-  color: rgb(204, 255, 144) !important;
+  color: rgba(204, 255, 144, 1.0) !important;
 }
 
 .settings .b-radio,
@@ -247,7 +247,7 @@ export default {
 }
 
 .settings .tabs ul li.is-active a {
-  color: rgb(204, 255, 144);
+  color: rgba(204, 255, 144, 1.0);
 }
 
 .settings .tabs ul li:hover a {
@@ -318,7 +318,7 @@ export default {
   height: 47px;
   width: 47px;
   border-radius: 24px !important;
-  border: 1px solid rgb(204, 255, 144);
+  border: 1px solid rgba(204, 255, 144, 1.0);
   background: transparent;
   color: rgba(255, 255, 255, 0.8);
   border-radius: 24px !important;
@@ -337,7 +337,7 @@ export default {
 }
 
 .join:hover {
-  border-color: rgb(204, 255, 144);
+  border-color: rgba(204, 255, 144, 1.0);
   color: #fff;
   transform: scale(1);
 }

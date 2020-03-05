@@ -130,48 +130,7 @@
             </div>
           </div>
         </div>
-        <div class="videocontrol">
-          <div v-show="showaimenu" class="videocontrolai">
-            <b-button
-              @click="ss('blur')"
-              v-if="this.$store.state.supportwenmm"
-              icon-left="blur"
-              >Blur background</b-button
-            >
-            <b-button @click="ss('blur')" v-else icon-left="blur" disabled
-              >Blur background</b-button
-            >
-            <b-button
-              @click="ss('image')"
-              v-if="this.$store.state.supportwenmm"
-              icon-left="image-multiple"
-              >Change background</b-button
-            >
-            <b-button @click="ss('image')" v-else icon-left="image-multiple" disabled
-              >Change background</b-button
-            >
-            <b-button @click="stopSS" icon-left="fullscreen">Stop SS</b-button>
-          </div>
-          <div class="hcontrol">
-            <b-button class="date"><Clock /></b-button>
-            <b-button icon-left="video"></b-button>
-            <b-button icon-left="microphone"></b-button>
-            <b-button icon-left="projector-screen"></b-button>
-            <b-button
-              @click="showAiMenu"
-              icon-left="dots-horizontal"
-            ></b-button>
-            <b-button
-              @click="toggleConversation"
-              icon-left="message-reply-text"
-            ></b-button>
-            <b-button
-              @click="toggleParticipants"
-              icon-left="account-group"
-            ></b-button>
-            <b-button @click="leaveMeeting" icon-left="phone-hangup"></b-button>
-          </div>
-        </div>
+        <Control />
       </div>
       <div class="column rightoptions is-one-fifth">
         <div ref="inferenceTime">{{ inferencetime }}</div>
@@ -210,11 +169,6 @@
     <div id="status" class="columns">
       <div class="column">
         {{ loadedsize }} / {{ totalsize }}MB {{ progress }}%
-        <b-progress
-          :value="progress"
-          class="nnprogress"
-          show-value
-        ></b-progress>
       </div>
     </div>
   </div>
@@ -295,7 +249,7 @@ body {
   border-right: 0px;
   padding: 0px;
   text-align: left;
-  min-height: 60vh;
+  height: 72vh;
 }
 
 .cl {
@@ -304,12 +258,6 @@ body {
 
 #status .column {
   padding: 0;
-}
-
-.nnprogress .progress {
-  height: 1px;
-  border-radius: 0px;
-  background: transparent;
 }
 
 .upload .upload-draggable {
