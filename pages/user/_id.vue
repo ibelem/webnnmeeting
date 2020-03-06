@@ -135,7 +135,6 @@
       <div class="column rightoptions is-one-fifth">
         <div ref="inferenceTime">{{ inferencetime }}</div>
         FPS: {{ showfps }}<br />
-        {{ mode }}
 
         <div id="bgimage" class="">
           <input
@@ -157,18 +156,7 @@
           <span>Choose background image</span>
         </div>
 
-        <MeetingInfo />
-        <div>
-          {{ subscribeType }}<br />
-          EnableVideo: {{ enablevideo }}<br />
-          {{ resolutionwidth }} x {{ resolutionheight }} <br />
-        </div>
-        <div>{{ users }}</div>
-      </div>
-    </div>
-    <div id="status" class="columns">
-      <div class="column">
-        {{ loadedsize }} / {{ totalsize }}MB {{ progress }}%
+         
       </div>
     </div>
   </div>
@@ -254,10 +242,6 @@ body {
 
 .cl {
   border-right: 0px;
-}
-
-#status .column {
-  padding: 0;
 }
 
 .upload .upload-draggable {

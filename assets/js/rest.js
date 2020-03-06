@@ -79,7 +79,8 @@ const updateStream = function(room, stream, host) {
 }
 
 const deleteStream = function(room, stream, host) {
-  send('DELETE', '/rooms/' + room + '/streams/' + stream, onResponse, host);
+  const jsonPatch = [{ name: 'deleteStream'}]
+  send('DELETE', '/rooms/' + room + '/streams/' + stream, jsonPatch, onResponse, host);
 }
 
 const startStreamingIn = function(room, inUrl, host) {

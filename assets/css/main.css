@@ -165,12 +165,20 @@ body, button, input, select, textarea {
   border: 1px solid rgba(0, 0, 0, 0.2) !important;
 }
 
+.meetingcontrolai .button:hover,
+.meetingcontrolai .button:hover .icon i,
+.meetingcontrolai .button:hover span,
+.meetingcontrolai .btneffect span,
+.meetingcontrolai .btneffect .icon i {
+  color: rgba(204, 255, 144, 1.0) !important;
+}
+
 .meetingcontrol .button span:not(:hover) {
-  color: rgba( 255, 255, 255, 0.9);
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .meetingcontrol .button .icon:hover {
-  color: rgba( 255, 255, 255, 1.0);
+  color: rgba(255, 255, 255, 1.0);
 }
 
 .meetingcontrol .date {
@@ -227,18 +235,16 @@ body, button, input, select, textarea {
 }
 
 .meetingcontrolai .button {
-  width: 186px;
+  width: 100%;
   display: flex;
   justify-content: left;
   font-size: 0.8rem;
+  background: transparent !important;
+  margin: 0px;
 }
 
 .meetingcontrolai .button:first-child, .meetingcontrolai .button:last-child {
   border-radius: 0px;
-}
-
-.meetingcontrolai .button {
-  background: transparent !important;
 }
 
 .meetingcontrol .btnactive {

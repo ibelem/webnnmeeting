@@ -40,6 +40,8 @@ export default {
       inferencetime: null,
       renderer: null,
       progress: 0,
+      blurdone: false,
+      bgimgdone: false,
       loadedsize: 0,
       totalsize: 0,
       textmsg: null,
@@ -318,6 +320,8 @@ export default {
     },
     async stopSS() {
       this.ssmode = false
+      this.blurdone = false
+      this.bgimgdone = false
       try {
         this.ssstream = this.videostream
         deleteStream(this.roomId, this.localPublication.id)
@@ -328,19 +332,24 @@ export default {
       } catch (e) {}
     },
     async ss(effect) {
+      this.bgimgdone = false
+      this.blurdone = false
       // this.progress = 0
       this.initRunner()
       if (this.runner) {
         await this.initRenderer(effect)
         await this.runner.loadModel()
         // await this.runner.initModel('WebML', 'sustained')
-        this.progress = 50
         await this.runner.initModel('WebGL', 'none')
-        this.progress = 66
         // this.showSSStream()
         this.ssmode = true
         this.getSSStream()
-        this.progress = 100
+        if(effect === 'blur') {
+          this.blurdone = true
+        }
+        if(effect === "image") {
+          this.bgimgdone = true
+        }
         await this.startPredictCamera()
         deleteStream(this.roomId, this.localPublication.id)
         await this.publishLocal()
