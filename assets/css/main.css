@@ -470,8 +470,9 @@ body::scrollbar {
   right: 0;
   bottom: 0;
   left: 0;
-  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-  opacity: 0.6;
+  /* background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab); */
+  background: radial-gradient(ellipse farthest-corner at center bottom, #23d5ab, #2e9aa4);
+  opacity: 1.0;
 }
 
 .footerbrackets a {

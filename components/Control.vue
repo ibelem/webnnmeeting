@@ -9,9 +9,14 @@
         class="btneffect"
         >
         Blur background
-        <span class="circle c1"></span>
-        <span class="circle c2"></span>
-        <span class="circle c3"></span>
+        <div class="outer-circle c">
+          <div class="inner-circle">  
+          </div>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
       </b-button>
       <b-button
         v-else
@@ -32,12 +37,22 @@
         v-if="this.$parent.bgimgdone"
         icon-left="image-multiple"
         type="is-twitter"
-        class="btneffect btnbgimg"
+        class="btneffect"
         >
         Change background 
+        <!-- 
         <span class="circle m1"></span>
         <span class="circle m2"></span>
         <span class="circle m3"></span>
+        -->
+        <div class="outer-circle m">
+          <div class="inner-circle">  
+          </div>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
       </b-button>
       <b-button
         @click="ss('image')"
@@ -161,13 +176,10 @@ export default {
   animation: scaleIn 2s infinite cubic-bezier(.36, .11, .5, .32);
 }
 
-.btnbgimg {
-  margin-left: 6px !important;
-}
-
 .c1 {
   position: relative;
-  left: 30px;
+  left: 26px;
+  top: 3px;
   animation-delay: 0s;
 }
 
@@ -229,4 +241,69 @@ export default {
   color: rgba(204, 255, 144, 1.0);
 }
 
+.c {
+  position: relative;
+  left: 26px;
+  top: 3px;
+}
+
+.m {
+  position: relative;
+  left: 8px;
+  top: 3px;
+}
+
+.outer-circle {
+  height: 17px;
+  width: 17px;
+  background: linear-gradient(#14ffe9, #ffeb3b, #ff00e0);
+  border-radius: 50%;
+  animation: rotate 1.5s linear infinite;
+  display: inline-block;
+}
+
+.outer-circle span {
+  height: 10px;
+  width: 10px;
+  background: linear-gradient(#14ffe9, #ffeb3b, #ff00e0);
+  border-radius: 50%;
+}
+
+.outer-circle span:nth-child(1) {
+  filter: blur(3px);
+}
+
+.outer-circle span:nth-child(2) {
+  filter: blur(6px);
+}
+
+.outer-circle span:nth-child(3) {
+  filter: blur(9px);
+}
+
+.outer-circle span:nth-child(4) {
+  filter: blur(8px);
+}
+
+.inner-circle {
+  height: 12px;
+  width: 12px;
+  position: absolute;
+  background: black;
+  top: 2.5px;
+  left: 2.5px;
+  border-radius: 50%;
+  z-index: 9;
+  background-image: linear-gradient(to bottom,#3c3c3c 0,#222 100%);
+}
+
+@keyframes rotate {
+  0% {
+    filter: hue-rotate(0deg);
+  }
+
+  100% {
+    filter: hue-rotate(360deg);
+  }
+}
 </style>
