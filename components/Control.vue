@@ -40,11 +40,6 @@
         class="btneffect"
         >
         Change background 
-        <!-- 
-        <span class="circle m1"></span>
-        <span class="circle m2"></span>
-        <span class="circle m3"></span>
-        -->
         <div class="outer-circle m">
           <div class="inner-circle">  
           </div>
@@ -164,70 +159,6 @@ export default {
 .progress-wrapper .progress-value {
   display: block;
   height: 100px;
-}
-
-.circle {
-  display: inline-block;
-  border-radius: 5px;
-  width: 10px;
-  height: 10px;
-  background-color: rgba(204, 255, 144, 1.0);
-  opacity: 0;
-  animation: scaleIn 2s infinite cubic-bezier(.36, .11, .5, .32);
-}
-
-.c1 {
-  position: relative;
-  left: 26px;
-  top: 3px;
-  animation-delay: 0s;
-}
-
-.m1 {
-  position: relative;
-  left: 14px;
-  animation-delay: 0s;
-}
-
-.c2 {
-  position: relative;
-  left: 18px;
-  animation-delay: 1s;
-}
-
-.m2 {
-  position: relative;
-  left: 2px;
-  animation-delay: 1s;
-}
-
-.c3 {
-  position: relative;
-  left: 5.5px;
-  animation-delay: 2s;
-}
-
-.m3 {
-  position: relative;
-  left: -10.5px;
-  animation-delay: 2s;
-}
-
-@keyframes scaleIn {
-  from {
-    transform: scale(.5, .5);
-    opacity: .5;
-  }
-
-  to {
-    transform: scale(2.5, 2.5);
-    opacity: 0;
-  }
-}
-
-.cbgimg {
-  position: relative;
-  left: 10px;
 }
 
 .sseffect {

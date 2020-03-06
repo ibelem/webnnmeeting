@@ -27,6 +27,13 @@ export default {
   },
   data() {
     return {
+      ssbgimg: [
+        '../../img/ssbg/01.jpg',
+        '../../img/ssbg/02.jpg',
+        '../../img/ssbg/03.jpg',
+        '../../img/ssbg/04.jpg',
+        '../../img/ssbg/05.jpg'
+      ],
       showparticipants: false,
       showconversation: false,
       baserunner: null,
@@ -206,6 +213,10 @@ export default {
   methods: {
     fullscreen() {
       console.log('fullscreen')
+    },
+    selectImg(event) {
+      console.log(event.target)
+      this.renderer.backgroundImageSource = event.target.src
     },
     updateProgress(ev) {
       if (ev.lengthComputable) {

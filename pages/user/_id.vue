@@ -1,9 +1,10 @@
 <template>
   <div>
-    <!-- <div>
-      <video id="ssvideo" ref="ssvideo" playsinline autoplay></video>
+    <div>
+      <!-- <video id="ssvideo" ref="ssvideo" playsinline autoplay></video> -->
+      <div ref="inferenceTime">{{ inferencetime }}</div>
+      FPS: {{ showfps }}<br />
     </div>
-    -->
     <div class="columns user">
       <div
         v-show="showparticipants || showconversation"
@@ -133,8 +134,11 @@
         <Control />
       </div>
       <div class="column rightoptions is-one-fifth">
-        <div ref="inferenceTime">{{ inferencetime }}</div>
-        FPS: {{ showfps }}<br />
+        <div class="isleft pd cb">Change background</div>
+
+        <div v-for="i in ssbgimg" @click="selectImg($event)" class="bgimgselectors">
+          <img :src="i" class="bgimgselector" />
+        </div>
 
         <div id="bgimage" class="">
           <input
@@ -153,7 +157,6 @@
               ></path>
             </svg>
           </label>
-          <span>Choose background image</span>
         </div>
 
          
@@ -250,7 +253,19 @@ body {
 }
 
 .rightoptions.column {
-  padding: 0.75rem 0px;
+  padding: 0px;
+  max-height: 72vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+#bgimage {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+#bgimage:hover {
+  background-color: rgba(0, 0, 0, 0.2);
 }
 
 .inputfile {
@@ -279,12 +294,11 @@ body {
 }
 
 .inputfile + label svg {
-  width: 1em;
-  height: 1em;
+  width: 100%;
+  height: 1.5em;
   vertical-align: middle;
   fill: currentColor;
-  margin-top: -0.25em;
-  margin-right: 0.25em;
+  margin: 0;
 }
 
 .inputfile + label span {
@@ -293,13 +307,13 @@ body {
 
 .inputf + label {
   color: rgba(255, 255, 255, 0.9);
-  border: 1px solid currentColor;
+  border: 0px solid currentColor;
 }
 
 .inputf:focus + label,
 .inputf.has-focus + label,
 .inputf + label:hover {
-  color: rgba(255, 255, 255, 1);
+  background-color: rgba(255, 255, 255, 0);
 }
 
 .username {
@@ -336,5 +350,31 @@ body {
   width: 320px;
   border: 1px solid red;
   z-index: 3000;
+}
+
+.cb {
+  margin-bottom: 0.75rem;
+}
+
+.bgimgselectors {
+  width: 100%;
+  max-height: 82px;
+  overflow: hidden;
+  margin: 0px;
+}
+
+.bgimgselectors img 
+{
+  transition: all .2s ease-in-out;
+}
+
+.bgimgselectors:hover img 
+{
+  cursor: pointer;
+  transform: scale(1.5);
+}
+
+.bgimgselector {
+  width: 100%;
 }
 </style>
