@@ -4,8 +4,8 @@
       Your browser supports Web Neural Network API.
     </div>
     <div v-else class="webnn-not-supported">
-      Your browser doesn't support Web Neural Network API, machine learning
-      features are disabled.
+      Your browser does not support the Web Neural Network API, 
+      AI features will run in WebGL mode with low performance.
     </div>
   </div>
 </template>

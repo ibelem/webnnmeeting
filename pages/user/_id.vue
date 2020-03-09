@@ -197,7 +197,7 @@ body {
 .videosetforcanvas {
   display: inline-block;
   margin-bottom: -7px;
-  width: 513px;
+  width: calc(100% / 4);
   margin-right: -1px;
   overflow: hidden;
 }
@@ -219,7 +219,8 @@ body {
   position: absolute;
 }
 
-.videoset .user {
+.videoset .user,
+.videosetforcanvas .user {
   position: relative;
   text-align: center;
   top: -7px;
@@ -229,6 +230,7 @@ body {
   height: 20px;
   overflow: hidden;
   text-overflow: ellipsis;
+  z-index: 1001;
 }
 
 .videoset .user:hover {
@@ -341,11 +343,6 @@ body {
   transform: scale(1.4) !important;
 }
 
-#sscanvas {
-  width: auto !important;
-  height: auto !important;
-}
-
 #ssvideo {
   width: 320px;
   border: 1px solid red;
@@ -368,7 +365,7 @@ body {
   transition: all .2s ease-in-out;
 }
 
-.bgimgselectors:hover img 
+.bgimgselectors:hover img
 {
   cursor: pointer;
   transform: scale(1.5);

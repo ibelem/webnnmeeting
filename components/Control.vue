@@ -69,10 +69,19 @@
       <b-button icon-left="video"></b-button>
       <b-button icon-left="microphone"></b-button>
       <b-button icon-left="projector-screen"></b-button>
+
       <b-button
+        v-if="this.showaimenu"
+        @click="showAiMenu"
+        icon-left="dots-horizontal"
+        class="btnactive"
+      ></b-button>
+      <b-button
+        v-else
         @click="showAiMenu"
         icon-left="dots-horizontal"
       ></b-button>
+
       <b-button
         v-if="this.$parent.showconversation" @click="toggleConversation" class="btnactive"
         icon-left="message-reply-text"
@@ -81,6 +90,7 @@
         v-else @click="toggleConversation"
         icon-left="message-reply-text"
       ></b-button>
+
       <b-button
         @click="toggleParticipants" 
         v-if="this.$parent.showparticipants"
@@ -128,11 +138,7 @@ export default {
       this.$parent.leaveMeeting()
     },
     showAiMenu() {
-      if (!this.showaimenu) {
-        this.showaimenu = true
-      } else {
-        this.showaimenu = false
-      }
+      this.showaimenu = !this.showaimenu
     },
     toggleParticipants() {
       this.$parent.showparticipants = !this.$parent.showparticipants

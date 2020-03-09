@@ -247,12 +247,9 @@ body, button, input, select, textarea {
   border-radius: 0px;
 }
 
-.meetingcontrol .btnactive {
-  background: #47cf73 !important;
-}
-
-.meetingcontrol .btnactive:hover {
-  background: rgba(204, 255, 144, 1.0) !important;
+.meetingcontrol .btnactive .icon i  {
+  /* background: #47cf73 !important; */
+  color: rgba(204, 255, 144, 1.0) !important;
 }
 
 ::-webkit-scrollbar {
@@ -470,9 +467,9 @@ body::scrollbar {
   right: 0;
   bottom: 0;
   left: 0;
-  /* background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab); */
-  background: radial-gradient(ellipse farthest-corner at center bottom, #23d5ab, #2e9aa4);
-  opacity: 1.0;
+  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  /* background: radial-gradient(ellipse farthest-corner at center bottom, #23d5ab, #2e9aa4); */
+  opacity: 0.6;
 }
 
 .footerbrackets a {
