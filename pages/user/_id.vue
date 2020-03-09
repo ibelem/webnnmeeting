@@ -6,162 +6,170 @@
       FPS: {{ showfps }}<br />
     </div>
     <div class="columns user">
-      <div
-        v-show="showparticipants || showconversation"
-        class="column cl nopadding is-one-fifth"
-      >
-        <div id="layoutparticipants" v-show="showparticipants">
-          <div class="isleft pd">PARTICIPANTS</div>
-          <div class="isleft pd2">
-            Presenters ({{ this.$store.state.participants.number }})
-          </div>
-
-          <div ref="userlist" class="userlist">
-            <div v-for="u in users" class="columns">
-              <div class="column ull isleft is-three-quarters">
-                <b-icon class="ulicon" icon="account" size="is-small"> </b-icon>
-                <span class="ulu">{{ u.userId }}</span>
-              </div>
-              <div class="column ulr">
-                <b-icon v-if="u.video" icon="video" size="is-small"> </b-icon>
-                <b-icon v-else icon="video-off" size="is-small"> </b-icon>
-                <b-icon v-if="u.muted" icon="microphone-off" size="is-small">
-                </b-icon>
-                <b-icon v-else icon="microphone-high" size="is-small"> </b-icon>
-                <b-icon icon="projector-screen" size="is-small"> </b-icon>
-              </div>
-            </div>
-          </div>
-        </div>
+      <transition name="fade-slide">
         <div
-          v-show="showparticipants && showconversation"
-          class="issplit"
-        ></div>
-        <div id="layoutconversation" v-show="showconversation">
-          <div class="isleft pd">CONVERSATION</div>
-          <div ref="conversation" class="conversation">
-            <div v-show="textmsgs" v-for="t in textmsgs" class="cslist">
-              <div class="columns">
-                <span class="imtime column">{{ t.time }}</span
-                ><span class="imuser column">{{ t.user }}</span>
-              </div>
-              <div class="im">{{ t.message }}</div>
+          v-show="showparticipants || showconversation"
+          class="column cl nopadding is-one-fifth"
+        >
+          <div id="layoutparticipants" v-show="showparticipants">
+            <div class="isleft pd">PARTICIPANTS</div>
+            <div class="isleft pd2">
+              Presenters ({{ this.$store.state.participants.number }})
             </div>
-          </div>
-          <b-field id="send">
-            <b-input
-              v-model="textmsg"
-              @keyup.native.enter="sendIm"
-              placeholder="..."
-              type="text"
-            ></b-input>
-            <b-button @click="sendIm" icon-left="send"> </b-button>
-          </b-field>
-        </div>
-      </div>
-      <div class="column columncenter">
-        <div class="videos">
-          <div v-show="localuser.srcObject && ssmode" class="videosetforcanvas">
-            <div class="scale">
-              <div class="v">
-                <canvas id="sscanvas" ref="sscanvas"></canvas>
-                <!-- <canvas v-show="!ssmode" id="localcanvas" ref="localcanvas"></canvas> -->
-                <div class="user">
-                  <div class="username">{{ localuser.userId }} CANVAS</div>
-                  <b-button
-                    @click="fullscreen"
-                    :id="localuser.id"
-                    :ref="localuser.id"
-                    icon-left="fullscreen"
-                    class="btnfullscreen"
-                  ></b-button>
+
+            <div ref="userlist" class="userlist">
+              <div v-for="u in users" class="columns">
+                <div class="column ull isleft is-three-quarters">
+                  <b-icon class="ulicon" icon="account" size="is-small"> </b-icon>
+                  <span class="ulu">{{ u.userId }}</span>
                 </div>
-              </div>
-            </div>
-          </div>
-          <div v-show="localuser.srcObject && !ssmode" class="videoset">
-            <div class="scale">
-              <div class="v">
-                <video
-                  id="localvideo"
-                  ref="localvideo"
-                  :src-object.prop.camel="localuser.srcObject"
-                  playsinline
-                  autoplay
-                ></video>
-                <div class="user">
-                  <div class="username">{{ localuser.userId }} VIDEO</div>
-                  <b-button
-                    @click="fullscreen"
-                    :id="localuser.id"
-                    :ref="localuser.id"
-                    icon-left="fullscreen"
-                    class="btnfullscreen"
-                  ></b-button>
+                <div class="column ulr">
+                  <b-icon v-if="u.video" icon="video" size="is-small"> </b-icon>
+                  <b-icon v-else icon="video-off" size="is-small"> </b-icon>
+                  <b-icon v-if="u.muted" icon="microphone-off" size="is-small">
+                  </b-icon>
+                  <b-icon v-else icon="microphone-high" size="is-small"> </b-icon>
+                  <b-icon icon="projector-screen" size="is-small"> </b-icon>
                 </div>
               </div>
             </div>
           </div>
           <div
-            v-show="users.length > 0 && u.srcObject && !u.local"
-            v-for="u in users"
-            class="videoset"
-          >
-            <div class="scale">
-              <div class="v">
-                <video
-                  v-show="u.srcObject && !u.local"
-                  :src-object.prop.camel="u.srcObject"
-                  playsinline
-                  autoplay
-                ></video>
-                <div class="user">
-                  <div v-show="u.srcObject && !u.local" class="username">
-                    {{ u.userId }}
+            v-show="showparticipants && showconversation"
+            class="issplit"
+          ></div>
+          <div id="layoutconversation" v-show="showconversation">
+            <div class="isleft pd">CONVERSATION</div>
+            <div ref="conversation" class="conversation">
+              <div v-show="textmsgs" v-for="t in textmsgs" class="cslist">
+                <div class="columns">
+                  <span class="imtime column">{{ t.time }}</span
+                  ><span class="imuser column">{{ t.user }}</span>
+                </div>
+                <div class="im">{{ t.message }}</div>
+              </div>
+            </div>
+            <b-field id="send">
+              <b-input
+                v-model="textmsg"
+                @keyup.native.enter="sendIm"
+                placeholder="..."
+                type="text"
+              ></b-input>
+              <b-button @click="sendIm" icon-left="send"> </b-button>
+            </b-field>
+          </div>
+        </div>
+      </transition>
+      <transition name="fade">
+        <div class="column columncenter">
+          <div class="videos">
+            <div v-show="localuser.srcObject && ssmode" class="videosetforcanvas">
+              <div class="scale">
+                <div class="v">
+                  <canvas id="sscanvas" ref="sscanvas"></canvas>
+                  <!-- <canvas v-show="!ssmode" id="localcanvas" ref="localcanvas"></canvas> -->
+                  <div class="user">
+                    <div class="username">{{ localuser.userId }} CANVAS</div>
+                    <b-button
+                      @click="fullscreen"
+                      :id="localuser.id"
+                      :ref="localuser.id"
+                      icon-left="fullscreen"
+                      class="btnfullscreen"
+                    ></b-button>
                   </div>
-                  <b-button
-                    @click="fullscreen"
-                    :id="u.id"
-                    :ref="u.id"
-                    icon-left="fullscreen"
-                    class="btnfullscreen"
-                  ></b-button>
+                </div>
+              </div>
+            </div>
+            <div v-show="localuser.srcObject && !ssmode" class="videoset">
+              <div class="scale">
+                <div class="v">
+                  <video
+                    id="localvideo"
+                    ref="localvideo"
+                    :src-object.prop.camel="localuser.srcObject"
+                    playsinline
+                    autoplay
+                  ></video>
+                  <div class="user">
+                    <div class="username">{{ localuser.userId }} VIDEO</div>
+                    <b-button
+                      @click="fullscreen"
+                      :id="localuser.id"
+                      :ref="localuser.id"
+                      icon-left="fullscreen"
+                      class="btnfullscreen"
+                    ></b-button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              v-show="users.length > 0 && u.srcObject && !u.local"
+              v-for="u in users"
+              class="videoset"
+            >
+              <div class="scale">
+                <div class="v">
+                  <video
+                    v-show="u.srcObject && !u.local"
+                    :src-object.prop.camel="u.srcObject"
+                    playsinline
+                    autoplay
+                  ></video>
+                  <div class="user">
+                    <div v-show="u.srcObject && !u.local" class="username">
+                      {{ u.userId }}
+                    </div>
+                    <b-button
+                      @click="fullscreen"
+                      :id="u.id"
+                      :ref="u.id"
+                      icon-left="fullscreen"
+                      class="btnfullscreen"
+                    ></b-button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <Control />
-      </div>
-      <div class="column rightoptions is-one-fifth">
-        <div class="isleft pd cb">Change background</div>
+      </transition>
+      <transition name="slide-fade">
+        <div v-if="showrightsidebar" class="column cr rightoptions is-one-fifth">
+          <div class="isleft pd cb">Change background <b-button @click="closeRightSideBar" id="sidebarclose" size="is-small" icon-left="close"></b-button></div>
 
-        <div v-for="i in ssbgimg" @click="selectImg($event)" class="bgimgselectors">
-          <img :src="i" class="bgimgselector" />
+          <div v-for="i in ssbgimg" @click="selectImg($event)" class="bgimgselectors">
+            <img :src="i" class="bgimgselector" />
+          </div>
+
+          <img :src="defaultbgimg" ref="defaultbgimg" id="defaultbgimg" />
+
+          <div id="bgimage" class="">
+            <input
+              id="bgimg"
+              ref="bgimg"
+              @change="updateSSBackground"
+              type="file"
+              name="f"
+              accept="image/*"
+              class="inputfile inputf"
+            />
+            <label for="bgimg">
+              <svg width="20" height="17" viewBox="0 0 20 17">
+                <path
+                  d="M10 0l-5.2 4.9h3.3v5.1h3.8v-5.1h3.3l-5.2-4.9zm9.3 11.5l-3.2-2.1h-2l3.4 2.6h-3.5c-.1 0-.2.1-.2.1l-.8 2.3h-6l-.8-2.2c-.1-.1-.1-.2-.2-.2h-3.6l3.4-2.6h-2l-3.2 2.1c-.4.3-.7 1-.6 1.5l.6 3.1c.1.5.7.9 1.2.9h16.3c.6 0 1.1-.4 1.3-.9l.6-3.1c.1-.5-.2-1.2-.7-1.5z"
+                ></path>
+              </svg>
+            </label>
+          </div>
+
+          
         </div>
-
-        <div id="bgimage" class="">
-          <input
-            id="bgimg"
-            ref="bgimg"
-            @change="updateSSBackground"
-            type="file"
-            name="f"
-            accept="image/*"
-            class="inputfile inputf"
-          />
-          <label for="bgimg">
-            <svg width="20" height="17" viewBox="0 0 20 17">
-              <path
-                d="M10 0l-5.2 4.9h3.3v5.1h3.8v-5.1h3.3l-5.2-4.9zm9.3 11.5l-3.2-2.1h-2l3.4 2.6h-3.5c-.1 0-.2.1-.2.1l-.8 2.3h-6l-.8-2.2c-.1-.1-.1-.2-.2-.2h-3.6l3.4-2.6h-2l-3.2 2.1c-.4.3-.7 1-.6 1.5l.6 3.1c.1.5.7.9 1.2.9h16.3c.6 0 1.1-.4 1.3-.9l.6-3.1c.1-.5-.2-1.2-.7-1.5z"
-              ></path>
-            </svg>
-          </label>
-        </div>
-
-         
-      </div>
+      </transition>
     </div>
+    <Control ref="control" />
   </div>
 </template>
 <script>
@@ -239,7 +247,7 @@ body {
 
 .columncenter {
   border-left: 1px solid rgba(255, 255, 255, 0.2);
-  border-right: 0px;
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
   padding: 0px;
   text-align: left;
   height: 72vh;
@@ -247,6 +255,10 @@ body {
 
 .cl {
   border-right: 0px;
+}
+
+.cr {
+  border-left: 0px;
 }
 
 .upload .upload-draggable {
@@ -353,14 +365,35 @@ body {
   margin-bottom: 0.75rem;
 }
 
-.bgimgselectors {
-  width: 100%;
-  max-height: 82px;
-  overflow: hidden;
-  margin: 0px;
+#sidebarclose {
+  float: right;
+  margin-top: -3px;
 }
 
-.bgimgselectors img 
+.bgimgselectors {
+  width: 50%;
+  max-height: 60px;
+  overflow: hidden;
+  margin: 0px;
+  display: inline-block;
+  margin-bottom: -5px;
+}
+
+.bgimgselectors img {
+  opacity: 0.8;
+  height: 60px;
+  margin: 0;
+}
+
+.bgimgselectors:nth-child(even) img {
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.bgimgselectors:hover img {
+  opacity: 1;
+}
+
+.bgimgselectors img
 {
   transition: all .2s ease-in-out;
 }
@@ -371,7 +404,30 @@ body {
   transform: scale(1.5);
 }
 
+.videosetforcanvas canvas,
+.videoset canvas,
+.videoset video
+{
+  transition: all .2s ease-in-out;
+}
+
+.videosetforcanvas canvas:hover,
+.videoset canvas:hover,
+.videoset video:hover
+{
+  cursor: pointer;
+  transform: scale(1.2);
+}
+
 .bgimgselector {
   width: 100%;
+}
+
+.inputf + label {
+  outline: 0;
+}
+
+#defaultbgimg {
+  display: none;
 }
 </style>

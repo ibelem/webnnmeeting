@@ -18,13 +18,18 @@ export default {
     }
   },
   mounted() {
-    setTimeout(this.updateWebNNStatus, 100)
+    setTimeout(this.updateWebNNStatus, 1000)
   },
   methods: {
     updateWebNNStatus() {
       if (navigator.ml && navigator.ml.getNeuralNetworkContext()) {
-        this.webmlstatus = true
-        this.$store.commit('setWebNN', true)
+        if (!navigator.ml.isPolyfill) {
+          this.webmlstatus = true
+          this.$store.commit('setWebNN', true)
+        } else {
+          this.webmlstatus = false
+          this.$store.commit('setWebNN', false)
+        }
       } else {
         this.webmlstatus = false
         this.$store.commit('setWebNN', false)

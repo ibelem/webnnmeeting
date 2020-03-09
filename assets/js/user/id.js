@@ -28,12 +28,17 @@ export default {
   data() {
     return {
       ssbgimg: [
+        '../../img/ssbg/00.jpg',
         '../../img/ssbg/01.jpg',
         '../../img/ssbg/02.jpg',
         '../../img/ssbg/03.jpg',
         '../../img/ssbg/04.jpg',
         '../../img/ssbg/05.jpg'
       ],
+      defaultbgimg: '../../img/ssbg/00.jpg',
+      isblur: false,
+      isbgimg: false,
+      showrightsidebar: false,
       showparticipants: false,
       showconversation: false,
       baserunner: null,
@@ -214,11 +219,14 @@ export default {
     fullscreen() {
       console.log('fullscreen')
     },
+    closeRightSideBar() {
+      this.showrightsidebar = false
+    },
     selectImg(event) {
       console.log(event.target)
-      this.renderer.backgroundImageSource = event.target.src
+      this.renderer.backgroundImageSource = event.target
     },
-    updateProgress(ev) {
+    async updateProgress(ev) {
       if (ev.lengthComputable) {
         this.totalsize = ev.total / (1000 * 1000)
         this.totalsize = this.totalsize.toFixed(1)
@@ -246,7 +254,7 @@ export default {
         }
         img.src = URL.createObjectURL(files[0])
       } else {
-        this.renderer.backgroundImageSource = null
+        this.renderer.backgroundImageSource = this.$refs.defaultbgimg
       }
     },
     getClippedSize(source) {
@@ -360,6 +368,7 @@ export default {
         }
         if(effect === "image") {
           this.bgimgdone = true
+          this.renderer.backgroundImageSource = this.$refs.defaultbgimg
         }
         await this.startPredictCamera()
         deleteStream(this.roomId, this.localPublication.id)
