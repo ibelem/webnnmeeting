@@ -8,9 +8,6 @@ export default {
     script: [
       { src: '../../js/socket.io.js', defer: true },
       { src: '../../js/adapter-7.0.0.js', defer: true },
-      { src: '../../js/three.js', defer: true },
-      { src: '../../js/gsap.js', defer: true },
-      { src: '../../js/sketch.js', defer: true },
       {
         src: '../../js/webnn/dist/webml-polyfill.js',
         defer: true

@@ -248,7 +248,7 @@ export default {
     initRenderer(effect) {
       this.renderer = new Renderer(this.$refs.sscanvas)
       this.renderer.refineEdgeRadius = 6
-      this.renderer.blurRadius = 15
+      this.renderer.blurRadius = 10
       this.renderer.effect = effect
       this.renderer.setup()
     },
