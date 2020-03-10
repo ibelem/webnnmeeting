@@ -158,28 +158,25 @@ body, button, input, select, textarea {
   border-top: 0px solid rgba(255, 255, 255, 0.2);
   height: 36px;
   text-align: center;
-  display: none;
   z-index: 999;
-  position: fixed;
-  bottom: 110px;
   margin:0 auto;
-  left:0;
-  right:0;
+  position: relative;
+  top: -80px;
 }
 
 .togglecontrolbar {
-  position: fixed !important;
-  bottom: 55px;
-  left: 86px;
-  background-color: rgba(255, 255, 255, 0.2) !important;
-  border-radius: 2px;
+  width: 48px !important;
+  background-color: rgba(255, 255, 255, 0) !important;
+  position: relative !important;
+  display: block !important;
+  top: 68px;
+  left: -10px;
 }
 
 .togglecontrolbar:hover {
-  box-shadow: inset 0 3px 9px rgba(0, 0, 0, 0.25);
+  box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0) !important;
   color: rgba(255, 255, 255, 1.0);
-  border: 0px solid rgba(0, 0, 0, 0.7) !important;
-  background-color: rgba(0, 0, 0, 0.2) !important;
+  background-color: rgba(255, 255, 255, 0.2) !important;
 }
 
 .container:hover .meetingcontrol {
@@ -187,9 +184,16 @@ body, button, input, select, textarea {
   display: block;
 }
 
-.meetingcontrol:first-child {
+.meetingcontrol .button:first-child {
   border-top-left-radius: 2px;
   border-bottom-left-radius: 2px;
+  width: 24px;
+}
+
+.meetingcontrolai .button:first-child {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+  width: 100%;
 }
 
 .meetingcontrol .button:last-child {
@@ -239,8 +243,6 @@ body, button, input, select, textarea {
   padding: 0px 0 0 0;
   height: 36px;
   overflow: hidden;
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
 }
 
 .meetingcontrol .button .icon {
@@ -252,12 +254,6 @@ body, button, input, select, textarea {
 .meetingcontrol .button .icon:hover {
   transition: none !important;
   transform: none !important;
-}
-
-.hcontrol {
-  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
-  display: inline-block;
-  border-radius: 2px;
 }
 
 .button:focus,
@@ -274,10 +270,10 @@ body, button, input, select, textarea {
 .meetingcontrolai {
   width: 186px;
   margin: 0 auto;
-  margin-top: -73px;
+  margin-top: 0px;
   position: relative;
   top: -10px;
-  left: 120px;
+  left: 132px;
   text-align: left;
   background-image: linear-gradient(to bottom,#3c3c3c 0,#222 100%);
   background-repeat: repeat-x;

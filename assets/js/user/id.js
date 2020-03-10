@@ -15,7 +15,6 @@ import {
 import Renderer from '~/assets/js/webnn/webgl/DrawOutputs'
 import Control from '~/components/Control.vue'
 import MeetingInfo from '~/components/MeetingInfo.vue'
-import Clock from '~/components/Clock.vue'
 
 export default {
   name: 'User',
@@ -27,8 +26,7 @@ export default {
   // layout: 'userbgimg',
   components: {
     Control,
-    MeetingInfo,
-    Clock
+    MeetingInfo
   },
   data() {
     return {

@@ -26,7 +26,6 @@
           v-if="this.$parent.isblur && this.$parent.blurdone"
           :value="this.$parent.progress"
           type="is-twitter"
-          show-value
           class="nnprogress"
         >
         </b-progress>
@@ -34,7 +33,6 @@
           v-else-if="this.$parent.isblur"
           :value="this.$parent.progress"
           type="is-danger"
-          show-value
           class="nnprogress"
         >
         </b-progress>
@@ -67,7 +65,6 @@
           v-if="this.$parent.isbgimg && this.$parent.bgimgdone"
           :value="this.$parent.progress"
           type="is-twitter"
-          show-value
           class="nnprogress"
         >
         </b-progress>
@@ -75,22 +72,19 @@
           v-else-if="this.$parent.isbgimg"
           :value="this.$parent.progress"
           type="is-danger"
-          show-value
           class="nnprogress"
         >
         </b-progress>
       </div>
     </transition>
     <div class="hcontrol">
-      <transition name="fade">
-        <b-button
-          v-if="!controlbar"
-          @click="toggleControlBar"
-          icon-left="chevron-right"
-          class="togglecontrolbar"
-        ></b-button>
-      </transition>
-      <transition name="fade-slide">
+      <b-button
+        v-if="!controlbar"
+        @click="toggleControlBar"
+        icon-left="chevron-right"
+        class="togglecontrolbar"
+      ></b-button>
+      <transition name="slide-fade">
         <div v-if="controlbar">
           <b-button
             @click="toggleControlBar"
@@ -144,7 +138,12 @@
 </template>
 
 <script>
+import Clock from '~/components/Clock.vue'
+
 export default {
+  components: {
+    Clock
+  },
   data() {
     return {
       showaimenu: false,
