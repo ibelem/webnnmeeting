@@ -116,6 +116,15 @@ export default {
         //       v: this.enablevideo
         //     }
         // })
+
+        const supportwebnn = this.$store.state.supportwebnn
+        let bp = null
+        if (supportwebnn) {
+          bp = '&b=WebML&p=sustained'
+        } else {
+          bp = '&b=WebGL&p=none'
+        }
+
         const path = '/user/' + this.user
         const query =
           '/?t=' +
@@ -123,7 +132,8 @@ export default {
           '&r=' +
           this.resolution +
           '&v=' +
-          this.enablevideo
+          this.enablevideo +
+          bp
         location.href = path + query
       }
     },

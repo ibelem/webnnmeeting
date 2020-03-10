@@ -1,7 +1,7 @@
 // export const strict = false
 
 export const state = () => ({
-  supportwenmm: false,
+  supportwebnn: false,
   participants: {
     name: [],
     number: 0
@@ -19,7 +19,7 @@ export const state = () => ({
 
 export const mutations = {
   setWebNN(state, data) {
-    state.supportwenmm = data
+    state.supportwebnn = data
   },
   setParticipantsnumber(state, data) {
     state.participants.number = data

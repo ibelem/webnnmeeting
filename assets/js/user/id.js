@@ -141,6 +141,12 @@ export default {
     showparticipantsandconversation() {
       return this.showparticipants && this.showconversation
     },
+    backend() {
+      return this.$route.query.b
+    },
+    prefer() {
+      return this.$route.query.p
+    },
     subscribeType() {
       return this.$route.query.t
       // return this.$store.state.subscribetype
@@ -241,8 +247,8 @@ export default {
     },
     initRenderer(effect) {
       this.renderer = new Renderer(this.$refs.sscanvas)
-      this.renderer.refineEdgeRadius = 2
-      this.renderer.blurRadius = 4
+      this.renderer.refineEdgeRadius = 6
+      this.renderer.blurRadius = 15
       this.renderer.effect = effect
       this.renderer.setup()
     },
@@ -361,7 +367,10 @@ export default {
         await this.initRenderer(effect)
         await this.runner.loadModel()
         // await this.runner.initModel('WebML', 'sustained')
-        await this.runner.initModel('WebGL', 'none')
+        if (this.backend === 'webml') {
+          this.backend = 'WebML'
+        }
+        await this.runner.initModel(this.backend, this.prefer)
         // this.showSSStream()
         this.ssmode = true
         this.getSSStream()
