@@ -1,7 +1,12 @@
 import config from '~/config'
 import Owt from '~/assets/js/owt/owt'
 import { Stats, fps } from '~/assets/js/fps'
-import { deleteStream, updateStream, mixStream, createToken, getStreams } from '~/assets/js/rest'
+import {
+  deleteStream,
+  mixStream,
+  createToken,
+  getStreams
+} from '~/assets/js/rest'
 import getTime from '~/assets/js/user/time'
 import {
   baseRunner,
@@ -46,7 +51,6 @@ export default {
       ssmode: false,
       videostream: null,
       ssstream: null,
-      sstimer: null,
       sstimer: null,
       sspublishtimer: null,
       inferencetime: null,
@@ -226,7 +230,7 @@ export default {
       console.log(event.target)
       this.renderer.backgroundImageSource = event.target
     },
-    async updateProgress(ev) {
+    updateProgress(ev) {
       if (ev.lengthComputable) {
         this.totalsize = ev.total / (1000 * 1000)
         this.totalsize = this.totalsize.toFixed(1)
@@ -292,7 +296,7 @@ export default {
     },
     getSSStream() {
       this.ssstream = this.$refs.sscanvas.captureStream()
-      let audiotrack = this.videostream.getTracks().filter((track) => {
+      const audiotrack = this.videostream.getTracks().filter((track) => {
         return track.kind === 'audio'
       })[0]
       this.ssstream.addTrack(audiotrack)
@@ -363,10 +367,10 @@ export default {
         // this.showSSStream()
         this.ssmode = true
         this.getSSStream()
-        if(effect === 'blur') {
+        if (effect === 'blur') {
           this.blurdone = true
         }
-        if(effect === "image") {
+        if (effect === 'image') {
           this.bgimgdone = true
           this.renderer.backgroundImageSource = this.$refs.defaultbgimg
         }
@@ -789,7 +793,6 @@ export default {
       }
 
       if (stream.source.video !== 'screen-cast') {
-        
         if (isLocal) {
           const newusers = this.users.map((p) =>
             p.local === true ? { ...p, srcObject: stream.mediaStream } : p

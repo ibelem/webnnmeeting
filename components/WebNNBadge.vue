@@ -4,8 +4,8 @@
       Your browser supports Web Neural Network API.
     </div>
     <div v-else class="webnn-not-supported">
-      Your browser does not support the Web Neural Network API, 
-      AI features will run in WebGL mode with low performance.
+      Your browser does not support the Web Neural Network API, AI features will
+      run in WebGL mode with low performance.
     </div>
   </div>
 </template>
@@ -50,6 +50,6 @@ export default {
   padding: 0 8px;
   font-style: italic;
   font-size: 0.8rem;
-  color: rgba(204, 255, 144, 1.0);
+  color: rgba(204, 255, 144, 1);
 }
 </style>

@@ -18,8 +18,8 @@ module.exports = {
     httpsport: 8080
   },
   certificate: {
-    cert: './webnn-veritas.crt',
-    key: './webnn-veritas.key'
+    cert: '/home/belem/github/webnnmeeting/webnn-veritas.crt',
+    key: '/home/belem/github/webnnmeeting/webnn-veritas.key'
   },
   semanticsegmentation: {
     modelName: 'Deeplab 224 Atrous (TFLite)',

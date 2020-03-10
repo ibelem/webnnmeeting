@@ -75,13 +75,27 @@ const mixStream = function(room, stream, view, host) {
 
 // https://software.intel.com/sites/products/documentation/webrtc/restapi/
 const updateStream = function(room, stream, host) {
-  const jsonPatch = [{ op: 'replace', path: '/media/video/status', value: 'inactive'}]
-  send('PATCH', '/rooms/' + room + '/streams/' + stream, jsonPatch, onResponse, host)
+  const jsonPatch = [
+    { op: 'replace', path: '/media/video/status', value: 'inactive' }
+  ]
+  send(
+    'PATCH',
+    '/rooms/' + room + '/streams/' + stream,
+    jsonPatch,
+    onResponse,
+    host
+  )
 }
 
 const deleteStream = function(room, stream, host) {
-  const jsonPatch = [{ name: 'deleteStream'}]
-  send('DELETE', '/rooms/' + room + '/streams/' + stream, jsonPatch, onResponse, host);
+  const jsonPatch = [{ name: 'deleteStream' }]
+  send(
+    'DELETE',
+    '/rooms/' + room + '/streams/' + stream,
+    jsonPatch,
+    onResponse,
+    host
+  )
 }
 
 const startStreamingIn = function(room, inUrl, host) {

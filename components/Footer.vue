@@ -40,7 +40,7 @@ export default {
 </script>
 
 <style scope>
-  .hero-foot .section {
-    padding: 0 0 1rem 0 !important;
-  }
+.hero-foot .section {
+  padding: 0 0 1rem 0 !important;
+}
 </style>

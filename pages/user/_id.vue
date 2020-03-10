@@ -20,7 +20,8 @@
             <div ref="userlist" class="userlist">
               <div v-for="u in users" class="columns">
                 <div class="column ull isleft is-three-quarters">
-                  <b-icon class="ulicon" icon="account" size="is-small"> </b-icon>
+                  <b-icon class="ulicon" icon="account" size="is-small">
+                  </b-icon>
                   <span class="ulu">{{ u.userId }}</span>
                 </div>
                 <div class="column ulr">
@@ -28,7 +29,8 @@
                   <b-icon v-else icon="video-off" size="is-small"> </b-icon>
                   <b-icon v-if="u.muted" icon="microphone-off" size="is-small">
                   </b-icon>
-                  <b-icon v-else icon="microphone-high" size="is-small"> </b-icon>
+                  <b-icon v-else icon="microphone-high" size="is-small">
+                  </b-icon>
                   <b-icon icon="projector-screen" size="is-small"> </b-icon>
                 </div>
               </div>
@@ -64,7 +66,10 @@
       <transition name="fade">
         <div class="column columncenter">
           <div class="videos">
-            <div v-show="localuser.srcObject && ssmode" class="videosetforcanvas">
+            <div
+              v-show="localuser.srcObject && ssmode"
+              class="videosetforcanvas"
+            >
               <div class="scale">
                 <div class="v">
                   <canvas id="sscanvas" ref="sscanvas"></canvas>
@@ -137,14 +142,29 @@
         </div>
       </transition>
       <transition name="slide-fade">
-        <div v-if="showrightsidebar" class="column cr rightoptions is-one-fifth">
-          <div class="isleft pd cb">Change background <b-button @click="closeRightSideBar" id="sidebarclose" size="is-small" icon-left="close"></b-button></div>
+        <div
+          v-if="showrightsidebar"
+          class="column cr rightoptions is-one-fifth"
+        >
+          <div class="isleft pd cb">
+            Change background
+            <b-button
+              id="sidebarclose"
+              @click="closeRightSideBar"
+              size="is-small"
+              icon-left="close"
+            ></b-button>
+          </div>
 
-          <div v-for="i in ssbgimg" @click="selectImg($event)" class="bgimgselectors">
+          <div
+            v-for="i in ssbgimg"
+            @click="selectImg($event)"
+            class="bgimgselectors"
+          >
             <img :src="i" class="bgimgselector" />
           </div>
 
-          <img :src="defaultbgimg" ref="defaultbgimg" id="defaultbgimg" />
+          <img id="defaultbgimg" ref="defaultbgimg" :src="defaultbgimg" />
 
           <div id="bgimage" class="">
             <input
@@ -164,8 +184,6 @@
               </svg>
             </label>
           </div>
-
-          
         </div>
       </transition>
     </div>
@@ -393,28 +411,24 @@ body {
   opacity: 1;
 }
 
-.bgimgselectors img
-{
-  transition: all .2s ease-in-out;
+.bgimgselectors img {
+  transition: all 0.2s ease-in-out;
 }
 
-.bgimgselectors:hover img
-{
+.bgimgselectors:hover img {
   cursor: pointer;
   transform: scale(1.5);
 }
 
 .videosetforcanvas canvas,
 .videoset canvas,
-.videoset video
-{
-  transition: all .2s ease-in-out;
+.videoset video {
+  transition: all 0.2s ease-in-out;
 }
 
 .videosetforcanvas canvas:hover,
 .videoset canvas:hover,
-.videoset video:hover
-{
+.videoset video:hover {
   cursor: pointer;
   transform: scale(1.2);
 }
