@@ -314,6 +314,16 @@ body, button, input, select, textarea {
   box-shadow: 0px 0px 0px rgba(0, 0, 0, 0);
 }
 
+.fullscreencontrolbar.meetingcontrol .button:hover {
+  box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0) !important;
+  color: rgba(255, 255, 255, 1.0);
+  background-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+.fullscreencontrolbar.meetingcontrol .date {
+  border: 0px !important;
+}
+
 .fullscreencontrolbar .inner-circle {
   background-image: none;
   background-color: transparent;
