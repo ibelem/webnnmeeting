@@ -30,6 +30,8 @@ export default {
   },
   data() {
     return {
+      localfullscreen: false,
+      videofullscreen: -1,
       ssbgimg: [
         '../../img/ssbg/00.jpg',
         '../../img/ssbg/01.jpg',
@@ -225,7 +227,36 @@ export default {
   // },
   methods: {
     fullscreen() {
-      console.log('fullscreen')
+      if (this.localfullscreen === false && this.videofullscreen === -1) {
+        const doc = window.document
+        const docEl = doc.body
+
+        const requestFullScreen = docEl.requestFullscreen
+        const cancelFullScreen = doc.exitFullscreen
+
+        if (!doc.fullscreenElement) {
+          requestFullScreen.call(docEl)
+        } else {
+          cancelFullScreen.call(doc)
+        }
+      }
+    },
+    exitFullScreen() {
+      const doc = window.document
+      const cancelFullScreen = doc.exitFullscreen
+      cancelFullScreen.call(doc)
+      this.localfullscreen = false
+      this.videofullscreen = -1
+    },
+    localFullscreen() {
+      this.fullscreen()
+      this.localfullscreen = true
+      this.videofullscreen = -1
+    },
+    videoFullscreen(index) {
+      this.fullscreen()
+      this.localfullscreen = false
+      this.videofullscreen = index
     },
     closeRightSideBar() {
       this.showrightsidebar = false
@@ -251,6 +282,8 @@ export default {
       this.renderer.blurRadius = 10
       this.renderer.effect = effect
       this.renderer.setup()
+      console.log('----------------------------------------')
+      console.log(this.renderer)
     },
     updateSSBackground() {
       const files = this.$refs.bgimg.files

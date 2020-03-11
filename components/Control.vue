@@ -1,5 +1,12 @@
 <template>
-  <div class="meetingcontrol">
+  <div
+    :class="
+      this.$parent.localfullscreen || this.$parent.videofullscreen != -1
+        ? 'fullscreencontrolbar'
+        : ''
+    "
+    class="meetingcontrol"
+  >
     <transition name="fade-slide">
       <div v-if="controlbar" v-show="showaimenu" class="meetingcontrolai">
         <b-button
@@ -77,18 +84,36 @@
         </b-progress>
       </div>
     </transition>
-    <div class="hcontrol">
-      <b-button
-        v-if="!controlbar"
-        @click="toggleControlBar"
-        icon-left="chevron-right"
-        class="togglecontrolbar"
-      ></b-button>
+    <div>
+      <div class="togglecontrolbar">
+        <b-button
+          v-if="!controlbar"
+          @click="toggleControlBar"
+          icon-left="chevron-right"
+        ></b-button>
+        <b-button
+          v-if="
+            (this.$parent.localfullscreen ||
+              this.$parent.videofullscreen !== -1) &&
+              !controlbar
+          "
+          @click="this.$parent.exitFullScreen"
+          icon-left="fullscreen-exit"
+        ></b-button>
+      </div>
       <transition name="slide-fade">
         <div v-if="controlbar">
           <b-button
             @click="toggleControlBar"
             icon-left="chevron-left"
+          ></b-button>
+          <b-button
+            v-if="
+              this.$parent.localfullscreen ||
+                this.$parent.videofullscreen !== -1
+            "
+            @click="this.$parent.exitFullScreen"
+            icon-left="fullscreen-exit"
           ></b-button>
           <b-button class="date"><Clock /></b-button>
           <b-button icon-left="video"></b-button>
@@ -130,7 +155,11 @@
             v-else
             icon-left="account-group"
           ></b-button>
-          <b-button @click="leaveMeeting" icon-left="phone-hangup"></b-button>
+          <b-button
+            @click="leaveMeeting"
+            icon-left="phone-hangup"
+            class="leavemeeting"
+          ></b-button>
         </div>
       </transition>
     </div>

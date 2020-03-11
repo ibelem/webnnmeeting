@@ -68,6 +68,7 @@
           <div class="videos">
             <div
               v-show="localuser.srcObject && ssmode"
+              :class="localfullscreen ? 'fullscreen' : ''"
               class="videosetforcanvas"
             >
               <div class="scale">
@@ -77,7 +78,7 @@
                   <div class="user">
                     <div class="username">{{ localuser.userId }} CANVAS</div>
                     <b-button
-                      @click="fullscreen"
+                      @click="localFullscreen"
                       :id="localuser.id"
                       :ref="localuser.id"
                       icon-left="fullscreen"
@@ -87,7 +88,11 @@
                 </div>
               </div>
             </div>
-            <div v-show="localuser.srcObject && !ssmode" class="videoset">
+            <div
+              v-show="localuser.srcObject && !ssmode"
+              :class="localfullscreen ? 'fullscreen' : ''"
+              class="videoset"
+            >
               <div class="scale">
                 <div class="v">
                   <video
@@ -100,7 +105,7 @@
                   <div class="user">
                     <div class="username">{{ localuser.userId }} VIDEO</div>
                     <b-button
-                      @click="fullscreen"
+                      @click="localFullscreen"
                       :id="localuser.id"
                       :ref="localuser.id"
                       icon-left="fullscreen"
@@ -112,7 +117,8 @@
             </div>
             <div
               v-show="users.length > 0 && u.srcObject && !u.local"
-              v-for="u in users"
+              v-for="(u, index) in users"
+              :class="videofullscreen == index ? 'fullscreen' : ''"
               class="videoset"
             >
               <div class="scale">
@@ -128,7 +134,7 @@
                       {{ u.userId }}
                     </div>
                     <b-button
-                      @click="fullscreen"
+                      @click="videoFullscreen(index)"
                       :id="u.id"
                       :ref="u.id"
                       icon-left="fullscreen"
@@ -220,16 +226,61 @@ body {
   overflow: hidden;
 }
 
-.videosetforcanvas {
-  display: inline-block;
-  margin-bottom: -7px;
-  width: calc(100% / 4);
-  margin-right: -1px;
-  overflow: hidden;
+/*
+  .videosetforcanvas {
+    display: inline-block;
+    margin-bottom: -7px;
+    width: calc(100% / 4);
+    margin-right: -1px;
+    overflow: hidden;
+  }
+
+  .videosetforcanvas canvas {
+    width: 100%;
+  }
+*/
+
+#sscanvas {
+  width: 100%;
+  max-width: 1539px;
+  max-height: 1539px;
 }
 
-.videosetforcanvas canvas {
-  width: 100%;
+.fullscreen {
+  width: 0;
+}
+
+.cl,
+.cr {
+  z-index: 1;
+}
+
+canvas,
+video {
+  z-index: 2;
+}
+
+.fullscreen canvas,
+.fullscreen video {
+  z-index: -1;
+}
+
+.fullscreen canvas,
+.fullscreen video {
+  position: fixed;
+  margin: 0;
+  left: 0;
+  bottom: 0;
+  width: 100vw !important;
+  height: 100vh !important;
+  object-fit: fill;
+  border: 0px;
+  display: block;
+}
+
+.fullscreen canvas:hover,
+.fullscreen video:hover {
+  transform: scale(1) !important;
 }
 
 .scale {
@@ -256,7 +307,6 @@ body {
   height: 20px;
   overflow: hidden;
   text-overflow: ellipsis;
-  z-index: 1001;
 }
 
 .videoset .user:hover {
@@ -376,7 +426,6 @@ body {
 #ssvideo {
   width: 320px;
   border: 1px solid red;
-  z-index: 3000;
 }
 
 .cb {
@@ -424,6 +473,7 @@ body {
 .videoset canvas,
 .videoset video {
   transition: all 0.2s ease-in-out;
+  transform: scale(1);
 }
 
 .videosetforcanvas canvas:hover,
