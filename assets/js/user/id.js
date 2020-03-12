@@ -287,12 +287,10 @@ export default {
     },
     initRenderer(effect) {
       this.renderer = new Renderer(this.$refs.sscanvas)
-      this.renderer.refineEdgeRadius = 6
+      this.renderer.refineEdgeRadius = 10
       this.renderer.blurRadius = 10
       this.renderer.effect = effect
       this.renderer.setup()
-      console.log('----------------------------------------')
-      console.log(this.renderer)
     },
     updateSSBackground() {
       const files = this.$refs.bgimg.files
@@ -314,12 +312,6 @@ export default {
       const resizeRatio = Math.max(Math.max(imWidth, imHeight) / width, 1)
       const scaledWidth = Math.floor(imWidth / resizeRatio)
       const scaledHeight = Math.floor(imHeight / resizeRatio)
-      console.log('width: ' + width)
-      console.log('imWidth x imHeight: ' + imWidth + 'x' + imHeight)
-      console.log('resizeRatio: ' + resizeRatio)
-      console.log(
-        'scaledWidth x scaledHeight: ' + scaledWidth + 'x' + scaledHeight
-      )
       return [scaledWidth, scaledHeight]
     },
     async drawResultComponents(data, source) {
@@ -372,12 +364,12 @@ export default {
       }
     },
     async runPredict(source) {
-      const inputSize = config.semanticsegmentation.inputSize
+      // const inputSize = config.semanticsegmentation.inputSize
       const options = {
         inputSize: config.semanticsegmentation.inputSize,
         preOptions: config.semanticsegmentation.preOptions || {},
         imageChannels: 4, // RGBA
-        drawWH: [inputSize[1], inputSize[0]]
+        drawWH: this.getClippedSize(source)
       }
       const ret = await this.runner.predict(source, options)
       return ret

@@ -92,6 +92,16 @@
           @click="this.$parent.exitFullScreen"
           icon-left="fullscreen-exit"
         ></b-button>
+        <div
+          v-if="this.$parent.ssmode"
+          :class="showaimenu ? 'indicatorcontrolbar' : ''"
+          class="indicator"
+        >
+          <span>FPS: {{ this.$parent.showfps }}</span>
+          <span ref="inferenceTime">
+            Inference Time: {{ this.$parent.inferencetime }}
+          </span>
+        </div>
       </div>
       <transition name="slide-fade">
         <div v-if="controlbar">
@@ -307,5 +317,16 @@ export default {
   100% {
     filter: hue-rotate(360deg);
   }
+}
+
+.indicator {
+  display: inline-block;
+  position: absolute;
+  right: 0;
+  top: 0.5rem;
+}
+
+.indicatorcontrolbar {
+  top: -4rem;
 }
 </style>

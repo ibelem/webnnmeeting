@@ -189,11 +189,6 @@
       </transition>
     </div>
     <Control ref="control" />
-    <div>
-      <!-- <video id="ssvideo" ref="ssvideo" playsinline autoplay></video> -->
-      <div ref="inferenceTime">{{ inferencetime }}</div>
-      FPS: {{ showfps }}<br />
-    </div>
   </div>
 </template>
 <script>
@@ -242,25 +237,25 @@ body {
   min-height: 128px;
 }
 
+.videosetforcanvas {
+  display: inline-block;
+  margin-bottom: -7px;
+  width: calc(100% / 4);
+  margin-right: -1px;
+  overflow: hidden;
+}
+
+.videosetforcanvas canvas {
+  width: 100%;
+}
+
 /*
-  .videosetforcanvas {
-    display: inline-block;
-    margin-bottom: -7px;
-    width: calc(100% / 4);
-    margin-right: -1px;
-    overflow: hidden;
-  }
-
-  .videosetforcanvas canvas {
-    width: 100%;
-  }
-*/
-
 #sscanvas {
   width: 100%;
   max-width: 1539px;
   max-height: 1539px;
 }
+*/
 
 .fullscreen {
   width: 0 !important;

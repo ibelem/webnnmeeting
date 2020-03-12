@@ -2,14 +2,22 @@
   <div class="webnnbadge">
     <b-tooltip
       v-if="webmlstatus"
-      label="Your browser supports Web Neural Network API.">
+      type="is-dark"
+      position="is-left"
+      square
+      label="Your browser supports Web Neural Network API."
+    >
       <div class="btn webnn-supported">
         <span>WebNN API</span><b-icon icon="emoticon-happy"></b-icon>
       </div>
     </b-tooltip>
     <b-tooltip
       v-else
-      label="Your browser does not support Web Neural Network API">
+      type="is-dark"
+      position="is-left"
+      square
+      label="Your browser does not support Web Neural Network API"
+    >
       <div class="btn webnn-not-supported">
         <span>WebNN API</span><b-icon icon="emoticon-sad"></b-icon>
       </div>
