@@ -226,6 +226,22 @@ body {
   overflow: hidden;
 }
 
+.isfullscreen .column .videos {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  flex-wrap: nowrap;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.isfullscreen .column .videoset,
+.isfullscreen .column .videosetforcanvas {
+  width: calc(100% / 6);
+  margin-bottom: 0;
+  min-height: 128px;
+}
+
 /*
   .videosetforcanvas {
     display: inline-block;
@@ -247,7 +263,9 @@ body {
 }
 
 .fullscreen {
-  width: 0;
+  width: 0 !important;
+  height: 0 !important;
+  min-height: 0 !important;
 }
 
 .cl,

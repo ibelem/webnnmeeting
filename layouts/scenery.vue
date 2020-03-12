@@ -1,5 +1,8 @@
 <template>
-  <section class="hero is-fullheight home">
+  <section
+    :class="getFullscreen ? 'isfullscreen' : ''"
+    class="hero is-fullheight home"
+  >
     <Nav />
     <div id="slider" :data-images="slideimage"></div>
     <div id="hero-body" class="hero-body">
@@ -73,6 +76,11 @@ export default {
         '../../img/03.jpg',
         '../../img/04.jpg'
       ]
+    }
+  },
+  computed: {
+    getFullscreen() {
+      return this.$store.state.fullscreen
     }
   },
   methods: {}

@@ -607,6 +607,7 @@ body::scrollbar {
 .fullscreen .webnnbadge .webnn-supported,
 .fullscreen .webnnbadge .webnn-not-supported {
   background: rgba(255, 255, 255, 0);
+  border-radius: 2px;
 }
 
 .fullscreen .webnnbadge .webnn-supported:hover,
