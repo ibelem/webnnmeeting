@@ -1,11 +1,10 @@
 <template>
   <div class="webnnbadge">
-    <div v-if="webmlstatus" class="webnn-supported">
-      Your browser supports Web Neural Network API.
+    <div v-if="webmlstatus" class="btn webnn-supported">
+      <span>WebNN API</span><b-icon icon="emoticon-happy"></b-icon>
     </div>
-    <div v-else class="webnn-not-supported">
-      Your browser does not support the Web Neural Network API, AI features will
-      run in WebGL mode with low performance.
+    <div v-else class="btn webnn-not-supported">
+      <span>WebNN API</span><b-icon icon="emoticon-sad"></b-icon>
     </div>
   </div>
 </template>
@@ -42,14 +41,52 @@ export default {
 }
 </script>
 <style>
-.webnnbadge,
-.webnnbadge div {
+.webnnbadge {
   display: inline-block;
-
-  /* text-transform: uppercase; */
-  padding: 0 8px;
-  font-style: italic;
   font-size: 0.8rem;
-  color: rgba(204, 255, 144, 1);
+}
+
+.btn {
+  outline: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 132px;
+  border: 0;
+
+  /* 
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+  */
+  box-sizing: border-box;
+  padding: 4px 10px;
+  color: #ffffff;
+  font-size: 12px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.webnn-supported {
+  background: rgba(83, 128, 247, 0.05);
+}
+
+.webnn-not-supported {
+  background: rgba(255, 71, 15, 0.05);
+}
+
+.webnn-supported:hover {
+  background: rgba(83, 128, 247, 0.8);
+}
+
+.webnn-not-supported:hover {
+  background: rgba(255, 71, 15, 0.8);
+}
+
+.btn .icon {
+  background-color: transparent;
+  border-radius: 100%;
+  animation: ripple 0.6s linear infinite;
 }
 </style>

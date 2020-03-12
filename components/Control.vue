@@ -1,10 +1,6 @@
 <template>
   <div
-    :class="
-      this.$parent.localfullscreen || this.$parent.videofullscreen != -1
-        ? 'fullscreencontrolbar'
-        : ''
-    "
+    :class="this.$parent.isFullscreen ? 'fullscreencontrolbar' : ''"
     class="meetingcontrol"
   >
     <transition name="fade-slide">
@@ -92,11 +88,7 @@
           icon-left="chevron-right"
         ></b-button>
         <b-button
-          v-if="
-            (this.$parent.localfullscreen ||
-              this.$parent.videofullscreen !== -1) &&
-              !controlbar
-          "
+          v-if="this.$parent.isFullscreen && !controlbar"
           @click="this.$parent.exitFullScreen"
           icon-left="fullscreen-exit"
         ></b-button>
@@ -108,10 +100,7 @@
             icon-left="chevron-left"
           ></b-button>
           <b-button
-            v-if="
-              this.$parent.localfullscreen ||
-                this.$parent.videofullscreen !== -1
-            "
+            v-if="this.$parent.isFullscreen"
             @click="this.$parent.exitFullScreen"
             icon-left="fullscreen-exit"
           ></b-button>

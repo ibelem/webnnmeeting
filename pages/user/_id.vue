@@ -1,10 +1,5 @@
 <template>
   <div>
-    <div>
-      <!-- <video id="ssvideo" ref="ssvideo" playsinline autoplay></video> -->
-      <div ref="inferenceTime">{{ inferencetime }}</div>
-      FPS: {{ showfps }}<br />
-    </div>
     <div class="columns user">
       <transition name="fade-slide">
         <div
@@ -194,6 +189,11 @@
       </transition>
     </div>
     <Control ref="control" />
+    <div>
+      <!-- <video id="ssvideo" ref="ssvideo" playsinline autoplay></video> -->
+      <div ref="inferenceTime">{{ inferencetime }}</div>
+      FPS: {{ showfps }}<br />
+    </div>
   </div>
 </template>
 <script>

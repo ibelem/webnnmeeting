@@ -140,6 +140,15 @@ export default {
     }
   },
   computed: {
+    isFullscreen() {
+      if (this.localfullscreen === true || this.videofullscreen !== -1) {
+        this.$store.commit('setFullscreen', true)
+        return true
+      } else {
+        this.$store.commit('setFullscreen', false)
+        return false
+      }
+    },
     showparticipantsandconversation() {
       return this.showparticipants && this.showconversation
     },
@@ -227,7 +236,7 @@ export default {
   // },
   methods: {
     fullscreen() {
-      if (this.localfullscreen === false && this.videofullscreen === -1) {
+      if (!this.isFullscreen) {
         const doc = window.document
         const docEl = doc.body
 

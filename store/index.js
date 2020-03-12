@@ -14,7 +14,8 @@ export const state = () => ({
   },
   enablevideo: true,
   users: [],
-  layout: 'scenery'
+  layout: 'scenery',
+  fullscreen: false
 })
 
 export const mutations = {
@@ -47,5 +48,8 @@ export const mutations = {
   },
   setLayout(state, data) {
     state.layout = data
+  },
+  setFullscreen(state, data) {
+    state.fullscreen = data
   }
 }

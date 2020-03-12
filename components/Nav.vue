@@ -1,7 +1,7 @@
 <template>
   <div class="hero-head">
     <section class="section container">
-      <b-navbar>
+      <b-navbar :class="getFullscreen ? 'fullscreen' : ''">
         <template slot="brand">
           <b-navbar-item :to="{ path: '/' }" class="logo" tag="router-link">
             <div class="titlea">
@@ -39,6 +39,11 @@
 </template>
 <script>
 export default {
+  computed: {
+    getFullscreen() {
+      return this.$store.state.fullscreen
+    }
+  },
   methods: {
     setLayout(e) {
       this.$store.commit('setLayout', e.target.id)
@@ -48,6 +53,10 @@ export default {
 }
 </script>
 <style scope>
+nav.fullscreen {
+  display: none;
+}
+
 .navbar-item,
 .navbar-link {
   color: rgba(255, 255, 255, 1);

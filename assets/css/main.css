@@ -305,7 +305,7 @@ body, button, input, select, textarea {
 
 .meetingcontrol .btnactive .icon i  {
   /* background: #47cf73 !important; */
-  color: rgba(204, 255, 144, 1.0) !important;
+  color: rgba(204, 255, 144, 1) !important;
 }
 
 .fullscreencontrolbar.meetingcontrol .button, .fullscreencontrolbar .meetingcontrolai {
@@ -584,4 +584,40 @@ body::scrollbar {
 .brackets a:hover:after {
   opacity: 1;
   transform: translateX(0px);
+}
+
+@keyframes ripple {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.1), 0 0 0 20px rgba(255, 255, 255, 0.1), 0 0 0 40px rgba(255, 255, 255, 0.1), 0 0 0 60px rgba(255, 255, 255, 0.1);
+  }
+  100% {
+    box-shadow: 0 0 0 20px rgba(255, 255, 255, 0.1), 0 0 0 40px rgba(255, 255, 255, 0.1), 0 0 0 60px rgba(255, 255, 255, 0.1), 0 0 0 80px rgba(255, 255, 255, 0);
+  }
+}
+
+@keyframes ripplefullscreen {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.05), 0 0 0 20px rgba(255, 255, 255, 0.05), 0 0 0 40px rgba(255, 255, 255, 0.05), 0 0 0 60px rgba(255, 255, 255, 0.05);
+  }
+  100% {
+    box-shadow: 0 0 0 20px rgba(255, 255, 255, 0.05), 0 0 0 40px rgba(255, 255, 255, 0.05), 0 0 0 60px rgba(255, 255, 255, 0.05), 0 0 0 80px rgba(255, 255, 255, 0);
+  }
+}
+
+.fullscreen .webnnbadge .webnn-supported,
+.fullscreen .webnnbadge .webnn-not-supported {
+  background: rgba(255, 255, 255, 0);
+}
+
+.fullscreen .webnnbadge .webnn-supported:hover,
+.fullscreen .webnnbadge .webnn-not-supported:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.fullscreen .webnnbadge .btn .icon {
+  animation: ripplefullscreen 0.6s linear infinite;
+}
+
+.fullscreen .webnnbadge:hover .btn .icon {
+  animation: ripple 0.6s linear infinite;
 }
