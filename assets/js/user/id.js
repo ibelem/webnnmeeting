@@ -569,10 +569,10 @@ export default {
 
       const publication = await this.room.publish(this.localStream)
       this.localPublication = publication
-      // this.isPauseAudio = false
-      // this.toggleAudio()
-      // this.isPauseVideo = true
-      // this.toggleVideo()
+      this.isPauseAudio = false
+      this.toggleAudio()
+      this.isPauseVideo = true
+      this.toggleVideo()
       mixStream(this.roomId, this.localPublication.id, 'common')
       this.streamObj[this.localStream.id] = this.localStream
       publication.addEventListener('error', (err) => {
@@ -806,10 +806,14 @@ export default {
       }
       console.log('==== END addVideo END ====')
     },
-    chgMutePic(clientId, muted) {
-      console.log(
-        'TODO, change MutePic -----------------' + clientId + ' muted: ' + muted
-      )
+    editMute(users, id, newnuted) {
+      return users.map((item) => {
+        const temp = Object.assign({}, item)
+        if (temp.id === id) {
+          temp.muted = newnuted
+        }
+        return temp
+      })
     },
     refreshMuteState() {
       this.refreshMute = setInterval(() => {
@@ -823,13 +827,21 @@ export default {
                 // eslint-disable-next-line no-unused-vars
                 const clientId = stream.info.owner
                 // eslint-disable-next-line no-unused-vars
-                const muted = stream.media.audio.status === 'inactive'
-                // this.chgMutePic(clientId, muted)
+                const ismuted = stream.media.audio.status === 'inactive'
+                // this.users.map((p) => {
+                //   p.id === clientId ? (p.muted = ismuted) : p
+                // })
+
+                this.users = this.editMute(this.users, clientId, ismuted)
+
+                console.log(clientId)
+                console.log(ismuted)
+                console.log(this.users[0])
               }
             }
           }
         })
-      }, 1000)
+      }, 4000)
     },
     userExit() {
       if (this.localScreen) {

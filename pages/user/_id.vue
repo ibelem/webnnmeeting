@@ -24,8 +24,7 @@
                   <b-icon v-else icon="video-off" size="is-small"> </b-icon>
                   <b-icon v-if="u.muted" icon="microphone-off" size="is-small">
                   </b-icon>
-                  <b-icon v-else icon="microphone-high" size="is-small">
-                  </b-icon>
+                  <b-icon v-else icon="microphone" size="is-small"> </b-icon>
                   <b-icon icon="projector-screen" size="is-small"> </b-icon>
                 </div>
               </div>

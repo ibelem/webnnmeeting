@@ -92,7 +92,18 @@
           ></b-button>
           <b-button class="date"><Clock /></b-button>
           <b-button icon-left="video"></b-button>
-          <b-button icon-left="microphone"></b-button>
+
+          <b-button
+            v-if="!this.$parent.isPauseAudio"
+            @click="this.$parent.toggleAudio"
+            icon-left="microphone"
+          ></b-button>
+          <b-button
+            v-else
+            @click="this.$parent.toggleAudio"
+            icon-left="microphone-off"
+          ></b-button>
+
           <b-button icon-left="projector-screen"></b-button>
           <b-button
             v-if="showaimenu"
