@@ -40,7 +40,7 @@ export default {
         '../../img/ssbg/04.jpg',
         '../../img/ssbg/05.jpg'
       ],
-      defaultbgimg: '../../img/ssbg/00.jpg',
+      defaultbgimg: '../../img/ssbg/04.jpg',
       isblur: false,
       isbgimg: false,
       showrightsidebar: false,
@@ -209,19 +209,15 @@ export default {
     }
   },
   beforeDestroy() {
-    if (this.timer) {
-      clearInterval(this.timer)
-    }
+    // if (this.sstimer) {
+    //   clearTimeout(this.sstimer)
+    // }
   },
   mounted() {
     this.scrollToBottom()
     this.userExit()
     this.initStats()
     this.initConference()
-    // this.$nextTick(() => {
-    //   this.videoToCanvas()
-    // })
-    // this.videoToCanvas()
   },
   created() {
     if (process.browser) {
@@ -235,6 +231,16 @@ export default {
   //   this.userExit()
   // },
   methods: {
+    snackbar(msg) {
+      this.$buefy.snackbar.open({
+        duration: 5000,
+        message: msg,
+        type: 'is-twitter',
+        position: 'is-bottom-right',
+        actionText: 'OK',
+        queue: false
+      })
+    },
     fullscreen() {
       if (!this.isFullscreen) {
         const doc = window.document
@@ -315,8 +321,6 @@ export default {
       return [scaledWidth, scaledHeight]
     },
     async drawResultComponents(data, source) {
-      // console.log('NNNNNNNNNNNNNNNNNNNNN')
-      // console.log(this.getClippedSize(source))
       this.renderer.uploadNewTexture(source, this.getClippedSize(source))
       await this.renderer.drawOutputs(data)
     },
@@ -377,7 +381,9 @@ export default {
     async startPredictCamera() {
       const ret = await this.runPredict(this.$refs.localvideo)
       await this.handleInferencedResult(ret, this.$refs.localvideo)
-      this.sstimer = requestAnimationFrame(this.startPredictCamera)
+      // this.sstimer = requestAnimationFrame(this.startPredictCamera)
+      // not using nAF because that limites us to 60FPS
+      this.sstimer = setTimeout(this.startPredictCamera, 0)
     },
     async stopSS() {
       this.ssmode = false
@@ -388,7 +394,8 @@ export default {
         deleteStream(this.roomId, this.localPublication.id)
         await this.publishLocal()
         // updateStream(this.roomId, this.localPublication.id)
-        cancelAnimationFrame(this.sstimer)
+        // cancelAnimationFrame(this.sstimer)
+        // clearTimeout(this.sstimer)
         this.baserunner.deleteAll()
       } catch (e) {}
     },
@@ -420,38 +427,6 @@ export default {
         await this.publishLocal()
         // updateStream(this.roomId, this.localPublication.id)
       }
-    },
-    videoToCanvas() {
-      this.ctx = this.$refs.localcanvas.getContext('2d')
-      this.ctx.imageSmoothingQuality = 'high'
-      this.ctx.imageSmoothingEnabled = true
-      this.animate()
-      // let frame = this.ctx1.getImageData(0, 0, this.width, this.height)
-    },
-    animate() {
-      const localcanvas = this.$refs.localcanvas
-      const localvideo = this.$refs.localvideo
-
-      try {
-        localcanvas.width = localvideo.offsetWidth
-        localcanvas.height = localvideo.offsetHeight
-        this.stats.begin()
-        this.ctx.drawImage(
-          localvideo,
-          0,
-          0,
-          localcanvas.width,
-          localcanvas.height
-        )
-        this.showfps = fps
-        this.stats.end()
-        this.timer = requestAnimationFrame(this.animate)
-      } catch (err) {
-        console.log(err)
-      }
-    },
-    stopAnimate() {
-      cancelAnimationFrame(this.timer)
     },
     initStats() {
       this.stats = new Stats()
@@ -578,7 +553,7 @@ export default {
             console.log('server connect failed: ' + err)
             if (err.message.includes('connect_error:')) {
               const signalingHost = err.message.replace('connect_error:', '')
-              _this.alertCert(signalingHost)
+              _this.snackbar(signalingHost)
             }
           }
         )
@@ -601,7 +576,8 @@ export default {
       mixStream(this.roomId, this.localPublication.id, 'common')
       this.streamObj[this.localStream.id] = this.localStream
       publication.addEventListener('error', (err) => {
-        console.log('createLocal: Publication error: ' + err.error.message)
+        // console.log('createLocal: Publication error: ' + err.error.message)
+        this.snackbar(err.error.message)
       })
 
       // this.room.publish(this.localStream).then(
@@ -627,101 +603,55 @@ export default {
     async createLocal() {
       console.log('==== createLocal ====')
 
-      const stream = await Owt.Base.MediaStreamFactory.createMediaStream(
-        this.avTrackConstraint
-      )
+      try {
+        const stream = await Owt.Base.MediaStreamFactory.createMediaStream(
+          this.avTrackConstraint
+        )
 
-      this.videostream = stream
-      this.ssstream = this.videostream
+        this.videostream = stream
+        this.ssstream = this.videostream
 
-      this.localStream = new Owt.Base.LocalStream(
-        this.ssstream,
-        new Owt.Base.StreamSourceInfo('mic', 'camera')
-      )
+        this.localStream = new Owt.Base.LocalStream(
+          this.ssstream,
+          new Owt.Base.StreamSourceInfo('mic', 'camera')
+        )
 
-      this.localId = this.localStream.id
-      this.addVideo(this.localStream, true)
+        this.localId = this.localStream.id
+        this.addVideo(this.localStream, true)
 
-      await this.publishLocal()
+        await this.publishLocal()
+      } catch (ex) {
+        if (ex.name === 'NotFoundError') {
+          this.$buefy.snackbar.open({
+            duration: 10000,
+            message: `No camera detected, please check your camera settings and rejoin the meeting.`,
+            type: 'is-twitter',
+            position: 'is-bottom-right',
+            actionText: 'OK',
+            queue: false,
+            onAction: () => {
+              this.leaveMeeting()
+            }
+          })
+        }
+
+        if (ex.name === 'OverconstrainedError') {
+          this.$buefy.snackbar.open({
+            duration: 20000,
+            message: `Your camera can't support the resolution constraints. Please select a lower resolution or check if the camera is occupied by other applications.`,
+            type: 'is-twitter',
+            position: 'is-bottom-right',
+            actionText: 'Accept',
+            queue: false,
+            onAction: () => {
+              this.leaveMeeting()
+            }
+          })
+        }
+      }
 
       // Todo Better Try ... Catch ... for await
-
-      // Owt.Base.MediaStreamFactory.createMediaStream(
-      //   _this.avTrackConstraint
-      // ).then(
-      //   (stream) => {
-      //     mediaStream = stream
-
-      //     _this.localStream = new Owt.Base.LocalStream(
-      //       mediaStream,
-      //       new Owt.Base.StreamSourceInfo('mic', 'camera')
-      //     )
-
-      //     _this.localId = _this.localStream.id
-      //     console.log('this.localId: ' + _this.localId)
-      //     console.log('this.localStream')
-      //     console.log(_this.localStream)
-      //     _this.addVideo(_this.localStream, true)
-
-      //     this.publishLocal()
-      //   },
-      //   (err) => {
-      //     console.error('createLocal: Failed to create MediaStream, ' + err)
-      //     if (err.name === 'OverconstrainedError') {
-      //       // if (
-      //       //   confirm(
-      //       //     "your camrea can't support the resolution constraints, please leave room and select a lower resolution"
-      //       //   )
-      //       // ) {
-      //       //   userExit()
-      //       // }
-      //       this.$buefy.snackbar.open({
-      //         duration: 20000,
-      //         message: `Your camrea can't support the resolution constraints, select a lower resolution?`,
-      //         type: 'is-danger',
-      //         position: 'is-bottom-left',
-      //         actionText: 'Accept',
-      //         queue: false,
-      //         onAction: () => {
-      //           // Need to exit user
-      //           this.userExit()
-      //           if (this.resolutionwidth === 1280) {
-      //             this.$store.commit('setResolutionWidth', 640)
-      //             this.$store.commit('setResolutionHeight', 480)
-      //           } else if (this.resolutionwidth === 640) {
-      //             this.$store.commit('setResolutionWidth', 320)
-      //             this.$store.commit('setResolutionHeight', 240)
-      //           }
-      //           this.initConference()
-      //         }
-      //       })
-      //     }
-      //   }
-      // )
-
       console.log('==== END createLocal END ====')
-    },
-    alertCert(signalingHost) {
-      console.log(signalingHost + ' TOTO: alertCert')
-      // const $d = $('#m-dialog')
-      // $d.empty()
-      // const infoText =
-      //   'The security certificate of the following url ' +
-      //   "is not trusted by your computer's operating system. " +
-      //   'If you confirm to continue, click the url and proceed to the unsafe host, then come back' +
-      //   'to this page and refresh.'
-      // const info = $('<div/>', {
-      //   text: infoText
-      // })
-      // const anchor = $('<a/>', {
-      //   text: `${signalingHost}/socket.io/`,
-      //   target: '_blank',
-      //   href: `${signalingHost}/socket.io/`
-      // })
-      // info.appendTo($d)
-      // anchor.appendTo($d)
-      // $d.show()
-      // $d.dialog()
     },
     getUserFromName(name) {
       for (let i = 0; i < this.users.length; ++i) {

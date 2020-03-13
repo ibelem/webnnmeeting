@@ -1,6 +1,8 @@
 class Renderer {
   constructor(canvas) {
     this.gl = canvas.getContext('webgl2');
+    // this.gl.imageSmoothingQuality = 'high';
+    // this.gl.imageSmoothingEnabled = true;
     if (this.gl === null) {
       throw new Error('Unable to initialize WebGL.');
     }

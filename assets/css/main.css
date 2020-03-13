@@ -544,9 +544,23 @@ body::scrollbar {
   right: 0;
   bottom: 0;
   left: 0;
-  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #2e9aa4);
   /* background: radial-gradient(ellipse farthest-corner at center bottom, #23d5ab, #2e9aa4); */
   opacity: 1;
+  /*  animation: grad 15s ease infinite; */
+  background-size: 150% 150%;
+}
+
+@keyframes grad {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
 }
 
 .footerbrackets a {

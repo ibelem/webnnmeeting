@@ -140,6 +140,16 @@
               </div>
             </div>
           </div>
+          <div v-if="ssmode" class="indicator">
+            <div ref="fps" class="counter">
+              {{ showfps }}
+              <div class="title">FPS</div>
+            </div>
+            <div ref="inferenceTime" class="counter">
+              {{ inferencetime }} <span>ms</span>
+              <div class="title">Inference Time</div>
+            </div>
+          </div>
         </div>
       </transition>
       <transition name="slide-fade">
@@ -198,8 +208,42 @@ export default {
 }
 </script>
 <style scope>
+.counter {
+  display: inline-block;
+  font-size: 2rem;
+  text-align: center;
+  margin-left: 0.75rem;
+  font-weight: 200;
+  position: relative;
+  top: -5rem;
+}
+
+.counter .title {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.8rem;
+  font-weight: 500;
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 0.2rem 1rem;
+}
+
+.counter span {
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
 body {
   background: transparent;
+}
+
+.cslist {
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.im {
+  padding-right: 0.75rem;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .content {
