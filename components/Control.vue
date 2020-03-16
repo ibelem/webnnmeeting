@@ -4,7 +4,11 @@
     class="meetingcontrol"
   >
     <transition name="fade-slide">
-      <div v-if="controlbar" v-show="showaimenu" class="meetingcontrolai">
+      <div
+        v-if="controlbar"
+        v-show="showaimenu && !this.$parent.isPauseVideo"
+        class="meetingcontrolai"
+      >
         <b-button
           @click="ss('blur')"
           v-if="this.$parent.blurdone"
@@ -91,7 +95,17 @@
             icon-left="fullscreen-exit"
           ></b-button>
           <b-button class="date"><Clock /></b-button>
-          <b-button icon-left="video"></b-button>
+
+          <b-button
+            v-if="this.$parent.isPauseVideo"
+            @click="this.$parent.toggleVideo"
+            icon-left="video-off"
+          ></b-button>
+          <b-button
+            v-else
+            @click="this.$parent.toggleVideo"
+            icon-left="video"
+          ></b-button>
 
           <b-button
             v-if="!this.$parent.isPauseAudio"
@@ -106,13 +120,13 @@
 
           <b-button icon-left="projector-screen"></b-button>
           <b-button
-            v-if="showaimenu"
+            v-if="showaimenu && !this.$parent.isPauseVideo"
             @click="showAiMenu"
             icon-left="dots-horizontal"
             class="btnactive"
           ></b-button>
           <b-button
-            v-else
+            v-else-if="!this.$parent.isPauseVideo"
             @click="showAiMenu"
             icon-left="dots-horizontal"
           ></b-button>

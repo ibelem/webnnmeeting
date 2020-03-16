@@ -82,6 +82,7 @@ export default {
         role: null,
         local: null,
         muted: null,
+        video: null,
         srcObject: null
       },
       smallRadius: 60,
@@ -508,6 +509,7 @@ export default {
                 role: participant.role,
                 local,
                 muted: true,
+                video: true,
                 srcObject: null
               })
               _this.localuser.id = participant.id
@@ -515,6 +517,7 @@ export default {
               _this.localuser.role = participant.role
               _this.localuser.local = local
               _this.localuser.muted = true
+              _this.localuser.video = true
               _this.localuser.srcObject = null
             })
             _this.createLocal()
@@ -551,10 +554,10 @@ export default {
           },
           (err) => {
             console.log('server connect failed: ' + err)
-            if (err.message.includes('connect_error:')) {
-              const signalingHost = err.message.replace('connect_error:', '')
-              _this.snackbar(signalingHost)
-            }
+            // if (err.message.includes('connect_error:')) {
+            //   const signalingHost = err.message.replace('connect_error:', '')
+            //   _this.snackbar(signalingHost)
+            // }
           }
         )
       })
@@ -579,26 +582,6 @@ export default {
         // console.log('createLocal: Publication error: ' + err.error.message)
         this.snackbar(err.error.message)
       })
-
-      // this.room.publish(this.localStream).then(
-      //   (publication) => {
-      //     this.localPublication = publication
-      //     // this.isPauseAudio = false
-      //     // this.toggleAudio()
-      //     // this.isPauseVideo = true
-      //     // this.toggleVideo()
-      //     mixStream(this.roomId, this.localPublication.id, 'common')
-      //     this.streamObj[this.localStream.id] = this.localStream
-      //     publication.addEventListener('error', (err) => {
-      //       console.log(
-      //         'createLocal: Publication error: ' + err.error.message
-      //       )
-      //     })
-      //   },
-      //   (err) => {
-      //     console.log('createLocal: Publish error: ' + err)
-      //   }
-      // )
     },
     async createLocal() {
       console.log('==== createLocal ====')
@@ -806,11 +789,16 @@ export default {
       }
       console.log('==== END addVideo END ====')
     },
-    editMute(users, id, newnuted) {
+    updateState(users, id, key, newvalue) {
       return users.map((item) => {
         const temp = Object.assign({}, item)
         if (temp.id === id) {
-          temp.muted = newnuted
+          if (key === 'muted') {
+            temp.muted = newvalue
+          }
+          if (key === 'video') {
+            temp.video = newvalue
+          }
         }
         return temp
       })
@@ -828,20 +816,29 @@ export default {
                 const clientId = stream.info.owner
                 // eslint-disable-next-line no-unused-vars
                 const ismuted = stream.media.audio.status === 'inactive'
-                // this.users.map((p) => {
-                //   p.id === clientId ? (p.muted = ismuted) : p
-                // })
-
-                this.users = this.editMute(this.users, clientId, ismuted)
-
-                console.log(clientId)
-                console.log(ismuted)
-                console.log(this.users[0])
+                this.users = this.updateState(
+                  this.users,
+                  clientId,
+                  'muted',
+                  ismuted
+                )
+              }
+              if (stream.media.video) {
+                // eslint-disable-next-line no-unused-vars
+                const clientId = stream.info.owner
+                // eslint-disable-next-line no-unused-vars
+                const isvideo = stream.media.video.status === 'active'
+                this.users = this.updateState(
+                  this.users,
+                  clientId,
+                  'video',
+                  isvideo
+                )
               }
             }
           }
         })
-      }, 4000)
+      }, 5000)
     },
     userExit() {
       if (this.localScreen) {
@@ -1036,6 +1033,7 @@ export default {
             local,
             // video: event.participant.permission.publish.video,
             muted: true,
+            video: true,
             srcObject: null
           })
 

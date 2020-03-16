@@ -68,7 +68,6 @@
               <div class="scale">
                 <div class="v">
                   <canvas id="sscanvas" ref="sscanvas"></canvas>
-                  <!-- <canvas v-show="!ssmode" id="localcanvas" ref="localcanvas"></canvas> -->
                   <div class="user">
                     <div class="username">{{ localuser.userId }} CANVAS</div>
                     <b-button
@@ -83,14 +82,13 @@
               </div>
             </div>
             <div
-              v-show="localuser.srcObject && !ssmode"
+              v-show="localuser.srcObject && !ssmode && !isPauseVideo"
               :class="localfullscreen ? 'fullscreen' : ''"
               class="videoset"
             >
               <div class="scale">
                 <div class="v">
                   <video
-                    id="localvideo"
                     ref="localvideo"
                     :src-object.prop.camel="localuser.srcObject"
                     playsinline
@@ -147,6 +145,34 @@
             <div ref="inferenceTime" class="counter">
               {{ inferencetime }} <span>ms</span>
               <div class="title">Inference Time</div>
+            </div>
+            <div class="counter">
+              <div class="value">
+                {{ resolutionwidth }} x {{ resolutionheight }}
+              </div>
+              <div class="value">
+                <span v-if="enablevideo">
+                  Video + Audio
+                </span>
+                <span v-else>
+                  Audio Only
+                </span>
+              </div>
+            </div>
+          </div>
+          <div v-else>
+            <div class="counter less">
+              <div class="value">
+                {{ resolutionwidth }} x {{ resolutionheight }}
+              </div>
+              <div class="value">
+                <span v-if="enablevideo">
+                  Video + Audio
+                </span>
+                <span v-else>
+                  Audio Only
+                </span>
+              </div>
             </div>
           </div>
         </div>
@@ -217,12 +243,22 @@ export default {
   top: -5rem;
 }
 
+.less {
+  top: -3rem;
+}
+
 .counter .title {
   color: rgba(255, 255, 255, 0.8);
   font-size: 0.8rem;
   font-weight: 500;
   background-color: rgba(255, 255, 255, 0.2);
   padding: 0.2rem 1rem;
+}
+
+.counter .value {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.8rem;
+  font-weight: 500;
 }
 
 .counter span {
