@@ -1,11 +1,16 @@
 # WebNN Meeting
 
-> A video conference example based on W3C Web Neural Network API and Open WebRTC Toolkit (OWT).
+> A Video Conference example with AI features based on W3C Web Neural Network API and powered by Intel Open WebRTC Toolkit (OWT).
 
+## Web Machine Learning Features
+
+- Blur my background
+- Change my background
 
 ## HTTPS Configuration
 
 Go to project main dir and create private and public key:
+
 ```
 $ openssl genrsa 2048 > server.key
 $ chmod 400 server.key
