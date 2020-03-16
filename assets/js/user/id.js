@@ -83,7 +83,8 @@ export default {
         local: null,
         muted: null,
         video: null,
-        srcObject: null
+        srcObject: null,
+        shareScreenStream: null
       },
       smallRadius: 60,
       largeRadius: 120,
@@ -344,6 +345,10 @@ export default {
       })[0]
       this.ssstream.addTrack(audiotrack)
     },
+    stopSSStream() {
+      const track = this.ssstream.getTracks()[0]
+      track.stop()
+    },
     // showSSStream() {
     //   // this.ssstream = this.renderer.canvasStream
     //   this.getSSStream()
@@ -390,6 +395,7 @@ export default {
       this.ssmode = false
       this.blurdone = false
       this.bgimgdone = false
+      // this.stopSSStream()
       try {
         this.ssstream = this.videostream
         deleteStream(this.roomId, this.localPublication.id)
@@ -510,7 +516,8 @@ export default {
                 local,
                 muted: true,
                 video: true,
-                srcObject: null
+                srcObject: null,
+                shareScreenStream: null
               })
               _this.localuser.id = participant.id
               _this.localuser.userId = participant.userId
@@ -740,13 +747,18 @@ export default {
       const uid = stream.origin
       // const id = stream.id
       // const uid = stream.origin
-
-      // check if is screen sharing
       if (stream.source.video === 'screen-cast') {
-        console.log('handling screen sharing')
-      }
+        if (uid) {
+          const remoteusers = this.users.map((p) =>
+            p.id === uid ? { ...p, shareScreenStream: stream.mediaStream } : p
+          )
+          this.users = remoteusers
+        }
 
-      if (stream.source.video !== 'screen-cast') {
+        this.changeMode(this.MODES.LECTURE, !this.isLocalScreenSharing)
+        this.streamObj.screen = stream
+        // getUserFromId(stream.origin)["userId"]
+      } else {
         if (isLocal) {
           const newusers = this.users.map((p) =>
             p.local === true ? { ...p, srcObject: stream.mediaStream } : p
@@ -763,6 +775,10 @@ export default {
             this.users = remoteusers
           }
         }
+
+        this.changeMode(this.mode)
+
+        console.log(this.users)
 
         // append to global users
         // const thisUser = this.getUserFromId(uid) || {}
@@ -863,7 +879,7 @@ export default {
       this.isAudioOnly = false
       clearInterval(this.refreshMute)
     },
-    changeMode(newMode, enlargeElement) {
+    changeMode(newMode, _enlargeElement) {
       if (this.localStream) {
         console.log('localStream changeMode' + newMode)
       }
@@ -906,11 +922,16 @@ export default {
           }
           if (stream.source.video === 'screen-cast') {
             this.screenSub = subscription
-            stream.addEventListener('ended', function(event) {
-              this.changeMode(this.MODES.LECTURE)
+            const _this = this
+            stream.addEventListener('ended', function(_event) {
+              this.changeMode(_this.MODES.LECTURE)
               setTimeout(function() {
-                // this.shareScreenChanged(false, false)
-                this.changeMode(this.mode)
+                _this.shareScreenChanged(false, false)
+                if (_this.subscribeType === _this.SUBSCRIBETYPES.MIX) {
+                  _this.changeMode(_this.mode)
+                } else {
+                  _this.changeMode(_this.mode)
+                }
               }, 800)
             })
           }
@@ -918,7 +939,7 @@ export default {
             subscription.getStats().then(
               (report) => {
                 console.info(report)
-                report.forEach(function(item, index) {
+                report.forEach(function(item, _index) {
                   if (item.type === 'ssrc' && item.mediaType === 'video') {
                     this.scaleLevel =
                       parseInt(item.googFrameHeightReceived) /
@@ -1034,7 +1055,8 @@ export default {
             // video: event.participant.permission.publish.video,
             muted: true,
             video: true,
-            srcObject: null
+            srcObject: null,
+            shareScreenStream: null
           })
 
           event.participant.addEventListener('left', () => {
@@ -1073,6 +1095,82 @@ export default {
           }
         }
       })
+    },
+    shareScreen() {
+      this.sendIm('You are sharing screen now.')
+      this.changeMode(this.MODES.LECTURE)
+      const width = screen.width
+      const height = screen.height
+      const screenSharingConfig = {
+        audio: {
+          source: 'screen-cast'
+        },
+        video: {
+          resolution: {
+            width,
+            height
+          },
+          frameRate: 20,
+          source: 'screen-cast'
+        }
+        // extensionId:'pndohhifhheefbpeljcmnhnkphepimhe'
+      }
+      Owt.Base.MediaStreamFactory.createMediaStream(screenSharingConfig).then(
+        (stream) => {
+          this.localScreen = new Owt.Base.LocalStream(
+            stream,
+            new Owt.Base.StreamSourceInfo('screen-cast', 'screen-cast')
+          )
+          console.info(this.localScreen)
+          this.localScreenId = this.localScreen.id
+          const screenVideoTracks = this.localScreen.mediaStream.getVideoTracks()
+          const _this = this
+          for (const screenVideoTrack of screenVideoTracks) {
+            screenVideoTrack.addEventListener('ended', function(_e) {
+              _this.changeMode(_this.MODES.LECTURE)
+              console.log('unpublish')
+              setTimeout(function() {
+                _this.shareScreenChanged(false, false)
+                if (_this.subscribeType === _this.SUBSCRIBETYPES.MIX) {
+                  _this.changeMode(_this.mode)
+                } else {
+                  _this.changeMode(_this.mode)
+                }
+              }, 800)
+              _this.localScreenPubliction.stop()
+            })
+          }
+          this.changeMode(this.MODES.LECTURE)
+          this.room.publish(this.localScreen).then(
+            (publication) => {
+              console.info('publish success')
+              this.localScreenPubliction = publication
+            },
+            (_err) => {
+              console.error('localsreen publish failed')
+            }
+          )
+        },
+        (_err) => {
+          console.error('create localscreen failed')
+          this.changeMode(this.MODES.LECTURE)
+          this.shareScreenChanged(false, false)
+          // TODO: limit to https
+          if (this.subscribeType === this.SUBSCRIBETYPES.MIX) {
+            this.changeMode(this.mode)
+          }
+          // if (window.location.protocol === "https:" && subscribeType ===
+          //   SUBSCRIBETYPES.MIX) {
+          //   changeMode(mode, $("div[isMix=true]"))
+          // }
+        }
+      )
+      this.shareScreenChanged(true, true)
+      console.log(this.users)
+    },
+    shareScreenChanged(ifToShare, ifToLocalShare) {
+      this.isScreenSharing = ifToShare
+      this.isLocalScreenSharing = ifToLocalShare
     },
     scrollToBottom() {
       this.$nextTick(() => {

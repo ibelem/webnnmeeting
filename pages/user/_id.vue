@@ -136,6 +136,38 @@
                 </div>
               </div>
             </div>
+            <div
+              v-show="users.length > 0 && u.shareScreenStream && !u.local"
+              v-for="(u, index) in users"
+              :class="videofullscreen == index ? 'fullscreen' : ''"
+              class="videoset"
+            >
+              <div class="scale">
+                <div class="v">
+                  <video
+                    v-show="u.shareScreenStream && !u.local"
+                    :src-object.prop.camel="u.shareScreenStream"
+                    playsinline
+                    autoplay
+                  ></video>
+                  <div class="user">
+                    <div
+                      v-show="u.shareScreenStream && !u.local"
+                      class="username"
+                    >
+                      {{ u.userId }}
+                    </div>
+                    <b-button
+                      @click="videoFullscreen(index)"
+                      :id="u.id"
+                      :ref="u.id"
+                      icon-left="fullscreen"
+                      class="btnfullscreen"
+                    ></b-button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
           <div v-if="ssmode" class="indicator">
             <div ref="fps" class="counter">

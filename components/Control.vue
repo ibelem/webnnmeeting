@@ -106,7 +106,6 @@
             @click="this.$parent.toggleVideo"
             icon-left="video"
           ></b-button>
-
           <b-button
             v-if="!this.$parent.isPauseAudio"
             @click="this.$parent.toggleAudio"
@@ -117,8 +116,10 @@
             @click="this.$parent.toggleAudio"
             icon-left="microphone-off"
           ></b-button>
-
-          <b-button icon-left="projector-screen"></b-button>
+          <b-button
+            @click="this.$parent.shareScreen"
+            icon-left="projector-screen"
+          ></b-button>
           <b-button
             v-if="showaimenu && !this.$parent.isPauseVideo"
             @click="showAiMenu"
