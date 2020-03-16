@@ -6,6 +6,7 @@
 
 - Blur my background
 - Change my background
+- more to come
 
 ## HTTPS Configuration
 
