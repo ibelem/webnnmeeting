@@ -49,6 +49,8 @@ export default {
       baserunner: null,
       runner: null,
       ssmode: false,
+      blurdone: false,
+      bgimgdone: false,
       videostream: null,
       ssstream: null,
       sstimer: null,
@@ -56,8 +58,6 @@ export default {
       inferencetime: null,
       renderer: null,
       progress: 0,
-      blurdone: false,
-      bgimgdone: false,
       loadedsize: 0,
       totalsize: 0,
       textmsg: null,
@@ -220,6 +220,7 @@ export default {
     this.userExit()
     this.initStats()
     this.initConference()
+    this.initSS()
   },
   created() {
     if (process.browser) {
@@ -295,7 +296,7 @@ export default {
     },
     initRenderer(effect) {
       this.renderer = new Renderer(this.$refs.sscanvas)
-      this.renderer.refineEdgeRadius = 10
+      this.renderer.refineEdgeRadius = 8
       this.renderer.blurRadius = 10
       this.renderer.effect = effect
       this.renderer.setup()
@@ -364,11 +365,13 @@ export default {
         }
       }
       try {
-        showInferenceTime(result.time)
-        this.stats.begin()
-        await this.drawResultComponents(result.drawData, source)
-        this.showfps = fps
-        this.stats.end()
+        if (result) {
+          showInferenceTime(result.time)
+          this.stats.begin()
+          await this.drawResultComponents(result.drawData, source)
+          this.showfps = fps
+          this.stats.end()
+        }
       } catch (e) {
         console.log(e)
       }
@@ -395,44 +398,51 @@ export default {
       this.ssmode = false
       this.blurdone = false
       this.bgimgdone = false
-      // this.stopSSStream()
       try {
+        this.stopSSStream()
         this.ssstream = this.videostream
+        clearTimeout(this.sstimer)
+        // cancelAnimationFrame(this.sstimer)
         deleteStream(this.roomId, this.localPublication.id)
         await this.publishLocal()
         // updateStream(this.roomId, this.localPublication.id)
-        // cancelAnimationFrame(this.sstimer)
-        // clearTimeout(this.sstimer)
-        this.baserunner.deleteAll()
-      } catch (e) {}
+        // this.baserunner.deleteAll()
+      } catch (e) {
+        console.log(e.message)
+      }
     },
     async ss(effect) {
       this.bgimgdone = false
       this.blurdone = false
-      // this.progress = 0
+      // this.showSSStream()
+      this.getSSStream()
+      if (effect === 'blur') {
+        this.blurdone = true
+      }
+      if (effect === 'image') {
+        this.bgimgdone = true
+        const img = new Image()
+        img.onload = () => {
+          this.renderer.backgroundImageSource = img
+        }
+        img.src = this.defaultbgimg
+      }
+      this.initRenderer(effect)
+      this.ssmode = true
+      await this.startPredictCamera()
+      deleteStream(this.roomId, this.localPublication.id)
+      await this.publishLocal()
+      // updateStream(this.roomId, this.localPublication.id)
+    },
+    async initSS() {
       this.initRunner()
       if (this.runner) {
-        await this.initRenderer(effect)
         await this.runner.loadModel()
         // await this.runner.initModel('WebML', 'sustained')
         if (this.backend === 'webml') {
           this.backend = 'WebML'
         }
         await this.runner.initModel(this.backend, this.prefer)
-        // this.showSSStream()
-        this.ssmode = true
-        this.getSSStream()
-        if (effect === 'blur') {
-          this.blurdone = true
-        }
-        if (effect === 'image') {
-          this.bgimgdone = true
-          this.renderer.backgroundImageSource = this.$refs.defaultbgimg
-        }
-        await this.startPredictCamera()
-        deleteStream(this.roomId, this.localPublication.id)
-        await this.publishLocal()
-        // updateStream(this.roomId, this.localPublication.id)
       }
     },
     initStats() {
@@ -1173,12 +1183,14 @@ export default {
       this.isLocalScreenSharing = ifToLocalShare
     },
     scrollToBottom() {
-      this.$nextTick(() => {
-        const conversation = this.$refs.conversation
-        const userlist = this.$refs.userlist
-        conversation.scrollTop = conversation.scrollHeight
-        userlist.scrollTop = userlist.scrollHeight
-      })
+      if (this.$refs.conversation.scrollHeight) {
+        this.$nextTick(() => {
+          const conversation = this.$refs.conversation
+          const userlist = this.$refs.userlist
+          conversation.scrollTop = conversation.scrollHeight
+          userlist.scrollTop = userlist.scrollHeight
+        })
+      }
     }
   }
 }

@@ -4,7 +4,7 @@
     class="hero is-fullheight home"
   >
     <Nav />
-    <div id="slider" class="scenery"></div>
+    <div id="slider" :data-images="slideimage"></div>
     <div id="hero-body" class="hero-body">
       <div class="container has-text-centered">
         <nuxt />
@@ -23,6 +23,9 @@ export default {
     script: [
       { src: '../../js/socket.io.js', defer: true },
       { src: '../../js/adapter-7.0.0.js', defer: true },
+      { src: '../../js/three.js', defer: true },
+      { src: '../../js/gsap.js', defer: true },
+      { src: '../../js/sketch.js', defer: true },
       {
         src: '../../js/webnn/dist/webml-polyfill.js',
         defer: true
@@ -65,6 +68,16 @@ export default {
     Nav,
     Footer
   },
+  data() {
+    return {
+      slideimage: [
+        '../../img/01.jpg',
+        '../../img/02.jpg',
+        '../../img/03.jpg',
+        '../../img/04.jpg'
+      ]
+    }
+  },
   computed: {
     getFullscreen() {
       return this.$store.state.fullscreen
@@ -80,9 +93,5 @@ export default {
 
 .hero-body {
   padding: 0;
-}
-
-#slider {
-  background: transparent url('../static/img/01.jpg') no-repeat fixed center;
 }
 </style>

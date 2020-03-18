@@ -49,6 +49,7 @@ import MeetingInfo from '~/components/MeetingInfo.vue'
 
 export default {
   name: 'Home',
+  layout: 'sceneryhome',
   components: {
     MeetingInfo
   },

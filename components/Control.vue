@@ -183,28 +183,28 @@ export default {
     ss(effect) {
       if (effect === 'blur') {
         this.$parent.isblur = !this.$parent.isblur
+        this.$parent.isbgimg = false
         this.$parent.showrightsidebar = false
         if (this.$parent.isblur) {
-          this.$parent.isbgimg = false
+          this.$parent.ss(effect)
+        } else {
+          this.$parent.stopSS()
         }
       }
 
       if (effect === 'image') {
         this.$parent.isbgimg = !this.$parent.isbgimg
+        this.$parent.isblur = false
         if (this.$parent.isbgimg) {
           this.$parent.showrightsidebar = true
         } else {
           this.$parent.showrightsidebar = false
         }
         if (this.$parent.isbgimg) {
-          this.$parent.isblur = false
+          this.$parent.ss(effect)
+        } else {
+          this.$parent.stopSS()
         }
-      }
-
-      if (this.$parent.isblur || this.$parent.isbgimg) {
-        this.$parent.ss(effect)
-      } else {
-        this.$parent.stopSS()
       }
     },
     leaveMeeting() {
