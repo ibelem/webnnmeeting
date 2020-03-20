@@ -49,6 +49,7 @@ export default {
       baserunner: null,
       runner: null,
       ssmode: false,
+      initss: false,
       blurdone: false,
       bgimgdone: false,
       videostream: null,
@@ -76,6 +77,7 @@ export default {
       localId: null,
       localScreenId: null,
       users: [],
+      shareScreenStream: null,
       localuser: {
         id: null,
         userId: null,
@@ -106,7 +108,7 @@ export default {
       remoteScreen: null,
       remoteScreenName: null,
       isMobile: false,
-      streamObj: {},
+      // streamObj: {},
       streamIndices: {},
       hasMixed: false,
       isSmall: false,
@@ -205,9 +207,6 @@ export default {
         return true
       }
       // return this.$store.state.enablevideo
-    },
-    srcobject(mediasource) {
-      return mediasource
     }
   },
   beforeDestroy() {
@@ -444,6 +443,7 @@ export default {
         }
         await this.runner.initModel(this.backend, this.prefer)
       }
+      this.initss = true
     },
     initStats() {
       this.stats = new Stats()
@@ -538,7 +538,7 @@ export default {
               _this.localuser.srcObject = null
             })
             _this.createLocal()
-            _this.streamObj = {}
+            // _this.streamObj = {}
 
             const streams = resp.remoteStreams
             for (const stream of streams) {
@@ -553,7 +553,7 @@ export default {
                 })
               }
               console.info('stream in conference:', stream.id)
-              _this.streamObj[stream.id] = stream
+              // _this.streamObj[stream.id] = stream
 
               const isMixStream = stream.source.audio === 'mixed'
               if (
@@ -594,7 +594,7 @@ export default {
       this.isPauseVideo = true
       this.toggleVideo()
       mixStream(this.roomId, this.localPublication.id, 'common')
-      this.streamObj[this.localStream.id] = this.localStream
+      // this.streamObj[this.localStream.id] = this.localStream
       publication.addEventListener('error', (err) => {
         // console.log('createLocal: Publication error: ' + err.error.message)
         this.snackbar(err.error.message)
@@ -757,18 +757,7 @@ export default {
       const uid = stream.origin
       // const id = stream.id
       // const uid = stream.origin
-      if (stream.source.video === 'screen-cast') {
-        if (uid) {
-          const remoteusers = this.users.map((p) =>
-            p.id === uid ? { ...p, shareScreenStream: stream.mediaStream } : p
-          )
-          this.users = remoteusers
-        }
-
-        this.changeMode(this.MODES.LECTURE, !this.isLocalScreenSharing)
-        this.streamObj.screen = stream
-        // getUserFromId(stream.origin)["userId"]
-      } else {
+      if (stream.source.video !== 'screen-cast') {
         if (isLocal) {
           const newusers = this.users.map((p) =>
             p.local === true ? { ...p, srcObject: stream.mediaStream } : p
@@ -812,6 +801,32 @@ export default {
         // console.log(this.localVideo)
         // console.log('remoteVideo')
         // console.log(this.remoteVideo)
+      } else {
+        console.log('********')
+        console.log(this.users)
+        console.log(uid)
+        // const audiotrack = this.videostream.getTracks().filter((track) => {
+        //   return track.kind === 'audio'
+        // })[0]
+        // this.shareScreenStream = stream.addTrack(audiotrack)
+        this.shareScreenStream = stream
+        console.log(this.shareScreenStream)
+        // if (uid) {
+        //   const updateusers = this.users.map((p) =>
+        //     // p.id === uid ? { ...p, shareScreenStream: stream } : p
+        //     {
+        //       if (p.id === uid) {
+        //         console.log(uid)
+        //         console.log(stream)
+        //       }
+        //     }
+        //   )
+        //   this.users = updateusers
+        // }
+        this.changeMode(this.MODES.LECTURE, !this.isLocalScreenSharing)
+        // this.streamObj.screen = stream
+        // getUserFromId(stream.origin)["userId"]
+        console.log('********')
       }
       console.log('==== END addVideo END ====')
     },
@@ -883,7 +898,7 @@ export default {
 
       this.users = []
       this.subList = {}
-      this.streamObj = {}
+      // this.streamObj = {}
       this.streamIndices = {}
       this.localStream = null
       this.isAudioOnly = false
@@ -915,18 +930,17 @@ export default {
     subscribeStream(stream) {
       console.log('=====  subscribeStream(stream) =====')
       console.log('stream.id: ' + stream.id)
+      console.info('subscribing:', stream.id)
       const videoOption = !this.isAudioOnly
       this.room.subscribe(stream, { video: videoOption }).then(
         (subscription) => {
-          console.log(stream)
-          const uid = stream.orgin
-          console.log(uid)
+          console.info('subscribed: ', subscription.id)
           this.addVideo(stream, false)
           this.subList[subscription.id] = subscription
-          this.streamObj[stream.id] = stream
+          // this.streamObj[stream.id] = stream
 
           console.log(this.subList)
-
+          console.info('add success')
           if (stream.source.video === 'mixed') {
             this.remoteMixedSub = subscription
           }
@@ -999,6 +1013,7 @@ export default {
     addRoomEventListener() {
       this.room.addEventListener('streamadded', (streamEvent) => {
         console.log('==== room.addEventListener streamadded ====')
+        console.log(streamEvent)
         const stream = streamEvent.stream
         if (this.localStream && this.localStream.id === stream.id) {
           return
@@ -1033,17 +1048,19 @@ export default {
         }
 
         // add video of non-local streams
-        if (this.getUserFromId(stream.origin)) {
-          if (
-            this.localId !== thatId &&
-            this.localScreenId !== thatId &&
-            this.localName !== this.getUserFromId(stream.origin).userId
-          ) {
-            this.subscribeStream(stream)
-          }
-        } else {
+        // if (this.getUserFromId(stream.origin)) {
+        if (
+          this.localId !== thatId &&
+          this.localScreenId !== thatId &&
+          this.localName !== this.getUserFromId(stream.origin).userId
+        ) {
           this.subscribeStream(stream)
+          console.log('A')
+          console.log(stream)
         }
+        // } else {
+        //   this.subscribeStream(stream)
+        // }
       })
       this.room.addEventListener('participantjoined', (event) => {
         console.log('participantjoined', event)

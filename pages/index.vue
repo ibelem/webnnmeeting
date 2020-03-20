@@ -300,10 +300,10 @@ export default {
   height: 56px;
   color: rgba(255, 255, 255, 1);
   font-size: 22px;
-  font-weight: 200;
+  font-weight: 300;
   outline: 0 !important;
   box-shadow: 0px 0px 0px rgba(255, 255, 255, 0);
-  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.4);
 }
 
 .homecontrol input::placeholder {

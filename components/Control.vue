@@ -6,7 +6,7 @@
     <transition name="fade-slide">
       <div
         v-if="controlbar"
-        v-show="showaimenu && !this.$parent.isPauseVideo"
+        v-show="this.$parent.initss && showaimenu && !this.$parent.isPauseVideo"
         class="meetingcontrolai"
       >
         <b-button
@@ -121,13 +121,15 @@
             icon-left="projector-screen"
           ></b-button>
           <b-button
-            v-if="showaimenu && !this.$parent.isPauseVideo"
+            v-if="
+              this.$parent.initss && showaimenu && !this.$parent.isPauseVideo
+            "
             @click="showAiMenu"
             icon-left="dots-horizontal"
             class="btnactive"
           ></b-button>
           <b-button
-            v-else-if="!this.$parent.isPauseVideo"
+            v-else-if="this.$parent.initss && !this.$parent.isPauseVideo"
             @click="showAiMenu"
             icon-left="dots-horizontal"
           ></b-button>

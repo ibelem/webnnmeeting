@@ -182,7 +182,7 @@ nav.fullscreen {
 
 .slogan {
   display: block;
-  font-weight: 300;
+  font-weight: 400;
   font-style: italic;
   font-size: 0.8rem;
   letter-spacing: -0.01em;

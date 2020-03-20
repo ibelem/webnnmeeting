@@ -8,7 +8,7 @@ module.exports = {
    ** Headers of the page
    */
   head: {
-    title: 'WebNN Meeting - Meet happy, meet everywhere',
+    title: 'WebNN Meeting - meet you, meet happy',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },

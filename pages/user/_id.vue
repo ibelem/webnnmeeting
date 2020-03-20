@@ -1,6 +1,12 @@
 <template>
   <div>
     <div class="columns user">
+      <video
+        :src-object.prop.camel="shareScreenStream"
+        style="display: none"
+        playsinline
+        autoplay
+      ></video>
       <transition name="fade-slide">
         <div
           v-show="showparticipants || showconversation"
@@ -136,7 +142,7 @@
                 </div>
               </div>
             </div>
-            <div
+            <!-- <div
               v-show="users.length > 0 && u.shareScreenStream && !u.local"
               v-for="(u, index) in users"
               :class="videofullscreen == index ? 'fullscreen' : ''"
@@ -167,7 +173,7 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </div> -->
           </div>
           <div v-if="ssmode" class="indicator">
             <div ref="fps" class="counter">
@@ -346,6 +352,20 @@ body {
   width: calc(100% / 6);
   margin-bottom: 0;
   min-height: 128px;
+  opacity: 0.2;
+}
+
+.isfullscreen .column .videoset:hover,
+.isfullscreen .column .videosetforcanvas:hover {
+  width: calc(100% / 6);
+  margin-bottom: 0;
+  min-height: 128px;
+  opacity: 1;
+}
+
+.videoset.fullscreen,
+.videosetforcanvas.fullscreen {
+  opacity: 1 !important;
 }
 
 .videosetforcanvas {

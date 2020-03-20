@@ -471,22 +471,6 @@ body::scrollbar {
   padding: 0;
 }
 
-.titlea {
-  font-size: 1.5rem;
-  font-style: italic;
-  display: block;
-  width: 100%;
-}
-
-.slogan {
-  display: block;
-  font-weight: 300;
-  font-style: italic;
-  font-size: 0.8rem;
-  letter-spacing: -0.01em;
-  width: 100%;
-}
-
 #shadow {
   background: rgba(0, 0, 0, 0.5);
   position:fixed;
