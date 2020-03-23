@@ -1,12 +1,6 @@
 <template>
   <div>
     <div class="columns user">
-      <video
-        :src-object.prop.camel="shareScreenStream"
-        style="display: none"
-        playsinline
-        autoplay
-      ></video>
       <transition name="fade-slide">
         <div
           v-show="showparticipants || showconversation"
@@ -26,12 +20,20 @@
                   <span class="ulu">{{ u.userId }}</span>
                 </div>
                 <div class="column ulr">
+                  <b-icon
+                    v-if="
+                      (u.shareScreenStream && isScreenSharing) ||
+                        (isLocalScreenSharing && u.userId === localuser.userId)
+                    "
+                    icon="projector-screen"
+                    size="is-small"
+                  >
+                  </b-icon>
                   <b-icon v-if="u.video" icon="video" size="is-small"> </b-icon>
                   <b-icon v-else icon="video-off" size="is-small"> </b-icon>
                   <b-icon v-if="u.muted" icon="microphone-off" size="is-small">
                   </b-icon>
                   <b-icon v-else icon="microphone" size="is-small"> </b-icon>
-                  <b-icon icon="projector-screen" size="is-small"> </b-icon>
                 </div>
               </div>
             </div>
@@ -75,7 +77,7 @@
                 <div class="v">
                   <canvas id="sscanvas" ref="sscanvas"></canvas>
                   <div class="user">
-                    <div class="username">{{ localuser.userId }} CANVAS</div>
+                    <div class="username">{{ localuser.userId }} (AI)</div>
                     <b-button
                       @click="localFullscreen"
                       :id="localuser.id"
@@ -101,7 +103,7 @@
                     autoplay
                   ></video>
                   <div class="user">
-                    <div class="username">{{ localuser.userId }} VIDEO</div>
+                    <div class="username">{{ localuser.userId }}</div>
                     <b-button
                       @click="localFullscreen"
                       :id="localuser.id"
@@ -114,7 +116,7 @@
               </div>
             </div>
             <div
-              v-show="users.length > 0 && u.srcObject && !u.local"
+              v-if="users.length > 0 && u.srcObject && !u.local"
               v-for="(u, index) in users"
               :class="videofullscreen == index ? 'fullscreen' : ''"
               class="videoset"
@@ -142,8 +144,13 @@
                 </div>
               </div>
             </div>
-            <!-- <div
-              v-show="users.length > 0 && u.shareScreenStream && !u.local"
+            <div
+              v-if="
+                users.length > 0 &&
+                  isScreenSharing &&
+                  !isLocalScreenSharing &&
+                  !u.local
+              "
               v-for="(u, index) in users"
               :class="videofullscreen == index ? 'fullscreen' : ''"
               class="videoset"
@@ -151,18 +158,12 @@
               <div class="scale">
                 <div class="v">
                   <video
-                    v-show="u.shareScreenStream && !u.local"
                     :src-object.prop.camel="u.shareScreenStream"
                     playsinline
                     autoplay
                   ></video>
                   <div class="user">
-                    <div
-                      v-show="u.shareScreenStream && !u.local"
-                      class="username"
-                    >
-                      {{ u.userId }}
-                    </div>
+                    <div class="username">{{ u.userId }}</div>
                     <b-button
                       @click="videoFullscreen(index)"
                       :id="u.id"
@@ -173,7 +174,7 @@
                   </div>
                 </div>
               </div>
-            </div> -->
+            </div>
           </div>
           <div v-if="ssmode" class="indicator">
             <div ref="fps" class="counter">

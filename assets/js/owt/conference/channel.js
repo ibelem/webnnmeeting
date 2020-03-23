@@ -295,8 +295,13 @@ export class ConferencePeerConnectionChannel extends EventDispatcher {
     if (typeof options !== 'object') {
       return Promise.reject(new TypeError('Options should be an object.'));
     }
+    
     if (options.audio === undefined) {
-      options.audio = !!stream.settings.audio;
+      if(stream.settings.audio.length === 0) {
+        options.audio = false
+      } else {
+        options.audio = !!stream.settings.audio;
+      }
     }
     if (options.video === undefined) {
       options.video = !!stream.settings.video;

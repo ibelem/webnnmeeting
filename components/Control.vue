@@ -116,10 +116,19 @@
             @click="this.$parent.toggleAudio"
             icon-left="microphone-off"
           ></b-button>
+
           <b-button
+            v-if="this.$parent.isLocalScreenSharing"
+            @click="this.$parent.shareScreen"
+            icon-left="projector-screen"
+            class="btnactive"
+          ></b-button>
+          <b-button
+            v-else
             @click="this.$parent.shareScreen"
             icon-left="projector-screen"
           ></b-button>
+
           <b-button
             v-if="
               this.$parent.initss && showaimenu && !this.$parent.isPauseVideo
