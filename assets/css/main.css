@@ -162,7 +162,8 @@ body, button, input, select, textarea {
   margin:0 auto;
   position: relative;
   top: -80px;
-  display: none;
+  visibility: hidden;
+  visibility: visible;
 }
 
 .togglecontrolbar {
@@ -188,7 +189,7 @@ body, button, input, select, textarea {
 
 .container:hover .meetingcontrol {
   transition: all .3s ease;
-  display: block;
+  visibility: visible;
 }
 
 .meetingcontrol .button:first-child {

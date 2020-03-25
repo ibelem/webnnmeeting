@@ -7,7 +7,7 @@
             <div class="titlea">
               WebNN Meeting
               <div class="slogan lg">
-                meet you, meet happy
+                meet you, meet happily
               </div>
             </div>
           </b-navbar-item>

@@ -145,13 +145,13 @@
               </div>
             </div>
             <div
+              v-for="(u, index) in users"
               v-if="
                 users.length > 0 &&
                   isScreenSharing &&
                   !isLocalScreenSharing &&
-                  !u.local
+                  u.shareScreenStream
               "
-              v-for="(u, index) in users"
               :class="videofullscreen == index ? 'fullscreen' : ''"
               class="videoset"
             >
@@ -187,14 +187,16 @@
             </div>
             <div class="counter">
               <div class="value">
-                {{ resolutionwidth }} x {{ resolutionheight }}
-              </div>
-              <div class="value">
+                <span v-if="resolutionheight >= 720">
+                  <b-icon icon="high-definition" class="blicon"> </b-icon>
+                </span>
                 <span v-if="enablevideo">
-                  Video + Audio
+                  <b-icon icon="video" class="blicon"> </b-icon>
+                  <b-icon icon="microphone" class="blicon"> </b-icon>
                 </span>
                 <span v-else>
-                  Audio Only
+                  <b-icon icon="video-off" class="blicon"> </b-icon>
+                  <b-icon icon="microphone" class="blicon"> </b-icon>
                 </span>
               </div>
             </div>
@@ -202,14 +204,16 @@
           <div v-else>
             <div class="counter less">
               <div class="value">
-                {{ resolutionwidth }} x {{ resolutionheight }}
-              </div>
-              <div class="value">
+                <span v-if="resolutionheight >= 720">
+                  <b-icon icon="high-definition" class="blicon"> </b-icon>
+                </span>
                 <span v-if="enablevideo">
-                  Video + Audio
+                  <b-icon icon="video" class="blicon"> </b-icon>
+                  <b-icon icon="microphone" class="blicon"> </b-icon>
                 </span>
                 <span v-else>
-                  Audio Only
+                  <b-icon icon="video-off" class="blicon"> </b-icon>
+                  <b-icon icon="microphone" class="blicon"> </b-icon>
                 </span>
               </div>
             </div>
@@ -283,7 +287,16 @@ export default {
 }
 
 .less {
-  top: -3rem;
+  top: -2rem;
+}
+
+.blicon {
+  margin-right: -4px;
+}
+
+.blicon i.mdi-24px.mdi-set,
+.blicon i.mdi-24px.mdi:before {
+  font-size: 18px;
 }
 
 .counter .title {
@@ -334,7 +347,7 @@ body {
 .videoset {
   display: inline-block;
   margin-bottom: -7px;
-  width: calc(100% / 4);
+  width: calc(100% / 4.01);
   margin-right: -1px;
   overflow: hidden;
 }
@@ -372,7 +385,7 @@ body {
 .videosetforcanvas {
   display: inline-block;
   margin-bottom: -7px;
-  width: calc(100% / 4);
+  width: calc(100% / 4.01);
   margin-right: -1px;
   overflow: hidden;
 }
@@ -618,6 +631,8 @@ video {
 .videoset canvas,
 .videoset video {
   transition: all 0.2s ease-in-out;
+  width: 100%;
+  height: 100%;
   transform: scale(1);
 }
 
@@ -625,7 +640,7 @@ video {
 .videoset canvas:hover,
 .videoset video:hover {
   cursor: pointer;
-  transform: scale(1.2);
+  transform: scale(1.4);
 }
 
 .bgimgselector {

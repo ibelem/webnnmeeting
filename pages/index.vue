@@ -17,7 +17,7 @@
         </p>
       </b-field>
       <div class="settings">
-        <b-field>
+        <b-field v-show="false">
           <template v-for="st in subscribetypes">
             <b-radio-button
               @change.native="updateSubscribeType"

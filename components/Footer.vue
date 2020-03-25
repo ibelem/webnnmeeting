@@ -72,4 +72,8 @@ export default {
   display: block;
   margin: -90px 0 0 -60px;
 }
+
+.hero-foot.fullscreen {
+  display: none;
+}
 </style>
