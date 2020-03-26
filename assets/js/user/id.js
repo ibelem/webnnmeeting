@@ -1,4 +1,4 @@
-import config from '~/config'
+import * as config from '~/config'
 import Owt from '~/assets/js/owt/owt'
 import { Stats, fps } from '~/assets/js/fps'
 import {
@@ -14,7 +14,6 @@ import {
 } from '~/assets/js/webnn/util/runner'
 import Renderer from '~/assets/js/webnn/webgl/DrawOutputs'
 import Control from '~/components/Control.vue'
-import MeetingInfo from '~/components/MeetingInfo.vue'
 
 export default {
   name: 'User',
@@ -25,8 +24,7 @@ export default {
   // layout: 'classic',
   // layout: 'userbgimg',
   components: {
-    Control,
-    MeetingInfo
+    Control
   },
   data() {
     return {
@@ -38,7 +36,11 @@ export default {
         '../../img/ssbg/02.jpg',
         '../../img/ssbg/03.jpg',
         '../../img/ssbg/04.jpg',
-        '../../img/ssbg/05.jpg'
+        '../../img/ssbg/05.jpg',
+        '../../img/ssbg/06.jpg',
+        '../../img/ssbg/07.jpg',
+        '../../img/ssbg/08.jpg',
+        '../../img/ssbg/09.jpg'
       ],
       defaultbgimg: '../../img/ssbg/04.jpg',
       isblur: false,
@@ -291,8 +293,8 @@ export default {
     },
     initRenderer(effect) {
       this.renderer = new Renderer(this.$refs.sscanvas)
-      this.renderer.refineEdgeRadius = 8
-      this.renderer.blurRadius = 10
+      this.renderer.refineEdgeRadius = 12
+      this.renderer.blurRadius = 20
       this.renderer.effect = effect
       this.renderer.setup()
     },
@@ -592,8 +594,8 @@ export default {
       mixStream(this.roomId, this.localPublication.id, 'common')
       // this.streamObj[this.localStream.id] = this.localStream
       publication.addEventListener('error', (err) => {
-        // console.log('createLocal: Publication error: ' + err.error.message)
-        this.snackbar(err.error.message)
+        console.log('createLocal: Publication error: ' + err.error.message)
+        // this.snackbar(err.error.message)
       })
     },
     async createLocal() {
