@@ -1,6 +1,6 @@
-# WebNN Meeting
+# WebNN Meeting (Intelligent Collaboration)
 
-A Video Conference example with AI features based on W3C Web Neural Network API and powered by Intel Open WebRTC Toolkit (OWT).
+A Web-based Intelligent Collaboration (Video Conference) example with AI features based on W3C Web Neural Network API and powered by Intel Open WebRTC Toolkit (OWT).
 
 ## Web Machine Learning Features
 
@@ -70,7 +70,7 @@ $ npm run generate
 
 If you are running the code locally, the browser will show "Your connection is not private" when accessing Intel OWT server and WebNN Meeting web pages.
 
-- Visit https://10.239.47.52:8080/socket.io/
+- Visit https://10.239.47.52:8080/socket.io/?EIO=3&transport=polling
 - Click "Advanced" button -> Click "Proceed to 10.239.47.52 (unsafe)"
 - Visit WebNN Meeting URL set in config.js, e.g: https://127.0.0.1:8080/
 - Click "Advanced" button -> Click "Proceed to 127.0.0.1 (unsafe)"
@@ -94,7 +94,7 @@ Update `assets/js/owt/conference/channel.js` code
       options.audio = !!stream.settings.audio;
     }
 ```
-to following for fixing a audio issue in screen sharing mode:
+to following for fixing a screen sharing mode issue caused by audio option:
 
 ```
     if (options.audio === undefined) {
@@ -108,7 +108,7 @@ to following for fixing a audio issue in screen sharing mode:
 
 ### Material Design Icons
 
-Modified Material Design Icons stylesheet url in npm package for faster loading due to network issue. If there is no such network issue, do not follow this step.
+Modified Material Design Icons style sheet url in npm package for faster loading due to network issue. No necessary to follow this step if you don't encounter the issue.
 
 Update `.node_modules/nuxt-buefy/modules.js` from `materialDesignIconsHRef: '//cdn.materialdesignicons.com/2.4.85/css/materialdesignicons.min.css'`
 to `materialDesignIconsHRef: '../../css/materialdesignicons/2.4.85/materialdesignicons.min.css'`
