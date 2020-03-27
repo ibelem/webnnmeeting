@@ -293,7 +293,7 @@ export default {
     },
     initRenderer(effect) {
       this.renderer = new Renderer(this.$refs.sscanvas)
-      this.renderer.refineEdgeRadius = 12
+      this.renderer.refineEdgeRadius = 8
       this.renderer.blurRadius = 20
       this.renderer.effect = effect
       this.renderer.setup()
@@ -320,9 +320,9 @@ export default {
       const scaledHeight = Math.floor(imHeight / resizeRatio)
       return [scaledWidth, scaledHeight]
     },
-    async drawResultComponents(data, source) {
+    drawResultComponents(data, source) {
       this.renderer.uploadNewTexture(source, this.getClippedSize(source))
-      await this.renderer.drawOutputs(data)
+      this.renderer.drawOutputs(data)
     },
     initRunner() {
       // eslint-disable-next-line new-cap
@@ -352,7 +352,7 @@ export default {
     //   this.getSSStream()
     //   this.$refs.ssvideo.srcObject = this.ssstream
     // },
-    async handleInferencedResult(result, source) {
+    handleInferencedResult(result, source) {
       const showInferenceTime = (time) => {
         try {
           this.inferencetime = time.toFixed(2)
@@ -365,7 +365,7 @@ export default {
         if (result) {
           showInferenceTime(result.time)
           this.stats.begin()
-          await this.drawResultComponents(result.drawData, source)
+          this.drawResultComponents(result.drawData, source)
           this.showfps = fps
           this.stats.end()
         }
@@ -386,7 +386,7 @@ export default {
     },
     async startPredictCamera() {
       const ret = await this.runPredict(this.$refs.localvideo)
-      await this.handleInferencedResult(ret, this.$refs.localvideo)
+      this.handleInferencedResult(ret, this.$refs.localvideo)
       // this.sstimer = requestAnimationFrame(this.startPredictCamera)
       // not using nAF because that limites us to 60FPS
       this.sstimer = setTimeout(this.startPredictCamera, 0)
@@ -427,8 +427,7 @@ export default {
       this.initRenderer(effect)
       await this.startPredictCamera()
       deleteStream(this.roomId, this.localPublication.id)
-      await this.publishLocal()
-      this.ssmode = true
+      await this.publishLocal(true)
       // updateStream(this.roomId, this.localPublication.id)
     },
     async initSS() {
@@ -578,7 +577,7 @@ export default {
       })
       console.log('==== END initConference END ====')
     },
-    async publishLocal() {
+    async publishLocal(ss) {
       console.log('===== publishLocal =====')
       this.localStream = new Owt.Base.LocalStream(
         this.ssstream,
@@ -593,6 +592,9 @@ export default {
       this.toggleVideo()
       mixStream(this.roomId, this.localPublication.id, 'common')
       // this.streamObj[this.localStream.id] = this.localStream
+      if (ss) {
+        this.ssmode = true
+      }
       publication.addEventListener('error', (err) => {
         console.log('createLocal: Publication error: ' + err.error.message)
         // this.snackbar(err.error.message)
