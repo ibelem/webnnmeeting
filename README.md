@@ -24,6 +24,8 @@ $ openssl req -new -x509 -nodes -sha256 -days 365 -key server.key -out webnn-ver
 
 ## Environment Configuration
 
+You could get webrtcserver information when launch the OWT Server via [Open WebRTC Toolkit (OWT) Server Setup](doc/Server.md).
+
 ```
   webrtcserver: {
     id: '5df9ca6f7415937c7a91d774',
