@@ -9,7 +9,7 @@
 
 ### Download and Install Open WebRTC Toolkit (OWT) Server for WebNN Meeting
 
-Please also follow [Open WebRTC Toolkit(OWT) Server User Guide](https://software.intel.com/sites/products/documentation/webrtc/conference/) to install the OWT server.
+Please follow [Open WebRTC Toolkit(OWT) Server User Guide](https://software.intel.com/sites/products/documentation/webrtc/conference/) to install the OWT server.
 
 - Download the distribution of the [Open WebRTC Toolkit (OWT)](https://software.intel.com/zh-cn/webrtc-sdk), e.g. `Intel_CS_WebRTC.v<Version>.zip`
 - `$ unzip Intel_CS_WebRTC.v<Version>.zip && cd Intel_CS_WebRTC.v<Version>`
@@ -27,11 +27,11 @@ $ openssl req -new -x509 -nodes -sha256 -days 365 -key server.key -out server.cr
 
 ### Use Your Own Certificate
 
-The default certificate (certificate.pfx) for the OWT server is located in the Release-<Version>/<Component>/cert folder. When using HTTPS and/or secure socket.io connection, you should use your own certificate for each server. First, you should edit management_api/management_api.toml, webrtc_agent/agent.toml, portal/portal.toml, management_console/management_console.toml to provide the path of each certificate for each server, under the key keystorePath. See Table 2-4 for details.
+The default certificate (certificate.pfx) for the OWT server is located in the `Release-<Version>/<Component>/cert` folder. When using HTTPS and/or secure socket.io connection, you should use your own certificate for each server. First, you should edit `management_api/management_api.toml`, `webrtc_agent/agent.toml`, `portal/portal.toml`, `management_console/management_console.toml` to provide the path of each certificate for each server, under the key keystorePath. 
 
 We use PFX formatted certificates in OWT server. See https://nodejs.org/api/tls.html for how to generate a self-signed certificate by openssl utility. We recommend using 2048-bit private key for the certificates. But if you meet DTLS SSL connection error in webrtc-agent, please use 1024-bit instead of 2048-bit private key because of a known network MTU issue.
 
-After editing the configuration file, you should run ./initcert.js inside each component to input your passphrases for the certificates, which would then store them in an encrypted file. Be aware that you should have node binary in your shell's $PATH to run the JS script.
+After editing the configuration file, you should run `./initcert.js` inside each component to input your passphrases for the certificates, which would then store them in an encrypted file. Be aware that you should have node binary in your shell's `$PATH` to run the JS script.
 
 ```
 $ vim cert-install.sh
