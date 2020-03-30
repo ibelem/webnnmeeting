@@ -18,7 +18,7 @@ Go to project main dir and create private and public key:
 
 ```
 $ openssl genrsa 2048 > webnn-veritas.key
-$ chmod 400 server.key
+$ chmod 400 webnn-veritas.key
 $ openssl req -new -x509 -nodes -sha256 -days 365 -key server.key -out webnn-veritas.crt
 ```
 
