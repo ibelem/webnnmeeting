@@ -35,11 +35,14 @@ After editing the configuration file, you should run `./initcert.js` inside each
 
 ```
 $ vim cert-install.sh
+
 $ cp ../../cert/certificate.pfx management_api/cert/ && ./management_api/initcert.js
 $ cp ../../cert/certificate.pfx portal/cert/ && ./portal/initcert.js
 $ cp ../../cert/certificate.pfx webrtc_agent/cert/ && ./webrtc_agent/initcert.js
 $ cp ../../cert/certificate.pfx management_console/cert/ && ./management_console/initcert.js
 $ cp ../../cert/certificate.pfx extras/basic_example/cert/ && ./extras/basic_example/initcert.js
+
+$ ./cert-install.sh
 ```
 
 #### OWT Server Certificates Configuration
@@ -89,4 +92,4 @@ $ bin/stop-all.sh
 
 ### Set Up the OWT Server Cluster
 
-Please refer to [Open WebRTC Toolkit(OWT) Server User Guide](https://software.intel.com/sites/products/documentation/webrtc/conference/)
+Please refer to [Open WebRTC Toolkit (OWT) Server User Guide](https://software.intel.com/sites/products/documentation/webrtc/conference/)
