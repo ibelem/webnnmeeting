@@ -89,6 +89,9 @@ module.exports = {
     /*
      ** You can extend webpack config here
      */
+    babel: {
+      sourceType: 'unambiguous'
+    },
     extend(config, ctx) {}
   },
   server: {

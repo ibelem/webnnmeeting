@@ -18,22 +18,34 @@ module.exports = {
     httpsport: 8080
   },
   certificate: {
-    cert: '/home/belem/github/webnnmeeting/webnn-veritas.crt',
-    key: '/home/belem/github/webnnmeeting/webnn-veritas.key'
+    cert: './webnn-veritas.crt',
+    key: './webnn-veritas.key'
   },
   semanticsegmentation: {
-    modelName: 'Deeplab 321 Atrous (TFLite)',
+    modelName: 'Deeplab 257 Atrous (TFLite)',
     format: 'TFLite',
-    modelId: 'deeplab_mobilenet_v2_321_atrous_tflite',
+    modelId: 'deeplab_mobilenet_v2_257_atrous_tflite',
     modelSize: '8.4MB',
-    modelFile: '../../js/webnn/ss/model/deeplab_mobilenetv2_321_dilated.tflite',
+    modelFile: '../../js/webnn/ss/model/deeplab_mobilenetv2_257_dilated.tflite',
     labelsFile: '../../js/webnn/ss/model/labels.txt',
-    inputSize: [321, 321, 3],
-    outputSize: [321, 321, 1],
+    inputSize: [257, 257, 3],
+    outputSize: [257, 257, 1],
     preOptions: {
       mean: [127.5, 127.5, 127.5],
       std: [127.5, 127.5, 127.5]
     }
+    // modelName: 'Deeplab 321 Atrous (TFLite)',
+    // format: 'TFLite',
+    // modelId: 'deeplab_mobilenet_v2_321_atrous_tflite',
+    // modelSize: '8.4MB',
+    // modelFile: '../../js/webnn/ss/model/deeplab_mobilenetv2_321_dilated.tflite',
+    // labelsFile: '../../js/webnn/ss/model/labels.txt',
+    // inputSize: [321, 321, 3],
+    // outputSize: [321, 321, 1],
+    // preOptions: {
+    //   mean: [127.5, 127.5, 127.5],
+    //   std: [127.5, 127.5, 127.5]
+    // }
     // modelName: 'Deeplab 513 Atrous (TFLite)',
     // format: 'TFLite',
     // modelId: 'deeplab_mobilenet_v2_513_atrous_tflite',
