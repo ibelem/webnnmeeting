@@ -1,5 +1,5 @@
 <template>
-  <div id="clock">
+  <div class="clock">
     <span>{{ clock }}</span>
     <span class="mill">{{ mill }}</span>
   </div>

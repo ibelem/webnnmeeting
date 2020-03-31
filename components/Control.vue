@@ -94,7 +94,8 @@
             @click="this.$parent.exitFullScreen"
             icon-left="fullscreen-exit"
           ></b-button>
-          <b-button class="date"><Clock /></b-button>
+
+          <!-- <b-button class="date"><Clock /></b-button> -->
 
           <b-button
             v-if="this.$parent.isPauseVideo"
@@ -178,11 +179,11 @@
 </template>
 
 <script>
-import Clock from '~/components/Clock.vue'
+// import Clock from '~/components/Clock.vue'
 
 export default {
   components: {
-    Clock
+    // Clock
   },
   data() {
     return {

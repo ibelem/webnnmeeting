@@ -8,9 +8,9 @@ A Web-based Intelligent Collaboration (Video Conference) example with AI feature
 - Change my background
 - More to come
 
-## Intel Open WebRTC Toolkit (OWT) Server Setup
+## Precondition - Intel Open WebRTC Toolkit (OWT) Server Setup
 
-Please read [Server.md](doc/Server.md) for setting up Intel Open WebRTC Toolkit (OWT) Server.
+The WebNN Meeting requires WebRTC server support, please read [Server.md](doc/Server.md) for setting up Intel Open WebRTC Toolkit (OWT) Server on CentOS* 7.6 or Ubuntu 18.04 LTS.
 
 ## HTTPS Configuration
 
