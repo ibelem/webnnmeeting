@@ -1,6 +1,6 @@
 ## Intel Open WebRTC Toolkit (OWT) Server Setup
 
-Please follow [Open WebRTC Toolkit(OWT) Server User Guide](https://software.intel.com/sites/products/documentation/webrtc/conference/) to install the OWT server.
+You can also follow [Open WebRTC Toolkit(OWT) Server User Guide](https://software.intel.com/sites/products/documentation/webrtc/conference/) to install and setup the OWT server.
 
 ### Server Requirements
 
@@ -36,12 +36,14 @@ The external stream output and mp4 format recording rely on AAC encoder libfdk_a
 
 ### Download and Install Open WebRTC Toolkit (OWT) Server for WebNN Meeting
 
-Download [CS_WebRTC_Conference_Server_MCU.v<Version>.Ubuntu.tgz](https://drive.google.com/file/d/1Ru2MLM82TfrzjUKfRq0ySHSDPSj8bJwJ/view?usp=sharing)(~45MB) or [CS_WebRTC_Conference_Server_MCU.v<Version>.CentOS.tgz](https://drive.google.com/file/d/1m7ynhq6AvaFwXPAbFaTAop3TWgajb5Pi/view?usp=sharing)(~44MB).
+Download [CS_WebRTC_Conference_Server_MCU.v_Version_.Ubuntu.tgz](https://drive.google.com/file/d/1Ru2MLM82TfrzjUKfRq0ySHSDPSj8bJwJ/view?usp=sharing)(~45MB) or [CS_WebRTC_Conference_Server_MCU.v_Version_.CentOS.tgz](https://drive.google.com/file/d/1m7ynhq6AvaFwXPAbFaTAop3TWgajb5Pi/view?usp=sharing)(~44MB).
+
+- `$ tar zxvf CS_WebRTC_Conference_Server_MCU.v<Version>.Ubuntu.tgz && cd Release-v<Version>`
+
+You can also download the full distribution (~830MB) from [Open WebRTC Toolkit (OWT)](https://software.intel.com/zh-cn/webrtc-sdk) or [Google Drive](https://drive.google.com/file/d/18Ev_p0pf4-B9cLHC54uOdVDFogtxdm5A/view?usp=sharing), e.g. `Intel_CS_WebRTC.v<Version>.zip` if you need, which contains `CS_WebRTC_Conference_Server_MCU.v<Version>.Ubuntu.tgz` and `CS_WebRTC_Conference_Server_MCU.v<Version>.CentOS.tgz`.
 
 - `$ unzip Intel_CS_WebRTC.v<Version>.zip && cd Intel_CS_WebRTC.v<Version>`
 - `$ tar zxvf CS_WebRTC_Conference_Server_MCU.v<Version>.Ubuntu.tgz && cd Release-v<Version>`
-
-You can also download the full distribution (~830MB) from [Open WebRTC Toolkit (OWT)](https://software.intel.com/zh-cn/webrtc-sdk) or [Google Drive](https://drive.google.com/file/d/18Ev_p0pf4-B9cLHC54uOdVDFogtxdm5A/view?usp=sharing), e.g. `Intel_CS_WebRTC.v<Version>.zip` if you need, which contains CS_WebRTC_Conference_Server_MCU.v<Version>.Ubuntu.tgz and CS_WebRTC_Conference_Server_MCU.v<Version>.CentOS.tgz.
 
 ### HTTPS Configuration
 

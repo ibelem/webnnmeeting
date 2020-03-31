@@ -2,11 +2,26 @@
 
 A Web-based Intelligent Collaboration (Video Conference) example with AI features based on W3C Web Neural Network API and powered by Intel Open WebRTC Toolkit (OWT).
 
+> [Web Neural Network (WebNN) API](https://webmachinelearning.github.io/webnn/) is a dedicated low-level API for neural network inference hardware acceleration. It is published by the [W3C Machine Learning for the Web Community Group](https://www.w3.org/community/webmachinelearning/).
+
 ## Web Machine Learning Features
 
 - Blur my background
 - Change my background
 - More to come
+
+## Supported Backends for Web Machine Learning Features
+
+- Slowest: WebAssembly (WASM)
+- Slower: WebGL (Will upgrade to WebGPU later)
+- Fastest: Web Neural Network (WebNN) API 
+
+Mordern browsers including Google Chrome doesn't support WebNN API now, you can try WebGL backend automatically with your browser.
+
+If you are interested, please refer to [WebNN Chromium build repo](https://github.com/otcshare/chromium-src) and WIKI: 
+
+- How to build WebNN Chromium on [Windows](https://github.com/intel/webml-polyfill/wiki/How-to-build-chromium-on-Windows), [Linux](https://github.com/intel/webml-polyfill/wiki/How-to-build-chromium-on-Linux)
+- [How to run Chromium builds with WebNN API](https://github.com/intel/webml-polyfill/wiki/How-to-Run-Chromium-builds-with-WebNN-API).
 
 ## Precondition - Intel Open WebRTC Toolkit (OWT) Server Setup
 
@@ -24,7 +39,7 @@ $ openssl req -new -x509 -nodes -sha256 -days 365 -key server.key -out webnn-ver
 
 ## Environment Configuration
 
-Please run `ifconfig` for getting IP for `webrtcserver`.`url`, and get other information in command line when launch the OWT Server via [Open WebRTC Toolkit (OWT) Server Setup](doc/Server.md).
+Please run `ifconfig` to get IP for `webrtcserver`.`url`, and get other information in command line when launch the OWT Server via [Open WebRTC Toolkit (OWT) Server Setup](doc/Server.md).
 
 ```
   webrtcserver: {
