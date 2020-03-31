@@ -24,7 +24,7 @@ $ openssl req -new -x509 -nodes -sha256 -days 365 -key server.key -out webnn-ver
 
 ## Environment Configuration
 
-You could get webrtcserver information when launch the OWT Server via [Open WebRTC Toolkit (OWT) Server Setup](doc/Server.md).
+You could get webrtcserver information in command line when launch the OWT Server via [Open WebRTC Toolkit (OWT) Server Setup](doc/Server.md).
 
 ```
   webrtcserver: {
@@ -49,6 +49,14 @@ You could get webrtcserver information when launch the OWT Server via [Open WebR
     cert: '/home/belem/github/webnnmeeting/webnn-veritas.crt',
     key: '/home/belem/github/webnnmeeting/webnn-veritas.key'
   }
+```
+
+You could get the sampleRoom id like `5df9d3661b3282c0ef1a5ee3` of `restapiserver`.`sampleroomparticipantspath` by running `npm run dev` in command line, e.g.
+
+```
+[0] [nodemon] starting `node server/meetingserver.js`
+[0] sampleRoom Id: 5df9d3661b3282c0ef1a5ee3
+[0] WebNN Meeting Rest API Server HTTPS Port: 8081
 ```
 
 ## Build Setup
