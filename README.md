@@ -60,11 +60,7 @@ $ node server/meetingserver.js
 ``` 
 you could get the sampleRoom id like `5df9d3661b3282c0ef1a5ee3` in command line log for `restapiserver`.`sampleroomparticipantspath`.
 
-```
-sampleRoom Id: 5df9d3661b3282c0ef1a5ee3
-```
-
-config.js
+Update `config.js` with correct data:
 
 
 ```
