@@ -32,9 +32,9 @@ The WebNN Meeting requires WebRTC server support, please read [Server.md](doc/Se
 Go to project main dir and create private and public key, put them under main folder like `/home/belem/github/webnnmeeting`
 
 ```
-$ openssl genrsa 2048 > webnn-veritas.key
-$ chmod 400 webnn-veritas.key
-$ openssl req -new -x509 -nodes -sha256 -days 365 -key webnn-veritas.key -out webnn-veritas.crt
+$ openssl genrsa 2048 > webnnmeeting.key
+$ chmod 400 webnnmeeting.key
+$ openssl req -new -x509 -nodes -sha256 -days 365 -key webnnmeeting.key -out webnnmeeting.crt
 ```
 
 ## Environment Configuration
@@ -71,8 +71,8 @@ Run `node server/meetingserver.js` in command line, you could get the sampleRoom
     httpsport: 8080
   },
   certificate: {
-    cert: './webnn-veritas.crt',
-    key: './webnn-veritas.key'
+    cert: './webnnmeeting.crt',
+    key: './webnnmeeting.key'
   }
 ```
 
