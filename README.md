@@ -29,7 +29,7 @@ The WebNN Meeting requires WebRTC server support, please read [Server.md](doc/Se
 
 ## HTTPS Configuration
 
-Go to project main dir and create private and public key, put them under main folder like `/home/belem/github/webnnmeeting`
+Go to project main dir like `/home/belem/github/webnnmeeting` and create private and public key.
 
 ```
 $ openssl genrsa 2048 > webnnmeeting.key
