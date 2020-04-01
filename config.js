@@ -15,7 +15,7 @@ module.exports = {
   },
   nuxtserver: {
     host: '0.0.0.0',
-    httpsport: 8080
+    httpsport: 8888
   },
   certificate: {
     cert: './webnn-veritas.crt',

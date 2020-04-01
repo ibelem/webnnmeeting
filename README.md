@@ -45,12 +45,16 @@ Please update configurations in `config.js` under main folder.
 
 In 'Launch the OWT Server as Single Node' section of [Open WebRTC Toolkit (OWT) Server Setup](doc/Server.md), you could get values of `webrtcserver`.`id`, `webrtcserver`.`key` and `webrtcserver`.`url` like 10.239.47.52.
 
-Run `node server/meetingserver.js` in command line, you could get the sampleRoom id like `5df9d3661b3282c0ef1a5ee3` of `restapiserver`.`sampleroomparticipantspath`.
+Run following in command line,
 
 ```
-[0] [nodemon] starting `node server/meetingserver.js`
-[0] sampleRoom Id: 5df9d3661b3282c0ef1a5ee3
-[0] WebNN Meeting Rest API Server HTTPS Port: 8081
+$ npm install
+$ node server/meetingserver.js
+``` 
+you could get the sampleRoom id like `5df9d3661b3282c0ef1a5ee3` of `restapiserver`.`sampleroomparticipantspath`.
+
+```
+sampleRoom Id: 5df9d3661b3282c0ef1a5ee3
 ```
 
 config.js
@@ -73,7 +77,7 @@ config.js
   },
   nuxtserver: {
     host: '0.0.0.0',
-    httpsport: 8080
+    httpsport: 8888
   },
   certificate: {
     cert: './webnnmeeting.crt',
@@ -109,7 +113,7 @@ If you are running the code locally, the browser will show "Your connection is n
 
 - Visit https://10.239.47.52:8080/socket.io/?EIO=3&transport=polling
 - Click "Advanced" button -> Click "Proceed to 10.239.47.52 (unsafe)"
-- Visit WebNN Meeting URL set in config.js, e.g: https://127.0.0.1:8080/
+- Visit WebNN Meeting URL set in config.js, e.g: https://127.0.0.1:8888/
 - Click "Advanced" button -> Click "Proceed to 127.0.0.1 (unsafe)"
 
 ### macOS

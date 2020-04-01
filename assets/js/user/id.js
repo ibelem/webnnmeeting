@@ -573,23 +573,28 @@ export default {
             //   _this.snackbar(signalingHost)
             // }
 
+            const buefymessage =
+              `No camera stream show in page (caused by certificate in test
+              environment)?
+              <ol>
+                <li>
+                  Visit
+                  <a href="` +
+              config.webrtcserver.url +
+              `:8080/socket.io/?EIO=3&transport=polling"
+                  target='_blank'
+                    >the test page</a
+                  >
+                </li>
+                <li>
+                "Your connection is not private" -&gt; Click "Advanced" button -&gt; Click "Proceed to 10.239.47.52 (unsafe)"
+                </li>
+                <li>Refresh this page.</li>
+              </ol>`
+
             _this.$buefy.notification.open({
               duration: 30000,
-              message: `No camera stream show in page (caused by certificate in test
-            environment)?
-            <ol>
-              <li>
-                Visit
-                <a href="https://10.239.47.52:8080/socket.io/?EIO=3&transport=polling"
-                target='_blank'
-                  >the test page</a
-                >
-              </li>
-              <li>
-              "Your connection is not private" -&gt; Click "Advanced" button -&gt; Click "Proceed to 10.239.47.52 (unsafe)"
-              </li>
-              <li>Refresh this page.</li>
-            </ol>`,
+              message: buefymessage,
               position: 'is-bottom-right',
               type: 'is-info',
               hasIcon: true
