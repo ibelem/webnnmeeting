@@ -654,4 +654,12 @@ video {
 #defaultbgimg {
   display: none;
 }
+
+.notices.is-bottom {
+  pointer-events: inherit;
+}
+
+.notices ol {
+  margin: 10px 0 0 12px;
+}
 </style>

@@ -7,9 +7,9 @@ You can also follow [Open WebRTC Toolkit(OWT) Server User Guide](https://softwar
 - CentOS* 7.6
 - Ubuntu 18.04 LTS
 
-The GPU-acceleration can only be enabled on kernel 4.14 or later (4.19 or later is recommended).
+#### Optional
 
-If you want to set up video conference service with H.264 codec support powered by non GPU-accelerated OWT server, OpenH264 library is required. See [Deploy Cisco OpenH264* Library](https://software.intel.com/sites/products/documentation/webrtc/conference/#Conferencesection2_3_4) section for more details.
+The GPU-acceleration can only be enabled on kernel 4.14 or later (4.19 or later is recommended).
 
 If you want to set up video conference service with SVT-HEVC Encoder on Ubuntu 18.04 LTS. See [Deploy SVT-HEVC Encoder Library](https://software.intel.com/sites/products/documentation/webrtc/conference/#Conferencesection2_3_6) section for more details.
 
@@ -29,10 +29,9 @@ The external stream output and mp4 format recording rely on AAC encoder libfdk_a
 
 ### OWT Server Dependencies
 
-- [Node.js](http://nodejs.org/)	- 8.15.0
-- Node modules
+- [Node.js](http://nodejs.org/)	with NPM - 8.15.0
 - [MongoDB](http://mongodb.org) -	2.6.10
-- System libraries - Latest
+- System libraries
 
 ### Download and Install Open WebRTC Toolkit (OWT) Server for WebNN Meeting
 
@@ -44,53 +43,6 @@ You can also download the full distribution (~830MB) from [Open WebRTC Toolkit (
 
 - `$ unzip Intel_CS_WebRTC.v<Version>.zip && cd Intel_CS_WebRTC.v<Version>`
 - `$ tar zxvf CS_WebRTC_Conference_Server_MCU.v<Version>.Ubuntu.tgz && cd Release-v<Version>`
-
-### HTTPS Configuration
-
-Go to project main dir and create private and public key:
-
-```
-$ openssl genrsa 2048 > server.key
-$ chmod 400 server.key
-$ openssl req -new -x509 -nodes -sha256 -days 365 -key server.key -out server.crt
-```
-
-### Use Your Own Certificate
-
-The default certificate (certificate.pfx) for the OWT server is located in the `Release-<Version>/<Component>/cert` folder. When using HTTPS and/or secure socket.io connection, you should use your own certificate for each server. First, you should edit `management_api/management_api.toml`, `webrtc_agent/agent.toml`, `portal/portal.toml`, `management_console/management_console.toml` to provide the path of each certificate for each server, under the key keystorePath. 
-
-We use PFX formatted certificates in OWT server. See https://nodejs.org/api/tls.html for how to generate a self-signed certificate by openssl utility. We recommend using 2048-bit private key for the certificates. But if you meet DTLS SSL connection error in webrtc-agent, please use 1024-bit instead of 2048-bit private key because of a known network MTU issue.
-
-After editing the configuration file, you should run `./initcert.js` inside each component to input your passphrases for the certificates, which would then store them in an encrypted file. Be aware that you should have node binary in your shell's `$PATH` to run the JS script.
-
-```
-$ vim cert-install.sh
-
-$ cp ../../cert/certificate.pfx management_api/cert/ && ./management_api/initcert.js
-$ cp ../../cert/certificate.pfx portal/cert/ && ./portal/initcert.js
-$ cp ../../cert/certificate.pfx webrtc_agent/cert/ && ./webrtc_agent/initcert.js
-$ cp ../../cert/certificate.pfx management_console/cert/ && ./management_console/initcert.js
-$ cp ../../cert/certificate.pfx extras/basic_example/cert/ && ./extras/basic_example/initcert.js
-
-$ ./cert-install.sh
-```
-
-#### OWT Server Certificates Configuration
-
-| Platform  | Chromium Command Line Switches |
-| ----------| ------------------------------ |
-| management-api HTTPS | management_api/management_api.toml |
-| portal secured Socket.io | portal/portal.toml |
-| DTLS-SRTP | webrtc_agent/agent.toml |
-| management-console HTTPS | management_console/management_console.toml |
-
-```
-$ vim /home/webnn/videoconference/Intel_CS_WebRTC.v4.3/Release-v4.3/portal/portal.toml
-
-[portal]
-keystorePath = "./cert/certificate.pfx"
-hostname = "<yourhostname.com>"
-```
 
 ### Launch the OWT Server as Single Node
 
@@ -120,6 +72,6 @@ $ cd Release-<Version>/
 $ bin/stop-all.sh
 ```
 
-### Set Up the OWT Server Cluster
+### More Powerful Settings
 
-Please refer to [Open WebRTC Toolkit (OWT) Server User Guide](https://software.intel.com/sites/products/documentation/webrtc/conference/)
+No necessary for WebNN Meeting testing or demostration purpose. If you are interested in more OWT Server features like "Set Up the OWT Server Cluster", please refer to [Open WebRTC Toolkit (OWT) Server User Guide](https://software.intel.com/sites/products/documentation/webrtc/conference/).
