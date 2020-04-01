@@ -1,13 +1,13 @@
-## Intel Open WebRTC Toolkit (OWT) Server Setup
+# Intel Open WebRTC Toolkit (OWT) Server Setup
 
 You can also follow [Open WebRTC Toolkit(OWT) Server User Guide](https://software.intel.com/sites/products/documentation/webrtc/conference/) to install and setup the OWT server.
 
-### Server Requirements
+## Server Requirements
 
 - CentOS* 7.6
 - Ubuntu 18.04 LTS
 
-#### Optional
+### Optional
 
 The GPU-acceleration can only be enabled on kernel 4.14 or later (4.19 or later is recommended).
 
@@ -27,13 +27,13 @@ For download or installation instructions, please visit https://github.com/Intel
 
 The external stream output and mp4 format recording rely on AAC encoder libfdk_aac support in ffmpeg library, please see [Compile and deploy ffmpeg with libfdk_aac](https://software.intel.com/sites/products/documentation/webrtc/conference/#Conferencesection2_3_5) section for detailed instructions.
 
-### OWT Server Dependencies
+## OWT Server Dependencies
 
 - [Node.js](http://nodejs.org/)	with NPM - 8.15.0
 - [MongoDB](http://mongodb.org) -	2.6.10
 - System libraries
 
-### Download and Install Open WebRTC Toolkit (OWT) Server for WebNN Meeting
+## Download and Install Open WebRTC Toolkit (OWT) Server for WebNN Meeting
 
 Download [CS_WebRTC_Conference_Server_MCU.v_Version_.Ubuntu.tgz](https://drive.google.com/file/d/1Ru2MLM82TfrzjUKfRq0ySHSDPSj8bJwJ/view?usp=sharing)(~45MB) or [CS_WebRTC_Conference_Server_MCU.v_Version_.CentOS.tgz](https://drive.google.com/file/d/1m7ynhq6AvaFwXPAbFaTAop3TWgajb5Pi/view?usp=sharing)(~44MB).
 
@@ -44,7 +44,7 @@ You can also download the full distribution (~830MB) from [Open WebRTC Toolkit (
 - `$ unzip Intel_CS_WebRTC.v<Version>.zip && cd Intel_CS_WebRTC.v<Version>`
 - `$ tar zxvf CS_WebRTC_Conference_Server_MCU.v<Version>.Ubuntu.tgz && cd Release-v<Version>`
 
-### Launch the OWT Server as Single Node
+## Launch the OWT Server as Single Node
 
 When install OWT server for some configurations, please just press "Enter" key to next steps in test environment. For example, just press "Enter" key for MongoDB settings. For general OWT Server installation, use following command:
 
@@ -61,17 +61,17 @@ $ cd Release-<Version>/
 $ bin/start-all.sh
 ```
 
-### Server Status
+## Server Status
 
 To verify whether the server has started successfully, launch your browser and connect to the OWT server at https://XXXXX:3004. Replace XXXXX with the IP address or machine name of your OWT server.
 
-### Stop the OWT Server
+## Stop the OWT Server
 
 ```
 $ cd Release-<Version>/
 $ bin/stop-all.sh
 ```
 
-### More Powerful Settings
+## More Powerful Settings
 
 No necessary for WebNN Meeting testing or demostration purpose. If you are interested in more OWT Server features like "Set Up the OWT Server Cluster", please refer to [Open WebRTC Toolkit (OWT) Server User Guide](https://software.intel.com/sites/products/documentation/webrtc/conference/).
