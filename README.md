@@ -50,9 +50,9 @@ $ openssl req -new -x509 -nodes -sha256 -days 365 -key webnnmeeting.key -out web
 
 Please update configurations in `config.js` under main folder.
 
-In 'Launch the OWT Server as Single Node' section of [Open WebRTC Toolkit (OWT) Server Setup](doc/Server.md), you could get values of `webrtcserver`.`id`, `webrtcserver`.`key` and `webrtcserver`.`url` like 10.239.47.52.
+In 'Launch the OWT Server as Single Node' section of [Open WebRTC Toolkit (OWT) Server Setup](doc/Server.md), you could get values of `webrtcserver`.`id`, `webrtcserver`.`key` and `webrtcserver`.`url` like `10.239.47.52`.
 
-Run following in command line,
+Run following commands,
 
 ```
 $ npm install
