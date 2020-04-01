@@ -31,7 +31,7 @@ The WebNN Meeting requires WebRTC server support, please read [Server.md](doc/Se
 
 ## HTTPS Configuration
 
-Go to project main dir like `/home/belem/github/webnnmeeting` and create private and public key.
+Go to project main dir like `/home/belem/github/webnnmeeting` and create private and public key, the certificate path need to be filled in `certificate.key` and `certificate.cert` of `config.js`.
 
 ```
 $ openssl genrsa 2048 > webnnmeeting.key
@@ -51,7 +51,7 @@ Run following in command line,
 $ npm install
 $ node server/meetingserver.js
 ``` 
-you could get the sampleRoom id like `5df9d3661b3282c0ef1a5ee3` of `restapiserver`.`sampleroomparticipantspath`.
+you could get the sampleRoom id like `5df9d3661b3282c0ef1a5ee3` in command line log for `restapiserver`.`sampleroomparticipantspath`.
 
 ```
 sampleRoom Id: 5df9d3661b3282c0ef1a5ee3
