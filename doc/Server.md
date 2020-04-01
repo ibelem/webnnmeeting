@@ -48,6 +48,22 @@ When install OWT server for some configurations, please just press "Enter" key t
 
 `$ bin/init-all.sh --deps`
 
+You will get logs like:
+
+```
+MongoDB already running
+Rabbitmq-server already running
+Initializing ManagementAPIServer configuration...
+superServiceId: 5e8422974963a115ad48b4a5
+superServiceKey: so336bcIaNj4ok+WqaiYlbpNUghN8Bf/Ch+wHIB9F28IaT/zP97676LjChERzOE15qYOfrICVkffVDRbE/XqIYfdMTJKZOPuy5dWlHeIG3wGefbWoFntMecd8XrFSU9rZWUb/x6g+lnlctfYKgOK8V1QKuPS1Uk/6mzmkGwAet8=
+sampleServiceId: 5df9ca6f7415937c7a91d774
+sampleServiceKey: rGtTQokQM/OeG/9oDzK9TtFjd+OOeUmFN2dZl52mvaI4cSj1waduIJB8x21Wa9MaGqtZzV1KTWBvr7heBIgSjQjQyeBWI0RFzCTSyhFtd9jmZ994xE50Gkmb2zxkQYALef8oj8do3gT/cWfOfgq1zPooCkRtbMK1xm44Avduyj4=
+ubuntu 18.04.4 lts
+...
+```
+
+Please copy and paste `sampleServiceId` and `sampleServiceKey` values, which will be used in `webrtcserver.id` and `webrtcserver.key` of `config.js` in main folder. Please run `ifconfig` on WebRTC server to get IP like 10.239.47.52 for `webrtcserver`.`url` of `config.js` in main folder.
+
 If you want to enable GPU-acceleration through Intel Media Server Studio, use following command:
 
 `$ bin/init-all.sh --deps --hardware`

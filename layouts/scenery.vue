@@ -24,7 +24,7 @@ export default {
       { src: '../../js/socket.io.js', defer: true },
       { src: '../../js/adapter-7.0.0.js', defer: true },
       {
-        src: '../../js/webnn/dist/webml-polyfill.js',
+        src: '../../js/webnn/polyfill/webml-polyfill.js',
         defer: true
       },
       {
