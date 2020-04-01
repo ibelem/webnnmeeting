@@ -45,13 +45,16 @@ Please update configurations in `config.js` under main folder.
 
 In 'Launch the OWT Server as Single Node' section of [Open WebRTC Toolkit (OWT) Server Setup](doc/Server.md), you could get values of `webrtcserver`.`id`, `webrtcserver`.`key` and `webrtcserver`.`url` like 10.239.47.52.
 
-Run `node server/meetingserver.js` in command line, you could get the sampleRoom id like `5df9d3661b3282c0ef1a5ee3` of `restapiserver`.`sampleroomparticipantspath`, e.g.
+Run `node server/meetingserver.js` in command line, you could get the sampleRoom id like `5df9d3661b3282c0ef1a5ee3` of `restapiserver`.`sampleroomparticipantspath`.
 
 ```
 [0] [nodemon] starting `node server/meetingserver.js`
 [0] sampleRoom Id: 5df9d3661b3282c0ef1a5ee3
 [0] WebNN Meeting Rest API Server HTTPS Port: 8081
 ```
+
+config.js
+
 
 ```
   webrtcserver: {
