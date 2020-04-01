@@ -10,6 +10,13 @@ A Web-based Intelligent Collaboration (Video Conference) example with AI feature
 - Change my background
 - More to come
 
+## Normal Video Conference Features
+
+- Video and audio
+- Screen sharing
+- Conversation / Text message
+- ...
+
 ## Supported Backends for Web Machine Learning Features
 
 - Slowest: WebAssembly (WASM)
