@@ -1,7 +1,5 @@
 # Intel Open WebRTC Toolkit (OWT) Server Setup
 
-You can also follow [Open WebRTC Toolkit(OWT) Server User Guide](https://software.intel.com/sites/products/documentation/webrtc/conference/) to install and setup the OWT server.
-
 ## Server Requirements
 
 - CentOS* 7.6
@@ -73,5 +71,7 @@ $ bin/stop-all.sh
 ```
 
 ## More Powerful Settings
+
+You can also follow [Open WebRTC Toolkit(OWT) Server User Guide](https://software.intel.com/sites/products/documentation/webrtc/conference/) to install and setup the OWT server.
 
 No necessary for WebNN Meeting testing or demostration purpose. If you are interested in more OWT Server features like "Set Up the OWT Server Cluster", please refer to [Open WebRTC Toolkit (OWT) Server User Guide](https://software.intel.com/sites/products/documentation/webrtc/conference/).
