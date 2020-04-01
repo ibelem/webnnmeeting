@@ -16,7 +16,9 @@ A Web-based Intelligent Collaboration (Video Conference) example with AI feature
 - Slower: WebGL (Will upgrade to WebGPU later)
 - Fastest: Web Neural Network (WebNN) API 
 
-Mordern browsers including Google Chrome doesn't support WebNN API now, you can try WebGL backend automatically with your browser.
+Mordern browsers including Google Chrome doesn't support WebNN API now, you can try WebGL backend automatically with your browser. 
+
+### Optional
 
 If you are interested, please refer to [WebNN Chromium build repo](https://github.com/otcshare/chromium-src) and WIKI: 
 
