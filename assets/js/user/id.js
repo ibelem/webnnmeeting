@@ -14,6 +14,7 @@ import {
 } from '~/assets/js/webnn/util/runner'
 import Renderer from '~/assets/js/webnn/webgl/DrawOutputs'
 import Control from '~/components/Control.vue'
+import Clock from '~/components/Clock.vue'
 
 export default {
   name: 'User',
@@ -24,7 +25,8 @@ export default {
   // layout: 'classic',
   // layout: 'userbgimg',
   components: {
-    Control
+    Control,
+    Clock
   },
   data() {
     return {

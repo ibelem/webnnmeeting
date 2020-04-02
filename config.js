@@ -22,6 +22,18 @@ module.exports = {
     key: './webnn-veritas.key'
   },
   semanticsegmentation: {
+    // modelName: 'Deeplab 224 Atrous (TFLite)',
+    // format: 'TFLite',
+    // modelId: 'deeplab_mobilenet_v2_224_atrous_tflite',
+    // modelSize: '8.4MB',
+    // modelFile: '../../js/webnn/ss/model/deeplab_mobilenetv2_224_dilated.tflite',
+    // labelsFile: '../../js/webnn/ss/model/labels.txt',
+    // inputSize: [224, 224, 3],
+    // outputSize: [224, 224, 1],
+    // preOptions: {
+    //   mean: [127.5, 127.5, 127.5],
+    //   std: [127.5, 127.5, 127.5]
+    // }
     modelName: 'Deeplab 257 Atrous (TFLite)',
     format: 'TFLite',
     modelId: 'deeplab_mobilenet_v2_257_atrous_tflite',
