@@ -1,5 +1,9 @@
 <template>
   <div class="clock">
+    <div class="recorder-container">
+      <div class="outer"></div>
+      <div class="icon-microphone">&nbsp;</div>
+    </div>
     <span>{{ clock }}</span>
     <span class="mill">{{ mill }}</span>
   </div>
@@ -34,5 +38,56 @@ export default {
 
 .clock {
   display: inline-block;
+}
+
+.recorder-container {
+  width: 12px;
+  background-color: rgba(204, 255, 144, 1);
+  display: inline-block;
+  margin-right: 0.75rem;
+  border-radius: 100%;
+  cursor: default;
+  transition: 0.3s all ease-in;
+  position: relative;
+}
+
+.icon-microphone {
+  color: #fff;
+  line-height: 12px;
+  display: block;
+  text-align: center;
+  transition: 0.1s all ease-in;
+  position: relative;
+}
+
+.outer {
+  width: 14px;
+  height: 14px;
+  margin: -1px 0 0 -1px;
+  transform: scale(1);
+  border-radius: 100%;
+  position: absolute;
+  background-color: #fff;
+  z-index: -1;
+  transition: 1.5s all ease;
+  animation: rec 1.5s infinite;
+  animation-delay: 1.5s;
+}
+
+@keyframes rec {
+  0% {
+    transform: scale(1.2);
+    opacity: 0.6;
+  }
+
+  50% {
+    transform: scale(1.6);
+    opacity: 0.3;
+  }
+
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
 }
 </style>

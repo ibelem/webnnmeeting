@@ -188,16 +188,18 @@
             <div class="counter">
               <div class="value">
                 <Clock />
-                <span v-if="resolutionheight >= 720">
-                  <b-icon icon="high-definition" class="blicon"> </b-icon>
+                <span class="hd" v-if="resolutionheight >= 720">
+                  <!-- <b-icon icon="high-definition" class="blicon"> </b-icon> -->
+                  HD
                 </span>
-                <span v-if="enablevideo">
+                <!-- <span v-if="enablevideo">
                   <b-icon icon="video" class="blicon"> </b-icon>
                   <b-icon icon="microphone" class="blicon"> </b-icon>
                 </span>
-                <span v-else>
+                -->
+                <span v-if="!enablevideo">
                   <b-icon icon="video-off" class="blicon"> </b-icon>
-                  <b-icon icon="microphone" class="blicon"> </b-icon>
+                  <!-- <b-icon icon="microphone" class="blicon"> </b-icon> -->
                 </span>
               </div>
             </div>
@@ -206,16 +208,18 @@
             <div class="counter less">
               <div class="value">
                 <Clock />
-                <span v-if="resolutionheight >= 720">
-                  <b-icon icon="high-definition" class="blicon"> </b-icon>
+                <span class="hd" v-if="resolutionheight >= 720">
+                  <!-- <b-icon icon="high-definition" class="blicon"> </b-icon> -->
+                  HD
                 </span>
-                <span v-if="enablevideo">
+                <!-- <span v-if="enablevideo">
                   <b-icon icon="video" class="blicon"> </b-icon>
                   <b-icon icon="microphone" class="blicon"> </b-icon>
                 </span>
-                <span v-else>
+                -->
+                <span v-if="!enablevideo">
                   <b-icon icon="video-off" class="blicon"> </b-icon>
-                  <b-icon icon="microphone" class="blicon"> </b-icon>
+                  <!-- <b-icon icon="microphone" class="blicon"> </b-icon> -->
                 </span>
               </div>
             </div>
@@ -318,6 +322,15 @@ export default {
 .counter span {
   font-size: 0.8rem;
   font-weight: 500;
+}
+
+.counter span.hd {
+  font-size: 0.6rem;
+  font-weight: bold;
+  margin-left: 0.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 1px 6px;
+  display: inline-block;
 }
 
 body {
