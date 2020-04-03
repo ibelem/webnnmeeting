@@ -166,6 +166,20 @@ export default {
       return this.$route.query.t
       // return this.$store.state.subscribetype
     },
+    echoCancellation() {
+      if (this.$route.query.ec === '1') {
+        return true
+      } else {
+        return false
+      }
+    },
+    noiseSuppression() {
+      if (this.$route.query.ns === '1') {
+        return true
+      } else {
+        return false
+      }
+    },
     resolutionwidth() {
       let w
       switch (this.$route.query.r) {
@@ -220,7 +234,7 @@ export default {
     this.initStats()
     this.initConference()
     await this.initSS()
-    this.$refs.localvideo.muted = true
+    this.$refs.localvideo.muted = false
   },
   created() {
     if (process.browser) {
@@ -478,8 +492,8 @@ export default {
         this.avTrackConstraint = {
           audio: {
             source: 'mic',
-            echoCancellation: false,
-            noiseSuppression: false
+            echoCancellation: this.echoCancellation,
+            noiseSuppression: this.noiseSuppression
           },
           video: {
             resolution: this.localResolution,
@@ -491,8 +505,8 @@ export default {
         this.avTrackConstraint = {
           audio: {
             source: 'mic',
-            echoCancellation: false,
-            noiseSuppression: false
+            echoCancellation: this.echoCancellation,
+            noiseSuppression: this.noiseSuppression
           },
           video: false
         }
@@ -832,7 +846,7 @@ export default {
                 const ismuted = stream.media.audio.status === 'inactive'
 
                 // console.log('audio-----------')
-                console.log(stream.media.audio)
+                // console.log(stream.media.audio)
                 this.users = this.updateState(
                   this.users,
                   clientId,

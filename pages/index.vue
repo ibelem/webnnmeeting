@@ -38,6 +38,16 @@
             <b-tab-item :label="r"></b-tab-item>
           </template>
         </b-tabs>
+        <b-tabs v-model="echocancellation" class="two">
+          <template v-for="ec in echocancellations">
+            <b-tab-item :label="ec"></b-tab-item>
+          </template>
+        </b-tabs>
+        <b-tabs v-model="noisesuppression" class="two">
+          <template v-for="ns in noisesuppressions">
+            <b-tab-item :label="ns"></b-tab-item>
+          </template>
+        </b-tabs>
       </div>
     </div>
     <MeetingInfo />
@@ -61,7 +71,11 @@ export default {
       resolution: 2,
       resolutions: ['320x240', '640x480', '1280x720'],
       enablevideo: 1,
-      videooptions: ['Audio Only', 'Video and Audio']
+      videooptions: ['Audio Only', 'Video and Audio'],
+      echocancellation: 1,
+      echocancellations: ['None', 'Echo Cancellation'],
+      noisesuppression: 1,
+      noisesuppressions: ['None', 'Noise Suppression']
     }
   },
   methods: {
@@ -134,6 +148,10 @@ export default {
           this.resolution +
           '&v=' +
           this.enablevideo +
+          '&ec=' +
+          this.echocancellation +
+          '&ns=' +
+          this.noisesuppression +
           bp
         location.href = path + query
       }

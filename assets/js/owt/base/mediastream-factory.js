@@ -173,6 +173,8 @@ export class MediaStreamFactory {
     if (typeof constraints.audio === 'object' &&
         constraints.audio.source === MediaFormatModule.AudioSourceInfo.MIC) {
       mediaConstraints.audio = Object.create({});
+      mediaConstraints.audio.echoCancellation = constraints.audio.echoCancellation;
+      mediaConstraints.audio.noiseSuppression = constraints.audio.noiseSuppression;
       if (utils.isEdge()) {
         mediaConstraints.audio.deviceId = constraints.audio.deviceId;
       } else {
@@ -187,6 +189,7 @@ export class MediaStreamFactory {
         mediaConstraints.audio = constraints.audio;
       }
     }
+
     if (typeof constraints.video === 'object') {
       mediaConstraints.video = Object.create({});
       if (typeof constraints.video.frameRate === 'number') {
@@ -226,6 +229,8 @@ export class MediaStreamFactory {
     if (isVideoConstrainsForScreenCast(constraints)) {
       return navigator.mediaDevices.getDisplayMedia(mediaConstraints);
     } else {
+      console.log('==mediaConstraints==')
+      console.log(mediaConstraints)
       return navigator.mediaDevices.getUserMedia(mediaConstraints);
     }
   }
