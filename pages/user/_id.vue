@@ -101,7 +101,6 @@
                     :src-object.prop.camel="localuser.srcObject"
                     playsinline
                     autoplay
-                    muted
                   ></video>
                   <div class="user">
                     <div class="username">{{ localuser.userId }}</div>

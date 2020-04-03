@@ -220,6 +220,7 @@ export default {
     this.initStats()
     this.initConference()
     await this.initSS()
+    this.$refs.localvideo.muted = true
   },
   created() {
     if (process.browser) {
