@@ -279,7 +279,7 @@ export default {
       this.showrightsidebar = false
     },
     selectImg(event) {
-      console.log(event.target)
+      // console.log(event.target)
       this.renderer.backgroundImageSource = event.target
     },
     updateProgress(ev) {
@@ -302,7 +302,6 @@ export default {
     },
     updateSSBackground() {
       const files = this.$refs.bgimg.files
-      console.log(files)
       if (files.length > 0) {
         const img = new Image()
         img.onload = () => {
@@ -453,7 +452,6 @@ export default {
       location.href = '../../'
     },
     initConference() {
-      console.log('==== initConference ====')
       this.localName = this.$route.params.id
       if (this.subscribeType === 'mix') {
         this.mode = this.MODES.LECTURE
@@ -496,19 +494,16 @@ export default {
       }
       const _this = this
       createToken(this.roomId, this.localName, 'presenter', function(response) {
-        console.log('==== createToken ====')
         let room
         if (!room) {
           room = new Owt.Conference.ConferenceClient()
           _this.room = room
           _this.addRoomEventListener()
         }
-        console.log(_this.room)
         _this.room.join(response).then(
           (resp) => {
             _this.roomId = resp.id
-            console.log('resp.participants')
-            console.log(resp.participants)
+            // console.log(resp.participants)
             resp.participants.map(function(participant) {
               participant.addEventListener('left', () => {
                 // TODO:send message for notice everyone the participant has left maybe no need
@@ -545,13 +540,12 @@ export default {
                 stream.source.audio === 'mixed' &&
                 stream.source.video === 'mixed'
               ) {
-                console.log('Mix stream id: ' + stream.id)
+                // console.log('Mix stream id: ' + stream.id)
                 stream.addEventListener('layoutChanged', function(regions) {
                   console.info('stream', stream.id, 'VideoLayoutChanged')
                   this.currentRegions = regions
                 })
               }
-              console.info('stream in conference:', stream.id)
               // _this.streamObj[stream.id] = stream
 
               const isMixStream = stream.source.audio === 'mixed'
@@ -566,7 +560,6 @@ export default {
               }
             }
             _this.refreshMuteState()
-            console.log('==== END createToken END ====')
           },
           (err) => {
             console.log('server connect failed: ' + err)
@@ -604,10 +597,8 @@ export default {
           }
         )
       })
-      console.log('==== END initConference END ====')
     },
     async publishLocal(ss) {
-      console.log('===== publishLocal =====')
       this.localStream = new Owt.Base.LocalStream(
         this.ssstream,
         new Owt.Base.StreamSourceInfo('mic', 'camera')
@@ -630,8 +621,6 @@ export default {
       })
     },
     async createLocal() {
-      console.log('==== createLocal ====')
-
       try {
         const stream = await Owt.Base.MediaStreamFactory.createMediaStream(
           this.avTrackConstraint
@@ -680,7 +669,6 @@ export default {
       }
 
       // Todo Better Try ... Catch ... for await
-      console.log('==== END createLocal END ====')
     },
     getUserFromName(name) {
       for (let i = 0; i < this.users.length; ++i) {
@@ -708,7 +696,6 @@ export default {
       }
 
       this.users.splice(index, 1)
-      console.log('====== END deleteUser END ' + id + '=====')
     },
     toggleAudio() {
       if (!this.localPublication) {
@@ -782,7 +769,6 @@ export default {
       }
     },
     addVideo(stream, isLocal) {
-      console.log('==== addVideo ====')
       const uid = stream.origin
       if (stream.source.video !== 'screen-cast') {
         if (isLocal) {
@@ -811,7 +797,6 @@ export default {
         }
         this.changeMode(this.MODES.LECTURE, !this.isLocalScreenSharing)
       }
-      console.log('==== END addVideo END ====')
     },
     updateState(users, id, key, newvalue) {
       return users.map((item) => {
@@ -832,7 +817,6 @@ export default {
         getStreams(this.roomId, (streams) => {
           this.forwardStreamMap.clear()
           for (const stream of streams) {
-            // console.log(stream);
             if (stream.type === 'forward') {
               this.forwardStreamMap.set(stream.id, stream)
               if (stream.media.audio) {
@@ -875,7 +859,7 @@ export default {
         try {
           this.room.leave()
         } catch (ex) {
-          console.log('>>>>>>>>>>>>> room.leave error: ' + ex)
+          console.log('room.leave() error: ' + ex)
         }
       }
 
@@ -904,16 +888,8 @@ export default {
         default:
           console.error('Illegal mode name')
       }
-
-      console.log('TOTO change to new model: ' + this.model)
-      // update canvas size in all video panels
-      // $('.player').trigger('resizeVideo')
-      // setTimeout(resizeStream, 500, newMode)
     },
     subscribeStream(stream) {
-      console.log('=====  subscribeStream(stream) =====')
-      console.log('stream.id: ' + stream.id)
-      console.info('subscribing:', stream.id)
       const videoOption = !this.isAudioOnly
       this.room.subscribe(stream, { video: videoOption }).then(
         (subscription) => {
@@ -921,9 +897,6 @@ export default {
           this.addVideo(stream, false)
           this.subList[subscription.id] = subscription
           // this.streamObj[stream.id] = stream
-
-          console.log(this.subList)
-          console.info('add success')
           if (stream.source.video === 'mixed') {
             this.remoteMixedSub = subscription
           }
@@ -969,7 +942,6 @@ export default {
           console.error('subscribe error: ' + err)
         }
       )
-      console.log('===== END subscribeStream(stream) END =====')
     },
     sendIm(msg, sender) {
       if (this.textmsg) {
@@ -978,12 +950,9 @@ export default {
           data: this.textmsg
         })
         sender = this.localId
-        console.log(sender)
-        console.info('ready to send message')
         if (this.localName !== null) {
           this.room.send(sendMsgInfo).then(
             () => {
-              console.info('begin to send message')
               console.info(this.localName + ' send message: ' + msg)
             },
             (err) => {
@@ -1046,7 +1015,6 @@ export default {
         // }
       })
       this.room.addEventListener('participantjoined', (event) => {
-        console.log('participantjoined', event)
         if (
           // Do not comment this line when ask colleagues to test in webnnteam
           // event.participant.userId !== 'user' &&
@@ -1083,13 +1051,10 @@ export default {
               this.sendIm('Anonymous has left the room.', 'System')
             }
           })
-          console.log('join user: ' + event.participant.userId)
-          // no need: send message to all for initId
         }
       })
 
       this.room.addEventListener('messagereceived', (event) => {
-        console.log('messagereceived', event)
         const user = this.getUserFromId(event.origin)
         if (!user) return
         const receivedMsg = JSON.parse(event.message)
@@ -1101,7 +1066,6 @@ export default {
               message: receivedMsg.data
             }
             this.textmsgs.push(msg)
-            console.log('messagereceived')
           }
         }
       })
@@ -1143,7 +1107,6 @@ export default {
             for (const screenVideoTrack of screenVideoTracks) {
               screenVideoTrack.addEventListener('ended', function(_e) {
                 _this.changeMode(_this.MODES.LECTURE)
-                console.log('unpublish')
                 setTimeout(function() {
                   _this.shareScreenChanged(false, false)
                   if (_this.subscribeType === _this.SUBSCRIBETYPES.MIX) {
