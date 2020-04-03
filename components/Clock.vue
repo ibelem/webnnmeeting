@@ -47,7 +47,7 @@ export default {
   margin-right: 0.75rem;
   border-radius: 100%;
   cursor: default;
-  transition: 0.3s all ease-in;
+  transition: 1s all ease-in;
   position: relative;
 }
 
@@ -61,9 +61,9 @@ export default {
 }
 
 .outer {
-  width: 14px;
-  height: 14px;
-  margin: -1px 0 0 -1px;
+  width: 12px;
+  height: 12px;
+  margin: 0;
   transform: scale(1);
   border-radius: 100%;
   position: absolute;
@@ -77,7 +77,7 @@ export default {
 @keyframes rec {
   0% {
     transform: scale(1.2);
-    opacity: 0.6;
+    opacity: 0.5;
   }
 
   50% {

@@ -824,6 +824,9 @@ export default {
                 const clientId = stream.info.owner
                 // eslint-disable-next-line no-unused-vars
                 const ismuted = stream.media.audio.status === 'inactive'
+
+                console.log('audio-----------')
+                console.log(stream.media.audio)
                 this.users = this.updateState(
                   this.users,
                   clientId,

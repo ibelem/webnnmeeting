@@ -17,7 +17,7 @@
           title="W3C Machine Learning for the Web Community Group"
           >W3C CG</a
         >
-        <a href="../perf" title="WebNN Meeting Performance">Performance</a>
+        <a href="../../perf" title="WebNN Meeting Performance">Performance</a>
       </div>
       <div id="copyright">
         &copy;2020
