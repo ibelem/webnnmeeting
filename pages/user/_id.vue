@@ -188,7 +188,7 @@
             <div class="counter">
               <div class="value">
                 <Clock />
-                <span class="hd" v-if="resolutionheight >= 720">
+                <span v-if="resolutionheight >= 720" class="hd">
                   <!-- <b-icon icon="high-definition" class="blicon"> </b-icon> -->
                   HD
                 </span>
@@ -208,7 +208,7 @@
             <div class="counter less">
               <div class="value">
                 <Clock />
-                <span class="hd" v-if="resolutionheight >= 720">
+                <span v-if="resolutionheight >= 720" class="hd">
                   <!-- <b-icon icon="high-definition" class="blicon"> </b-icon> -->
                   HD
                 </span>
