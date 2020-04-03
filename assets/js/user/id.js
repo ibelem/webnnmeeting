@@ -395,6 +395,7 @@ export default {
     },
     async stopSS() {
       this.ssmode = false
+      this.$refs.localvideo.muted = true
       this.blurdone = false
       this.bgimgdone = false
       try {
@@ -476,7 +477,9 @@ export default {
       if (this.enablevideo) {
         this.avTrackConstraint = {
           audio: {
-            source: 'mic'
+            source: 'mic',
+            echoCancellation: false,
+            noiseSuppression: false
           },
           video: {
             resolution: this.localResolution,
@@ -487,7 +490,9 @@ export default {
       } else {
         this.avTrackConstraint = {
           audio: {
-            source: 'mic'
+            source: 'mic',
+            echoCancellation: false,
+            noiseSuppression: false
           },
           video: false
         }
@@ -615,6 +620,7 @@ export default {
       // this.streamObj[this.localStream.id] = this.localStream
       if (ss) {
         this.ssmode = true
+        this.$refs.localvideo.muted = false
       }
       publication.addEventListener('error', (err) => {
         console.log('createLocal: Publication error: ' + err.error.message)
@@ -702,7 +708,6 @@ export default {
       if (!this.localPublication) {
         return
       }
-
       if (!this.isPauseAudio) {
         this.localPublication.mute(Owt.Base.TrackKind.AUDIO).then(
           () => {
@@ -826,7 +831,7 @@ export default {
                 // eslint-disable-next-line no-unused-vars
                 const ismuted = stream.media.audio.status === 'inactive'
 
-                console.log('audio-----------')
+                // console.log('audio-----------')
                 console.log(stream.media.audio)
                 this.users = this.updateState(
                   this.users,

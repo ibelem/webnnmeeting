@@ -73,6 +73,24 @@ const mixStream = function(room, stream, view, host) {
   )
 }
 
+const echoCancellation = function(room, stream, track, status, callback, host) {
+  const jsonPatch = []
+  if (track === 'audio' || track === 'av') {
+    jsonPatch.push({
+      op: 'replace',
+      path: '/media/audio/format/echoCancellation',
+      value: status
+    })
+  }
+  send(
+    'PATCH',
+    '/rooms/' + room + '/streams/' + stream,
+    jsonPatch,
+    callback,
+    host
+  )
+}
+
 // https://software.intel.com/sites/products/documentation/webrtc/restapi/
 const updateStream = function(room, stream, host) {
   const jsonPatch = [
@@ -200,6 +218,7 @@ export {
   mixStream,
   updateStream,
   deleteStream,
+  echoCancellation,
   startStreamingIn,
   createToken,
   getStreams,
