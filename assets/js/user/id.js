@@ -228,12 +228,12 @@ export default {
     //   clearTimeout(this.sstimer)
     // }
   },
-  async mounted() {
+  mounted() {
     this.scrollToBottom()
     this.userExit()
     this.initStats()
     this.initConference()
-    await this.initSS()
+    this.initSS()
     this.$refs.localvideo.muted = false
   },
   created() {
@@ -362,6 +362,12 @@ export default {
     stopSSStream() {
       const track = this.ssstream.getTracks()[0]
       track.stop()
+      // this.ssstream.getTracks().forEach((track) => {
+      //   track.stop()
+      // })
+      // this.$refs.localvideo.getTracks().forEach((track) => {
+      //   track.stop()
+      // })
     },
     // showSSStream() {
     //   // this.ssstream = this.renderer.canvasStream
