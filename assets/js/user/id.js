@@ -228,12 +228,12 @@ export default {
     //   clearTimeout(this.sstimer)
     // }
   },
-  mounted() {
+  async mounted() {
     this.scrollToBottom()
     this.userExit()
     this.initStats()
     this.initConference()
-    this.initSS()
+    await this.initSS()
     this.$refs.localvideo.muted = false
   },
   created() {
