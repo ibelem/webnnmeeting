@@ -173,8 +173,12 @@ export class MediaStreamFactory {
     if (typeof constraints.audio === 'object' &&
         constraints.audio.source === MediaFormatModule.AudioSourceInfo.MIC) {
       mediaConstraints.audio = Object.create({});
-      mediaConstraints.audio.echoCancellation = constraints.audio.echoCancellation;
-      mediaConstraints.audio.noiseSuppression = constraints.audio.noiseSuppression;
+      if (constraints.audio.echoCancellation) {
+        mediaConstraints.audio.echoCancellation = constraints.audio.echoCancellation;
+      }
+      if (constraints.audio.noiseSuppression) {
+        mediaConstraints.audio.noiseSuppression = constraints.audio.noiseSuppression;
+      }
       if (utils.isEdge()) {
         mediaConstraints.audio.deviceId = constraints.audio.deviceId;
       } else {
