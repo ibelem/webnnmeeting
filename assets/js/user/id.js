@@ -325,7 +325,6 @@ export default {
       }
     },
     initRunner() {
-      // eslint-disable-next-line new-cap
       this.runner = new SemanticSegmentationRunner()
       this.runner.setProgressHandler(this.updateProgress)
     },
