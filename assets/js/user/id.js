@@ -325,6 +325,7 @@ export default {
       }
     },
     initRunner() {
+      // eslint-disable-next-line new-cap
       this.runner = new SemanticSegmentationRunner()
       this.runner.setProgressHandler(this.updateProgress)
     },
@@ -362,7 +363,7 @@ export default {
     getSegMap() {
       const output = this.runner.getOutput()
       const segMap = {
-        data: output.outputTensor,
+        data: output.tensor,
         outputShape: config.semanticsegmentation.outputSize,
         labels: output.labels
       }
@@ -385,13 +386,16 @@ export default {
       this.customOutput(source)
     },
     async predict(source) {
-      const drawOptions = {
-        inputSize: config.semanticsegmentation.inputSize,
-        preOptions: config.semanticsegmentation.preOptions || {},
-        imageChannels: 4,
-        scaledFlag: true
+      const input = {
+        src: source,
+        options: {
+          inputSize: config.semanticsegmentation.inputSize,
+          preOptions: config.semanticsegmentation.preOptions || {},
+          imageChannels: 4,
+          scaledFlag: true
+        }
       }
-      await this.runner.run(source, drawOptions)
+      await this.runner.run(input)
     },
     async predictFrame() {
       const source = this.$refs.localvideo
