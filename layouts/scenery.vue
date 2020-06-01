@@ -86,5 +86,6 @@ export default {
 
 #slider {
   background: transparent url('../static/img/01.jpg') no-repeat fixed center;
+  background-size: 100vw 100vh;
 }
 </style>
