@@ -19,8 +19,8 @@ A Web-based Intelligent Collaboration (Video Conference) example with AI feature
 
 ## Screenshot
 
-![WebNN Meeting](doc/screenshot1.jpg)
-![WebNN Meeting FullScreen](doc/screenshot2.jpg)
+<img src="doc/screenshot1.png" alt="WebNN Meeting" width="60%">
+<img src="doc/screenshot2.png" alt="WebNN Meeting" width="60%">
 
 ## Supported Backends for Web Machine Learning Features
 
