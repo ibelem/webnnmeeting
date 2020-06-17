@@ -134,4 +134,4 @@ The License of WebNN Meeting will be Apache 2.0.
 
 ## Code Hacks
 
-There are some code hacks in Intel Open WebRTC Toolkit (OWT) and , please refer to Material Design Icons [code hacks](doc/CodeHacks.md).
+There are some code hacks in Intel Open WebRTC Toolkit (OWT) and Material Design Icons, please refer to [code hacks](doc/CodeHacks.md).
