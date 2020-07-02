@@ -124,6 +124,10 @@ If you are running the code locally, the browser will show "Your connection is n
 - Visit WebNN Meeting URL set in config.js, e.g: https://127.0.0.1:8888/
 - Click "Advanced" button -> Click "Proceed to 127.0.0.1 (unsafe)"
 
+### Models
+
+If you get the WebNNMeeting source code from https://github.com/intel/webml-polyfill, please download model files from [semantic_segmentation/model](https://github.com/intel/webml-polyfill/tree/master/examples/semantic_segmentation/model) and put them (e.g. deeplab_mobilenetv2_257_dilated.tflite) under `./static/js/webnn/ss/model/`
+
 ### macOS
 
 Once you are using macOS and it says "Your connection is not private", click somewhere on the page and then blindly type `thisisunsafe` which will instantly bypass the warning.
@@ -135,3 +139,11 @@ The License of WebNN Meeting will be Apache 2.0.
 ## Code Hacks
 
 There are some code hacks in Intel Open WebRTC Toolkit (OWT) and Material Design Icons, please refer to [code hacks](doc/CodeHacks.md).
+
+## Error Handling
+
+If you encounter the error `ENOSPC: System limit for number of file watchers reached, watch`  when build the project on Ubuntu, please try: 
+
+```
+echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
+```
