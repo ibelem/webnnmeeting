@@ -141,7 +141,7 @@ class BaseRunner {
    * @param {!Object<string, *>} modelInfo An object for model info which was configed in modeZoo.js.
    *     See modelInfo details from above '_setModelInfo' method.
    */
-  _doInitialization = (modelInfo) => {};
+  doInitialization = (modelInfo) => { };
 
   /**
    * This method is to load model file and relevant resources, such as label file.
@@ -154,7 +154,7 @@ class BaseRunner {
       return;
     }
 
-    this._doInitialization(modelInfo);
+    this.doInitialization(modelInfo);
 
     let modelPath = this._currentModelInfo.modelFile;
     // for local workload test
@@ -187,7 +187,7 @@ class BaseRunner {
    *       prefer: {string}, // 'fast'|'sustained'|'low'|'ultra_low'
    *     };
    */
-  _doCompile = (options) => {};
+  _doCompile = (options) => { };
 
   /**
    * This method is to check whether model compiled.
@@ -256,12 +256,12 @@ class BaseRunner {
    *     };
    *     or input is a Typed Array object, likes in Speech Recognition example.
    */
-  _getInputTensor = (input) => {};
+  _getInputTensor = (input) => { };
 
   /**
    * This methode is to do inference with input tensor and output tensor will be updated after successfully inferenced.
    */
-  _doInference = () => {};
+  _doInference = () => { };
 
   /**
    * This method is to do inference with an HTML [<img> | <video> | <audio>] element input.
@@ -288,7 +288,7 @@ class BaseRunner {
    *       outputClassScoresTensor: {!TypedArray<number>},
    *     };
    */
-  _getOutputTensor = () => {};
+  _getOutputTensor = () => { };
 
   /**
    * This method is to get inference result including inference time, computed output tensor
