@@ -31,6 +31,8 @@ class OpenCVRunner extends BaseRunner {
         case 'pb':
           try {
             cv.FS_createDataFile('/', modelName, bytes, true, false, false);
+            console.log(modelName)
+            console.log(bytes)
           } catch (e) {
             if (e.errno === 17) {
               console.log(`${modelName} already exited.`);
@@ -61,6 +63,7 @@ class OpenCVRunner extends BaseRunner {
     let model = null;
 
     const modelFormat = this._currentModelInfo.format;
+
     if (modelFormat === 'ONNX' || modelFormat === 'Tensorflow') {
       model = cv.readNet(this._currentModelInfo.modelFile.split('/').pop());
       this._setModel(model);
@@ -110,6 +113,7 @@ class OpenCVRunner extends BaseRunner {
     inputMat.delete();
     this._model.setInput(tensor);
     tensor.delete();
+    console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@')
   };
 
   /** @override */

@@ -14,6 +14,7 @@ class SemanticSegmentationOpenCVRunner extends OpenCVRunner {
   _getOutputTensor = () => {
     let outputTensor = this._outputArgmax(this._output);
     this._output.delete();
+    console.log('2222222222222222222222222222@@@@@@@@@@@@@@@@@@@@@@@@@@')
     return outputTensor;
   };
 

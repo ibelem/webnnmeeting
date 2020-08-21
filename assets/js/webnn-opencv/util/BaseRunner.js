@@ -223,6 +223,8 @@ class BaseRunner {
    *     };
    */
   compileModel = async (options) => {
+    console.log('############################')
+    console.log(options)
     if (this._checkInitializedCompilation(options)) {
       console.log('Model was already compiled.')
       return

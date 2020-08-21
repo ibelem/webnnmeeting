@@ -347,7 +347,7 @@ export default {
     //   this.$refs.ssvideo.srcObject = this.ssstream
     // },
     getClippedSize(source) {
-      const width = config.semanticsegmentation.inputSize[0]
+      const width = config.semanticsegmentationopencv.inputSize[0]
       const imWidth = source.videoWidth
       const imHeight = source.videoHeight
       const resizeRatio = Math.max(Math.max(imWidth, imHeight) / width, 1)
@@ -359,7 +359,7 @@ export default {
       const output = this.runner.getOutput()
       const segMap = {
         data: output.tensor,
-        outputShape: config.semanticsegmentation.outputSize,
+        outputShape: config.semanticsegmentationopecv.outputSize,
         labels: output.labels
       }
       return segMap
@@ -373,6 +373,8 @@ export default {
     output() {
       const source = this.$refs.localvideo
       const output = this.runner.getOutput()
+      console.log('1111111111111111111111111111111')
+      console.log(output)
       this.inferencetime = output.inferenceTime.toFixed(2)
       this.showfps = fps
       console.log(
@@ -384,12 +386,14 @@ export default {
       const input = {
         src: source,
         options: {
-          inputSize: config.semanticsegmentation.inputSize,
-          preOptions: config.semanticsegmentation.preOptions || {},
+          inputSize: config.semanticsegmentationopencv.inputSize,
+          preOptions: config.semanticsegmentationopencv.preOptions || {},
           imageChannels: 4,
           scaledFlag: true
         }
       }
+      console.log('00000000000000000000000000000000')
+      console.log(input)
       await this.runner.run(input)
     },
     async predictFrame() {
@@ -441,6 +445,8 @@ export default {
     async initSS() {
       this.initRunner()
       if (this.runner) {
+        console.log(config.semanticsegmentationopencv)
+        console.log('+++++++++++++++++++++++')
         await this.runner.loadModel(config.semanticsegmentationopencv)
         // await this.runner.initModel('WebML', 'sustained')
         if (this.backend === 'webml') {
@@ -450,6 +456,7 @@ export default {
           backend: 'Threads SIMD',
           prefer: this.prefer
         }
+        console.log('**********************************')
         await this.runner.compileModel(options)
       }
       this.initss = true

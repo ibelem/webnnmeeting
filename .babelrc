@@ -1,5 +1,8 @@
 {
   "env": {
+    // "development" : {
+    //   "compact": false
+    // },
     "test": {
       "plugins": [
         [

@@ -24,7 +24,7 @@ export default {
       script: [
         { src: '../../js/socket.io.js', defer: true },
         { src: '../../js/adapter-7.0.0.js', defer: true },
-        { src: '../../js/opencv.js/Threads+SIMD/opencv.js', defer: true },
+        { src: '../../js/opencv.js/Threads+SIMD/opencv.js', defer: false },
         {
           src: '../../js/webnn/util/tflite/flatbuffers/js/flatbuffers.js',
           defer: true
