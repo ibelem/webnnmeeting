@@ -23,29 +23,35 @@
               @change.native="updateSubscribeType"
               v-model="subscribetype"
               :native-value="st"
+              :key="st"
             >
               {{ st }}
             </b-radio-button>
           </template>
         </b-field>
+        <b-tabs v-model="framework" @change="updateFramework" class="two">
+          <template v-for="f in frameworks">
+            <b-tab-item :label="f" :key="f"></b-tab-item>
+          </template>
+        </b-tabs>
         <b-tabs v-model="enablevideo" @change="updateVideo" class="two">
           <template v-for="videooption in videooptions">
-            <b-tab-item :label="videooption"></b-tab-item>
+            <b-tab-item :label="videooption" :key="videooption"></b-tab-item>
           </template>
         </b-tabs>
         <b-tabs v-model="resolution" @change="updateResolutions" class="three">
           <template v-for="r in resolutions">
-            <b-tab-item :label="r"></b-tab-item>
+            <b-tab-item :label="r" :key="r"></b-tab-item>
           </template>
         </b-tabs>
         <b-tabs v-model="echocancellation" class="two">
           <template v-for="ec in echocancellations">
-            <b-tab-item :label="ec"></b-tab-item>
+            <b-tab-item :label="ec" :key="ec"></b-tab-item>
           </template>
         </b-tabs>
         <b-tabs v-model="noisesuppression" class="two">
           <template v-for="ns in noisesuppressions">
-            <b-tab-item :label="ns"></b-tab-item>
+            <b-tab-item :label="ns" :key="ns"></b-tab-item>
           </template>
         </b-tabs>
       </div>
@@ -68,6 +74,8 @@ export default {
       user: '',
       subscribetype: 'forward',
       subscribetypes: ['forward', 'mix'],
+      framework: 0,
+      frameworks: ['WebNN', 'OpenCV.js'],
       resolution: 2,
       resolutions: ['320x240', '640x480', '1280x720'],
       enablevideo: 1,
@@ -86,6 +94,9 @@ export default {
       let ev
       this.enablevideo ? (ev = true) : (ev = false)
       this.$store.commit('setEnableVideo', ev)
+    },
+    updateFramework() {
+      this.$store.commit('setFramework', this.framework)
     },
     updateResolutions() {
       let rswidth, rsheight
@@ -133,14 +144,17 @@ export default {
         // })
 
         const supportwebnn = this.$store.state.supportwebnn
+        let path = '/webnn/' + this.user
         let bp = null
-        if (supportwebnn) {
+        if (this.framework === 1) {
+          bp = '&p=threadsimd'
+          path = '/opencv/' + this.user
+        } else if (supportwebnn) {
           bp = '&b=WebML&p=sustained'
         } else {
           bp = '&b=WebGL&p=none'
         }
 
-        const path = '/user/' + this.user
         const query =
           '/?t=' +
           this.subscribetype +
@@ -153,6 +167,7 @@ export default {
           '&ns=' +
           this.noisesuppression +
           bp
+
         location.href = path + query
       }
     },

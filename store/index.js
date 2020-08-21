@@ -6,6 +6,7 @@ export const state = () => ({
     name: [],
     number: 0
   },
+  framework: 'webnn',
   subscribetype: 'forward',
   mode: 'galaxy',
   resolution: {
@@ -27,6 +28,9 @@ export const mutations = {
   },
   setParticipantsname(state, data) {
     state.participants.name = data
+  },
+  setFramework(state, data) {
+    state.framework = data
   },
   setSubscribeType(state, data) {
     state.subscribetype = data

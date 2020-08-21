@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import getTime from '~/assets/js/user/time'
+import getTime from '~/assets/js/time'
 export default {
   data() {
     return {

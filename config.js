@@ -71,5 +71,21 @@ module.exports = {
     //   mean: [127.5, 127.5, 127.5],
     //   std: [127.5, 127.5, 127.5]
     // }
+  },
+  semanticsegmentationopencv: {
+    modelName: 'Deeplab 224 (Tensorflow)',
+    format: 'Tensorflow',
+    modelId: 'opt_deeplabv3_mnv2_224',
+    modelSize: '8.4MB',
+    modelFile: '../../js/webnn/ss/model/opt_deeplabv3_mnv2_224.pb',
+    labelsFile: '../../js/webnn/ss/model/labels.txt',
+    isQuantized: false,
+    inputSize: [224, 224, 3],
+    outputSize: [224, 224, 1],
+    preOptions: {
+      mean: [0.5, 0.5, 0.5],
+      std: [0.5, 0.5, 0.5],
+      norm: true
+    }
   }
 }
