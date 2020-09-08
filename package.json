@@ -23,14 +23,14 @@
     }
   },
   "dependencies": {
-    "@nuxtjs/axios": "^5.12.1",
+    "@nuxtjs/axios": "^5.12.2",
     "@nuxtjs/dotenv": "^1.4.0",
-    "@nuxtjs/pwa": "^3.0.1",
+    "@nuxtjs/pwa": "^3.0.2",
     "concurrently": "^5.3.0",
     "cors": "^2.8.5",
     "cross-env": "^5.2.0",
     "express": "^4.16.4",
-    "nuxt": "^2.14.3",
+    "nuxt": "^2.14.4",
     "nuxt-buefy": "^0.3.31",
     "socket.io": "^2.3.0"
   },
@@ -38,8 +38,8 @@
     "@nuxtjs/eslint-config": "^1.0.1",
     "@nuxtjs/eslint-module": "^1.2.0",
     "@nuxtjs/stylelint-module": "^3.2.2",
-    "@vue/test-utils": "^1.0.4",
-    "ava": "^3.11.1",
+    "@vue/test-utils": "^1.0.5",
+    "ava": "^3.12.1",
     "babel-eslint": "^10.1.0",
     "babel-plugin-module-resolver": "^3.2.0",
     "browser-env": "^3.2.5",
