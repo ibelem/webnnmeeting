@@ -1,4 +1,5 @@
 import { BaseRunner } from '~/assets/js/webnn-opencv/util/BaseRunner'
+import { cv } from '~/static/js/opencv.js/Threads+SIMD/opencv'
 
 class OpenCVRunner extends BaseRunner {
   constructor() {
@@ -19,6 +20,8 @@ class OpenCVRunner extends BaseRunner {
             throw new Error(`The model file ${url} is invalid, ${err}`);
           }
           try {
+            console.log('&&&&&&&&&&& cv &&&&&&&&&&&&&&&')
+            console.log(cv)
             cv.FS_createDataFile('/', modelName, bytes, true, false, false);
           } catch (e) {
             if (e.errno === 17) {
@@ -30,6 +33,8 @@ class OpenCVRunner extends BaseRunner {
           break;
         case 'pb':
           try {
+            console.log('&&&&&&&&&&& cv &&&&&&&&&&&&&&&')
+            console.log(cv)
             cv.FS_createDataFile('/', modelName, bytes, true, false, false);
             console.log(modelName)
             console.log(bytes)
@@ -63,6 +68,9 @@ class OpenCVRunner extends BaseRunner {
     let model = null;
 
     const modelFormat = this._currentModelInfo.format;
+
+    console.log('&&&&&&&&&&& cv &&&&&&&&&&&&&&&')
+    console.log(cv)
 
     if (modelFormat === 'ONNX' || modelFormat === 'Tensorflow') {
       model = cv.readNet(this._currentModelInfo.modelFile.split('/').pop());

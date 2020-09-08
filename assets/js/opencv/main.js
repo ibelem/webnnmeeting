@@ -438,6 +438,10 @@ export default {
       this.getSSStream()
       this.initRenderer(effect)
       this.predictFrame()
+      console.log('%%%%%%%%%%%%%%% this.roomId %%%%%%%%%%%%%%%%')
+      console.log(this.roomId)
+      console.log('%%%%%%%%%%%%%%% this.localPublication.id %%%%%%%%%%%%%%%%')
+      console.log(this.localPublication.id)
       deleteStream(this.roomId, this.localPublication.id)
       await this.publishLocal(true)
       // updateStream(this.roomId, this.localPublication.id)
@@ -447,7 +451,7 @@ export default {
       if (this.runner) {
         console.log(config.semanticsegmentationopencv)
         console.log('+++++++++++++++++++++++')
-        await this.runner.loadModel(config.semanticsegmentationopencv)
+        this.runner.loadModel(config.semanticsegmentationopencv)
         // await this.runner.initModel('WebML', 'sustained')
         if (this.backend === 'webml') {
           this.backend = 'WebML'
@@ -456,9 +460,9 @@ export default {
           backend: 'Threads SIMD',
           prefer: this.prefer
         }
-        console.log('**********************************')
         await this.runner.compileModel(options)
       }
+      console.log('********************************** INIT TRUE')
       this.initss = true
     },
     initStats() {
@@ -628,6 +632,8 @@ export default {
 
       const publication = await this.room.publish(this.localStream)
       this.localPublication = publication
+      console.log('|||||||||| this.localPublication |||||||||||')
+      console.log(this.localPublication.id)
       this.isPauseAudio = false
       this.toggleAudio()
       this.isPauseVideo = true
