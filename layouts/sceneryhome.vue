@@ -28,7 +28,7 @@ export default {
         { src: '../../js/gsap.js', defer: true },
         { src: '../../js/sketch.js', defer: true },
         {
-          src: '../../js/webnn/polyfill/webml-polyfill.js',
+          src: '../../dist/webml-polyfill.js',
           defer: true
         },
         {
