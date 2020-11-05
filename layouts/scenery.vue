@@ -40,12 +40,24 @@ export default {
           src: '../../js/webnn/util/tflite/schema/schema_generated.js',
           defer: true
         },
+        // {
+        //   src: '../../js/webnn/util/tflite/TfLiteModelUtils.js',
+        //   defer: true
+        // },
+        // {
+        //   src: '../../js/webnn/util/tflite/TFliteModelImporter.js',
+        //   defer: true
+        // },
         {
-          src: '../../js/webnn/util/tflite/TfLiteModelUtils.js',
+          src: '../../js/webnn/util/openvino/openvino.js',
           defer: true
         },
         {
-          src: '../../js/webnn/util/tflite/TFliteModelImporter.js',
+          src: '../../js/webnn/util/openvino/OpenVINOModelUtils.js',
+          defer: true
+        },
+        {
+          src: '../../js/webnn/util/openvino/OpenVINOModelImporter.js',
           defer: true
         },
         {

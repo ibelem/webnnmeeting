@@ -135,9 +135,9 @@ export default {
         const supportwebnn = this.$store.state.supportwebnn
         let bp = null
         if (supportwebnn) {
-          bp = '&b=WebML&p=sustained'
+          bp = '&b=WebML&p=fast&precision=fp32'
         } else {
-          bp = '&b=WebGL&p=none'
+          bp = '&b=WebGL&p=none&precision=fp32'
         }
 
         const path = '/user/' + this.user

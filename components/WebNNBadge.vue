@@ -60,6 +60,7 @@ export default {
 .webnnbadge {
   display: inline-block;
   font-size: 0.8rem;
+  display: none;
 }
 
 .btn {

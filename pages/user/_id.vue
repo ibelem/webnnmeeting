@@ -192,6 +192,7 @@
                   <!-- <b-icon icon="high-definition" class="blicon"> </b-icon> -->
                   HD
                 </span>
+                <span class="mi">{{ modelname }}</span>
                 <!-- <span v-if="enablevideo">
                   <b-icon icon="video" class="blicon"> </b-icon>
                   <b-icon icon="microphone" class="blicon"> </b-icon>
@@ -212,6 +213,7 @@
                   <!-- <b-icon icon="high-definition" class="blicon"> </b-icon> -->
                   HD
                 </span>
+                <span class="mi">{{ modelname }}</span>
                 <!-- <span v-if="enablevideo">
                   <b-icon icon="video" class="blicon"> </b-icon>
                   <b-icon icon="microphone" class="blicon"> </b-icon>
@@ -676,5 +678,9 @@ video {
 
 .notices ol {
   margin: 10px 0 0 12px;
+}
+
+.mi {
+  margin-left: 6px;
 }
 </style>

@@ -137,7 +137,10 @@ export default {
       forwardStreamMap: new Map(),
 
       localVideo: [],
-      remoteVideo: []
+      remoteVideo: [],
+      output: null,
+      modelname: null,
+      configss: null
     }
   },
   computed: {
@@ -152,6 +155,9 @@ export default {
     },
     showparticipantsandconversation() {
       return this.showparticipants && this.showconversation
+    },
+    precision() {
+      return this.$route.query.precision
     },
     backend() {
       return this.$route.query.b
@@ -229,6 +235,12 @@ export default {
     this.scrollToBottom()
     this.userExit()
     this.initStats()
+    if (this.precision.toLowerCase() === 'int8') {
+      this.configss = config.semanticsegmentation.int8
+    } else {
+      this.configss = config.semanticsegmentation.fp32
+    }
+    this.modelname = this.configss.modelName
     this.initConference()
     await this.initSS()
     this.$refs.localvideo.muted = false
@@ -352,7 +364,7 @@ export default {
     //   this.$refs.ssvideo.srcObject = this.ssstream
     // },
     getClippedSize(source) {
-      const width = config.semanticsegmentation.inputSize[0]
+      const width = this.configss.inputSize[0]
       const imWidth = source.videoWidth
       const imHeight = source.videoHeight
       const resizeRatio = Math.max(Math.max(imWidth, imHeight) / width, 1)
@@ -360,12 +372,31 @@ export default {
       const scaledHeight = Math.floor(imHeight / resizeRatio)
       return [scaledWidth, scaledHeight]
     },
+    nchwTranspose(t) {
+      const nchwLayout = this.configss.preOptions.nchwFlag || false
+      if (nchwLayout && this.configss.outputSize.length === 3) {
+        const temp = Array.from(t.tensor)
+        const height = this.configss.outputSize[0]
+        const width = this.configss.outputSize[1]
+        const channels = this.configss.outputSize[2]
+
+        for (let c = 0; c < channels; ++c) {
+          for (let y = 0; y < height; ++y) {
+            for (let x = 0; x < width; ++x) {
+              const dstIndex = y * width * channels + x * channels + c
+              const srcIndex = c * height * width + y * width + x
+              t.tensor[dstIndex] = temp[srcIndex]
+            }
+          }
+        }
+      }
+      this.output = t
+    },
     getSegMap() {
-      const output = this.runner.getOutput()
       const segMap = {
-        data: output.tensor,
-        outputShape: config.semanticsegmentation.outputSize,
-        labels: output.labels
+        data: this.output.tensor,
+        outputShape: this.configss.outputSize,
+        labels: this.output.labels
       }
       return segMap
     },
@@ -375,10 +406,11 @@ export default {
       this.renderer.drawOutputs(this.getSegMap())
       this.stats.end()
     },
-    output() {
+    startOutput() {
       const source = this.$refs.localvideo
-      const output = this.runner.getOutput()
-      this.inferencetime = output.inferenceTime.toFixed(2)
+      this.output = this.runner.getOutput()
+      // this.nchwTranspose(this.output)
+      this.inferencetime = this.output.inferenceTime.toFixed(2)
       this.showfps = fps
       console.log(
         `Inference time: ${this.inferencetime} ms / FPS: ${this.showfps}`
@@ -389,8 +421,8 @@ export default {
       const input = {
         src: source,
         options: {
-          inputSize: config.semanticsegmentation.inputSize,
-          preOptions: config.semanticsegmentation.preOptions || {},
+          inputSize: this.configss.inputSize,
+          preOptions: this.configss.preOptions || {},
           imageChannels: 4,
           scaledFlag: true
         }
@@ -400,7 +432,7 @@ export default {
     async predictFrame() {
       const source = this.$refs.localvideo
       await this.predict(source)
-      this.output()
+      this.startOutput()
       this.sstimer = setTimeout(this.predictFrame, 0)
     },
     async stopSS() {
@@ -446,7 +478,7 @@ export default {
     async initSS() {
       this.initRunner()
       if (this.runner) {
-        await this.runner.loadModel(config.semanticsegmentation)
+        await this.runner.loadModel(this.configss)
         // await this.runner.initModel('WebML', 'sustained')
         if (this.backend === 'webml') {
           this.backend = 'WebML'
