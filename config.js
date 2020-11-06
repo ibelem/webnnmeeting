@@ -23,7 +23,7 @@ module.exports = {
   },
   semanticsegmentation: {
     fp32: {
-      modelName: 'DeepLab v3 257x257x3',
+      modelName: 'DeepLab v3 257',
       // HWC N = 1
       framework: ['WebNN'],
       format: 'OpenVINO',
@@ -40,7 +40,7 @@ module.exports = {
       }
     },
     int8: {
-      modelName: 'DeepLab v3 Quant 257',
+      modelName: 'DeepLab v3 257',
       framework: ['WebNN'],
       format: 'OpenVINO',
       modelId: 'deeplab_257_quant_openvino',

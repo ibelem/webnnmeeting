@@ -192,7 +192,7 @@
                   <!-- <b-icon icon="high-definition" class="blicon"> </b-icon> -->
                   HD
                 </span>
-                <span class="mi">{{ modelname }}</span>
+                <span class="hd">{{ precision.toUpperCase() }}</span>
                 <!-- <span v-if="enablevideo">
                   <b-icon icon="video" class="blicon"> </b-icon>
                   <b-icon icon="microphone" class="blicon"> </b-icon>
@@ -213,7 +213,7 @@
                   <!-- <b-icon icon="high-definition" class="blicon"> </b-icon> -->
                   HD
                 </span>
-                <span class="mi">{{ modelname }}</span>
+                <span class="hd">{{ precision.toUpperCase() }}</span>
                 <!-- <span v-if="enablevideo">
                   <b-icon icon="video" class="blicon"> </b-icon>
                   <b-icon icon="microphone" class="blicon"> </b-icon>
@@ -330,9 +330,15 @@ export default {
   font-size: 0.6rem;
   font-weight: bold;
   margin-left: 0.25rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(204, 255, 144, 0.2);
   padding: 1px 6px;
   display: inline-block;
+  color: rgba(204, 255, 144, 1);
+}
+
+.counter span.hd:hover {
+  border-color: rgba(204, 255, 144, 1);
+  color: #fff;
 }
 
 body {

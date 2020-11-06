@@ -139,7 +139,6 @@ export default {
       localVideo: [],
       remoteVideo: [],
       output: null,
-      modelname: null,
       configss: null
     }
   },
@@ -240,7 +239,6 @@ export default {
     } else {
       this.configss = config.semanticsegmentation.fp32
     }
-    this.modelname = this.configss.modelName
     this.initConference()
     await this.initSS()
     this.$refs.localvideo.muted = false
