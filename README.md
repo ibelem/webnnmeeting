@@ -1,3 +1,8 @@
+# Deprecated
+
+Please visit https://github.com/ibelem/webmlmeet for up to date version.
+
+
 # WebNN Meeting (Intelligent Collaboration)
 
 A Web-based Intelligent Collaboration (Video Conference) example with AI features based on W3C Web Neural Network API and powered by Intel Open WebRTC Toolkit (OWT).
